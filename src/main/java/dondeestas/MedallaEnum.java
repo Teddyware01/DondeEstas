@@ -1,4 +1,4 @@
-package org.example.dondeestas;
+package dondeestas;
 
 public enum  MedallaEnum {
     RESCATISTA1("Rescatista nivel 1"),

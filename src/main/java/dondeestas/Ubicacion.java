@@ -1,4 +1,4 @@
-package org.example.dondeestas;
+package dondeestas;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

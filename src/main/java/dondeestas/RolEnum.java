@@ -1,4 +1,4 @@
-package org.example.dondeestas;
+package dondeestas;
 
 public enum RolEnum {
     ESTANDAR("Estandar"),

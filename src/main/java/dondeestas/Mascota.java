@@ -1,4 +1,4 @@
-package org.example.dondeestas;
+package dondeestas;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

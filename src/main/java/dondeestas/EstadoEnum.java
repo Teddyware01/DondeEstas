@@ -1,4 +1,4 @@
-package org.example.dondeestas;
+package dondeestas;
 
 public enum EstadoEnum {
     PERDIDO_PROPIO("Mascota perdida, publicada por su dueño"),
