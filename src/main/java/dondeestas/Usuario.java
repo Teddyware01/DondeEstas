@@ -35,15 +35,6 @@ public class Usuario {
     @Column
     private String ciudad;
 
-    @Column
-    private RolEnum rol;
-
-    private List<Mascota> misMascotas;
-    private List<Mascota> mascotasAjenas;
-    private List<Medalla> medallas;
-    private List<Avistamiento> avistamientos;
-    private List<DetallePuntos> historialPuntos;
-
 
     public Usuario(Long id, String nombre, String apellido, String email,
                    String contrasena, String telefono, String barrio, String ciudad) {
@@ -55,12 +46,6 @@ public class Usuario {
         this.telefono = telefono;
         this.barrio = barrio;
         this.ciudad = ciudad;
-        this.rol = RolEnum.ESTANDAR;
-        this.misMascotas = new ArrayList<>();
-        this.mascotasAjenas = new ArrayList<>();
-        this.medallas = new ArrayList<>();
-        this.avistamientos = new ArrayList<>();
-        this.historialPuntos = new ArrayList<>();
     }
 
     public Usuario() {}
@@ -72,22 +57,6 @@ public class Usuario {
     }
 
     public void editarUsuario() {
-    }
-
-    public void crearMascota(Usuario usuario, String nombre, String tamanio, String color, LocalDate fecha, String estado, String fotos, Ubicacion coordenada, String descripcionExtra) {
-    }
-
-    public void editarMascota(String nombre, String tamanio, String color, LocalDate fecha, String estado, String fotos, Ubicacion coordenada, String descripcionExtra) {
-    }
-
-    public void verMascota() {
-    }
-
-    public void eliminarMascota(Integer id) {
-    }
-
-    public void reportarAvistamiento(Mascota mascota, Ubicacion coordenadas, String foto, LocalDate fecha, String comentario, Usuario usuario) {
-
     }
 
     public void verPerfil() {

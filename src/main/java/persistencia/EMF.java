@@ -7,10 +7,10 @@ public class EMF {
     private static EntityManagerFactory em = null;
     static {
     try {
-        em = Persistence.createEntityManagerFactory("unlp");
+        em = Persistence.createEntityManagerFactory("miUP");
     }
     catch (PersistenceException e) {
-        System.err.println("Error al crear EntityManagerFactory: "+e.getMessage());
+        System.err.println("Error al crear EntityManagerFactory: " + e.getMessage());
         e.printStackTrace();
     }
     }
