@@ -35,6 +35,20 @@ public class Usuario {
     @Column
     private String ciudad;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Avistamiento> avistamientos;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mascota> mascotas;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UsuarioMedalla> medallas;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UsuarioPuntaje> puntajes;
+
+    @Column(nullable = false)
+    private Boolean is_admin;
 
     public Usuario(Long id, String nombre, String apellido, String email,
                    String contrasena, String telefono, String barrio, String ciudad) {
@@ -46,9 +60,18 @@ public class Usuario {
         this.telefono = telefono;
         this.barrio = barrio;
         this.ciudad = ciudad;
+        this.medallas = new ArrayList<>();
+        this.avistamientos = new ArrayList<>();
+        this.is_admin = false;
     }
 
-    public Usuario() {}
+    public Usuario(List<UsuarioMedalla> medallas) {
+        this.medallas = medallas;
+    }
+
+    public Usuario() {
+
+    }
 
     public void verMascotas(String barrio) {
     }
