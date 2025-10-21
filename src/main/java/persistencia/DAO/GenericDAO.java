@@ -1,4 +1,4 @@
-package DAO;
+package persistencia.DAO;
 import java.util.List;
 
 public interface GenericDAO<T> {
