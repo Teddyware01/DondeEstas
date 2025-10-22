@@ -61,7 +61,9 @@ public class Usuario {
         this.ciudad = ciudad;
         this.medallas = new ArrayList<>();
         this.avistamientos = new ArrayList<>();
+        this.mascotas = new ArrayList<>();
         this.is_admin = false;
+        this.puntajes = new ArrayList<>();
     }
 
     public Usuario(List<UsuarioMedalla> medallas) {

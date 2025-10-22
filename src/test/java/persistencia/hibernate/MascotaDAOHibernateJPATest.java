@@ -19,7 +19,7 @@ class MascotaDAOHibernateJPATest {
     @BeforeAll
     static void inicializar() {
         em = EMF.getEMF().createEntityManager();
-        mascotaDAO = new MascotaDAOHibernateJPA();
+        mascotaDAO = new MascotaDAOHibernateJPA(em);
     }
 
     @BeforeEach

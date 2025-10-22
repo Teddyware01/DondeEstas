@@ -63,8 +63,29 @@ class UsuarioDAOHibernateJPATest {
         usuarioDAO.update(u);
 
         Usuario fetched = usuarioDAO.getByEmail("ana@example.com");
-        assertEquals("anamalia@gmail.com", fetched.getApellido());
+        assertEquals("Antonic", fetched.getApellido());
     }
+
+    /*************************************
+     * ver la opcion de meter un try catch:
+     * public T update(T entity) {
+     * EntityManager em = EMF.getEMF().createEntityManager();
+     * EntityTransaction tx = em.getTransaction();
+     * T merged = null;
+     * try {
+     *  tx.begin();
+     *  merged = em.merge(entity);
+     *  tx.commit();
+     * } catch (RuntimeException e) {
+     *  if (tx.isActive())
+     *      tx.rollback();
+     *      throw e;
+     *  } finally {
+     *      em.close();
+     *  }
+     *  return merged;
+     *  }
+     */
 
     @Test
     void testDeleteUsuario() {

@@ -1,5 +1,6 @@
 package persistencia.DAO;
 
+import jakarta.persistence.EntityManager;
 import persistencia.hibernate.*;
 
 public class FactoryDAO {
@@ -12,8 +13,8 @@ public class FactoryDAO {
     public static EstadoDAO getEstadoDAO() {
         return new EstadoDAOHibernateJPA();
     }
-    public static MascotaDAO getMascotaDAO() {
-        return new MascotaDAOHibernateJPA();
+    public static MascotaDAO getMascotaDAO(EntityManager em) {
+        return new MascotaDAOHibernateJPA(em);
     }
     public static MedallaDAO getMedallaDAO() {
         return new MedallaDAOHibernateJPA();
@@ -31,8 +32,5 @@ public class FactoryDAO {
     public static UsuarioPuntajeDAO getUsuarioPuntajeDAO() {
         return new UsuarioPuntajeDAOHibernateJPA();
     }
-
-
-
 
 }
