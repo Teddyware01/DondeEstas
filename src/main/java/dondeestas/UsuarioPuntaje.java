@@ -23,4 +23,29 @@ public class UsuarioPuntaje {
     @Column
     private LocalDate fechaObtencion;
 
+    public UsuarioPuntaje(Usuario usuario, Puntaje puntaje, LocalDate fechaObtencion) {
+        this.puntaje = puntaje;
+        this.fechaObtencion = fechaObtencion;
+        this.usuario = usuario;
+    }
+
+    public UsuarioPuntaje() {
+
+    }
+
+    public Puntaje getPuntaje() {
+        return  puntaje;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setPuntaje(Puntaje puntaje){
+        this.puntaje = puntaje;
+    }
 }

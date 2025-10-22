@@ -3,6 +3,7 @@ package dondeestas;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,5 +20,13 @@ public class  Medalla {
     @OneToMany(mappedBy = "medalla", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioMedalla> usuarios;
 
+    public Medalla(String  nombreMedalla) {
+        this.nombreMedalla = nombreMedalla;
+        this.usuarios = new ArrayList<>();
+    }
     public Medalla() {}
+
+    public String getNombreMedalla() {
+        return nombreMedalla;
+    }
 }

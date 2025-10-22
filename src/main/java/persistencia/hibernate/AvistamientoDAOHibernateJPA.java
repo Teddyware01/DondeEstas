@@ -86,7 +86,7 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
 
         try {
             TypedQuery<Avistamiento> consulta = em.createQuery(
-                    "SELECT e FROM Avistamiento e WHERE e.ubicacion.barrio = :barrio "  ,
+                    "SELECT e FROM Avistamiento e WHERE LOWER(e.ubicacion.barrio) = LOWER(:barrio) "  ,
                     Avistamiento.class
             );
             consulta.setParameter("barrio", barrio);

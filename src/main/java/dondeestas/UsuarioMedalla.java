@@ -24,4 +24,25 @@ public class UsuarioMedalla {
     private LocalDate fechaObtencion;
 
     // getters y setters
+    public UsuarioMedalla() {}
+    public UsuarioMedalla(Usuario usuario, Medalla medalla) {
+        this.usuario = usuario;
+        this.medalla = medalla;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public Medalla getMedalla() {
+        return medalla;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setMedalla(Medalla medalla) {
+        medalla = medalla;
+    }
 }

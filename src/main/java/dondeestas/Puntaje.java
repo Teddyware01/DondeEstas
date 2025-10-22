@@ -12,6 +12,7 @@ public class Puntaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //Es la cantidad de puntos que "paga" cada tipo.
     @Column(nullable = false)
     private int cantidad;
 
@@ -22,5 +23,17 @@ public class Puntaje {
     private List<UsuarioPuntaje> usuarios;
 
 
+    public Puntaje(int cantidad,  String tipoPuntaje) {
+        this.cantidad = cantidad;
+        this.tipoPuntaje = tipoPuntaje;
+    }
     public Puntaje() {}
+
+    public String getTipoPuntaje() {
+        return  tipoPuntaje;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
 }

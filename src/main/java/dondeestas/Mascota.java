@@ -2,6 +2,7 @@ package dondeestas;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,5 +43,47 @@ public class Mascota {
     @Column(length = 500)
     private String descripcionExtra;
 
+    public Mascota(Usuario usuario, String luna, String pequeño, LocalDate now, Ubicacion ubicacion, Estado estado, String s) {
+    }
+
+
+    public String getNombre(){
+        return nombre;
+    }
+
     public Mascota() {}
+
+    public Mascota(Usuario usuario, String nombre,
+                   String tamano, String color, LocalDate fecha,
+                   Ubicacion ubicacion, Estado estado, String descripcionExtra) {
+        this.usuario = usuario;
+        this.avistamientos = new ArrayList<>();
+        this.nombre = nombre;
+        this.tamano = tamano;
+        this.color = color;
+        this.fecha = fecha;
+        this.ubicacion = ubicacion;
+        this.estado = estado;
+        this.descripcionExtra = descripcionExtra;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTamano(String tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getTamano() {
+        return tamano;
+    }
 }

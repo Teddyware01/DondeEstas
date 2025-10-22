@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 @Table(name = "avistamientos")
 public class Avistamiento {
 
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -36,4 +38,40 @@ public class Avistamiento {
     }
 
     public Avistamiento() {}
+    public Avistamiento(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
+        this.foto = foto;
+        this.fecha = fecha;
+        this.comentario = comentario;
+        this.mascota = mascota;
+        this.usuario = usuario;
+        this.ubicacion = ubicacion;
+    }
+
+    public Ubicacion getUbicacion() {
+        return ubicacion;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Mascota getMascota() {
+        return mascota;
+    }
+   public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public String getFoto() {
+        return foto;
+
+    }
 }

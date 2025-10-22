@@ -2,6 +2,7 @@ package dondeestas;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,4 +20,8 @@ public class Estado {
     private List<Mascota> mascotas;
 
     public Estado() {}
+    public Estado(String nombreEstado) {
+        this.nombreEstado = nombreEstado;
+        this.mascotas = new ArrayList<>();
+    }
 }

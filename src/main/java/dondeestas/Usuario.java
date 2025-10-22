@@ -50,9 +50,8 @@ public class Usuario {
     @Column(nullable = false)
     private Boolean is_admin;
 
-    public Usuario(Long id, String nombre, String apellido, String email,
+    public Usuario(String nombre, String apellido, String email,
                    String contrasena, String telefono, String barrio, String ciudad) {
-        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
@@ -84,5 +83,28 @@ public class Usuario {
 
     public void verPerfil() {
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getTelefono() {
+        return  telefono;
+    }
 }

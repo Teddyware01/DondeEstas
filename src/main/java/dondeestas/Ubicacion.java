@@ -2,6 +2,7 @@ package dondeestas;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,4 +27,31 @@ public class Ubicacion {
     @OneToMany(mappedBy = "ubicacion")
     private List<Mascota> mascotas;
 
+    public Ubicacion(double latitud, double longitud, String barrio){
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.barrio = barrio;
+        this.avistamientos = new ArrayList<>();
+        this.mascotas = new ArrayList<>();
+    }
+
+    public Ubicacion() {
+
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
 }
