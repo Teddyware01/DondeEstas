@@ -2,6 +2,7 @@ package persistencia.hibernate;
 
 import dondeestas.Usuario;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import persistencia.hibernate.GenericDAOHibernateJPA;
 import persistencia.DAO.UsuarioDAO;
 import persistencia.EMF;
@@ -20,18 +21,17 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario>
 
     public Usuario getByEmail(String mail) {
         EntityManager em = EMF.getEMF().createEntityManager();
-        Usuario usr;
         try {
-            usr = (Usuario) em.createQuery("SELECT m FROM " +
-                            this.getPersistentClass().getSimpleName() + " m WHERE m.email = :email")
+            return em.createQuery("SELECT u FROM " +
+                            this.getPersistentClass().getSimpleName() + " u WHERE u.email = :email", Usuario.class)
                     .setParameter("email", mail).getSingleResult();
-        } catch (Exception e) {
-            usr = null;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }
-        return usr;
     }
+
     @Override
     public boolean existsByEmail(String email) {
         EntityManager em = EMF.getEMF().createEntityManager();
@@ -54,21 +54,12 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario>
     @Override
     public List<Usuario> findByBarrio(String barrio) {
         EntityManager em = EMF.getEMF().createEntityManager();
-        List<Usuario> resultado = null;
-
         try {
-            resultado = em.createQuery(
-                            "SELECT u FROM " + getPersistentClass().getSimpleName() + " u WHERE u.barrio = :barrio",
-                            Usuario.class)
-                    .setParameter("barrio", barrio)
-                    .getResultList();
+            return em.createQuery("SELECT u FROM " +
+                            this.getPersistentClass().getSimpleName() + " u WHERE u.barrio = :barrio", Usuario.class)
+                    .setParameter("barrio", barrio).getResultList();
         } finally {
             em.close();
         }
-
-        return resultado;
     }
-
-
-
 }

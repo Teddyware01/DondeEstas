@@ -30,7 +30,7 @@ public class GenericDAOHibernateJPA<T>
             tx.commit();
         } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) tx.rollback();
-            throw e; // escribir en un log o mostrar mensaje
+            throw e;
         } finally {
             em.close();
         }
@@ -38,7 +38,7 @@ public class GenericDAOHibernateJPA<T>
     }
 
 
-    @Override
+/*    @Override
     public T update(T entity) {
         EntityManager em = EMF.getEMF().createEntityManager();
         EntityTransaction etx = em.getTransaction();
@@ -48,6 +48,27 @@ public class GenericDAOHibernateJPA<T>
         em.close();
         return entityMerged;
     }
+*/
+
+    @Override
+    public T update(T entity) {
+        EntityManager em = EMF.getEMF().createEntityManager();
+        EntityTransaction tx = null;
+        T entityMerged = null;
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            entityMerged = em.merge(entity);
+            tx.commit();
+            return entityMerged;
+        } catch (RuntimeException e) {
+            if (tx != null && tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
     @Override
     public void delete(T entity) {
         EntityTransaction tx = null;
@@ -58,7 +79,7 @@ public class GenericDAOHibernateJPA<T>
             tx.commit();
         } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) tx.rollback();
-            throw e; // escribir en un log o mostrar un mensaje
+            throw e;
         }
     }
 
@@ -77,7 +98,7 @@ public class GenericDAOHibernateJPA<T>
             tx.commit();
         } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) tx.rollback();
-            throw e; // escribir en un log o mostrar un mensaje
+            throw e;
         }
     }
 
@@ -91,12 +112,12 @@ public class GenericDAOHibernateJPA<T>
 
     @Override
     public List<T> getAll(String columnOrder) {
-        Query consulta =
-                EMF.getEMF().createEntityManager()
-                        .createQuery("SELECT e FROM "+
-                                getPersistentClass().getSimpleName() +
-                                " e order by e." + columnOrder);
-        List<T> resultado = (List<T>) consulta.getResultList();
-        return resultado;
+        try (EntityManager em = EMF.getEMF().createEntityManager()) {
+            Query consulta = em.createQuery("SELECT e FROM " +
+                    getPersistentClass().getSimpleName() +
+                    " e order by e." + columnOrder);
+
+            return (List<T>) consulta.getResultList();
+        }
     }
 }
