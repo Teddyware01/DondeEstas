@@ -72,10 +72,17 @@ public class GenericDAOHibernateJPA<T>
     @Override
     public void delete(T entity) {
         EntityTransaction tx = null;
-        try(EntityManager em = EMF.getEMF().createEntityManager()){
+        try (EntityManager em = EMF.getEMF().createEntityManager()) {
             tx = em.getTransaction();
             tx.begin();
-            em.remove(em.merge(entity));
+
+            Object id = em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+            T attached = em.find(persistentClass, id);
+
+            if (attached != null) {
+                em.remove(attached);
+            }
+
             tx.commit();
         } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) tx.rollback();
