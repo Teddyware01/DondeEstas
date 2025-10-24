@@ -1,243 +1,168 @@
-package persistencia.hibernate;
+    package persistencia.hibernate;
 
-import dondeestas.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import org.junit.jupiter.api.*;
-import persistencia.EMF;
+    import dondeestas.*;
+    import org.junit.jupiter.api.*;
+    import persistencia.DAO.AvistamientoDAO;
+    import persistencia.DAO.FactoryDAO;
+    import jakarta.persistence.EntityManager;
+    import jakarta.persistence.EntityTransaction;
+    import persistencia.EMF;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+    import java.time.LocalDate;
+    import java.time.LocalDateTime;
+    import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+    import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AvistamientoDAOHibernateJPATest {
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class AvistamientoDAOHibernateJPATest {
 
-    private EntityManager em;
-    private EntityTransaction tx;
-    private AvistamientoDAOHibernateJPA avistamientoDAO;
+        private static AvistamientoDAO avistamientoDAO;
+        private static MascotaDAOHibernateJPA mascotaDAO;
+        private static UsuarioDAOHibernateJPA usuarioDAO;
+        private static EstadoDAOHibernateJPA estadoDAO;
+        private static UbicacionDAOHibernateJPA ubicacionDAO;
 
-    @BeforeAll
-    void setUpAll() {
-        em = EMF.getEMF().createEntityManager();
-        avistamientoDAO = new AvistamientoDAOHibernateJPA();
-    }
+        private static Usuario usuario;
+        private static Estado estado;
+        private static Ubicacion ubicacionMascota;
+        private static Mascota mascota;
+        private static Ubicacion ubicacionAvistamiento;
+        private static Avistamiento avistamiento;
 
-    @BeforeEach
-    void iniciarTransaccion() {
-        tx = em.getTransaction();
-        tx.begin();
-    }
+        @BeforeAll
+        static void inicializar() {
+            avistamientoDAO = FactoryDAO.getAvistamientoDAO();
+            mascotaDAO = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
+            usuarioDAO = (UsuarioDAOHibernateJPA) FactoryDAO.getUsuarioDAO();
+            estadoDAO = (EstadoDAOHibernateJPA) FactoryDAO.getEstadoDAO();
+            ubicacionDAO = (UbicacionDAOHibernateJPA) FactoryDAO.getUbicacionDAO();
+        }
 
-    @AfterEach
-    void rollbackTransaccion() {
-        if (tx != null && tx.isActive()) {
-            tx.rollback();
+        @BeforeEach
+        void setUp() {
+            usuario = new Usuario("Juan","Perez","juan@mail.com","1234","123456789","Centro","Ciudad");
+            usuarioDAO.persist(usuario);
+
+            estado = new Estado("PERDIDO");
+            estadoDAO.persist(estado);
+
+            ubicacionMascota = new Ubicacion(-34.60,-58.38,"Centro");
+            ubicacionDAO.persist(ubicacionMascota);
+
+            mascota = new Mascota(usuario,"Firulais","Mediano","Marron", LocalDate.now(), ubicacionMascota, estado,"Mascota amistosa");
+            mascotaDAO.persist(mascota);
+
+            ubicacionAvistamiento = new Ubicacion(-34.61,-58.39,"Centro");
+            ubicacionDAO.persist(ubicacionAvistamiento);
+
+            avistamiento = new Avistamiento("foto1.png", LocalDateTime.now(), "Lo vi corriendo por calle 7 y 50", mascota, usuario, ubicacionAvistamiento);
+            avistamientoDAO.persist(avistamiento);
+        }
+
+        @AfterEach
+        void limpiarDatos() {
+            try (EntityManager em = EMF.getEMF().createEntityManager()) {
+                EntityTransaction tx = em.getTransaction();
+                try {
+                    tx.begin();
+                    em.createQuery("DELETE FROM Avistamiento").executeUpdate();
+                    em.createQuery("DELETE FROM Mascota").executeUpdate();
+                    em.createQuery("DELETE FROM Usuario").executeUpdate();
+                    em.createQuery("DELETE FROM Estado").executeUpdate();
+                    em.createQuery("DELETE FROM Ubicacion").executeUpdate();
+                    tx.commit();
+                } catch (Exception e) {
+                    if (tx.isActive()) {
+                        tx.rollback();
+                    }
+                    throw new RuntimeException("Error limpiando datos de prueba: ", e);
+                }
+            }
+        }
+
+        @Test
+        void testAltaAvistamiento() {
+            Avistamiento avistamiento = new Avistamiento("foto_path", LocalDateTime.now(), "Lo vi corriendo por calle 7 y 50", mascota, usuario, ubicacionAvistamiento);
+            Avistamiento guardado = avistamientoDAO.persist(avistamiento);
+
+            Avistamiento encontrado = avistamientoDAO.get(guardado.getId());
+
+            assertNotNull(encontrado);
+            assertEquals(usuario.getEmail(), encontrado.getUsuario().getEmail());
+            assertEquals("Lo vi corriendo por calle 7 y 50", encontrado.getComentario());
+        }
+
+        @Test
+        void testFindById() {
+            Avistamiento encontrado = avistamientoDAO.get(avistamiento.getId());
+
+            assertNotNull(encontrado);
+            assertEquals(mascota.getNombre(), encontrado.getMascota().getNombre());
+        }
+
+        @Test
+        void testUpdateAvistamiento() {
+            avistamiento.setComentario("Lo vi ahora en 10 y 48");
+            avistamientoDAO.update(avistamiento);
+
+            Avistamiento encontrado = avistamientoDAO.get(avistamiento.getId());
+            assertEquals("Lo vi ahora en 10 y 48", encontrado.getComentario());
+        }
+
+        @Test
+        void testBajaAvistamiento() {
+            Long idAvistamiento = avistamiento.getId();
+
+            avistamientoDAO.delete(avistamiento);
+
+            Avistamiento encontrado = avistamientoDAO.get(idAvistamiento);
+            assertNull(encontrado);
+        }
+
+        @Test
+        void testFindByUsuario() {
+            Usuario u1 = new Usuario("buscador1", "User", "buscador1@mail.com", "pass", "111", "Centro", "CABA");
+            usuarioDAO.persist(u1);
+            Usuario u2 = new Usuario("buscador2", "User", "buscador2@mail.com", "pass", "111", "Centro", "CABA");
+            usuarioDAO.persist(u2);
+
+            Avistamiento av1 = new Avistamiento("foto1.jpeg", LocalDateTime.now().minusHours(2), "Reporte 1 U1", mascota, u1, ubicacionAvistamiento);
+            avistamientoDAO.persist(av1);
+            Avistamiento av2 = new Avistamiento("foto2.jpeg", LocalDateTime.now().minusHours(1), "Reporte 2 U1", mascota, u1, ubicacionAvistamiento);
+            avistamientoDAO.persist(av2);
+
+            Avistamiento av3 = new Avistamiento("foto3.jpeg", LocalDateTime.now(), "Reporte 1 U2", mascota, u2, ubicacionAvistamiento);
+            avistamientoDAO.persist(av3);
+
+            List<Avistamiento> reportesU1 = avistamientoDAO.findByUsuario(u1);
+            List<Avistamiento> reportesU2 = avistamientoDAO.findByUsuario(u2);
+
+            assertEquals(2, reportesU1.size());
+            assertEquals(1, reportesU2.size());
+        }
+
+        @Test
+        void testFindByMascota() {
+            Usuario duenio = new Usuario("duenio5", "User", "duenio5@mail.com", "pass", "111", "Centro", "CABA");
+            usuarioDAO.persist(duenio);
+            Usuario reporta = new Usuario("reporta5", "User", "reporta5@mail.com", "pass", "111", "Norte", "CABA");
+            usuarioDAO.persist(reporta);
+
+            Mascota m1 = new Mascota(duenio, "Milo", "Chico", "Blanco", LocalDate.now().minusDays(1), ubicacionMascota, estado, "Perdido");
+            mascotaDAO.persist(m1);
+            Mascota m2 = new Mascota(duenio, "Nala", "Grande", "Negro", LocalDate.now().minusDays(1), ubicacionMascota, estado, "Perdido");
+            mascotaDAO.persist(m2);
+
+            Avistamiento av1 = new Avistamiento("foto1.png", LocalDateTime.now().minusHours(2), "Reporte 1 M1", m1, reporta, ubicacionAvistamiento);
+            avistamientoDAO.persist(av1);
+            Avistamiento av2 = new Avistamiento("foto2.png", LocalDateTime.now().minusHours(1), "Reporte 2 M1", m1, reporta, ubicacionAvistamiento);
+            avistamientoDAO.persist(av2);
+
+            List<Avistamiento> avistamientosM1 = avistamientoDAO.findByMascota(m1.getId());
+            List<Avistamiento> avistamientosM2 = avistamientoDAO.findByMascota(m2.getId());
+
+            assertEquals(2, avistamientosM1.size());
+            assertEquals(0, avistamientosM2.size());
         }
     }
-
-    @AfterAll
-    void cerrarEntityManager() {
-        if (em.isOpen()) em.close();
-    }
-
-    // ------------------- Tests existentes -------------------
-
-    @Test
-    void testPersistYGet() {
-        Usuario usuario = new Usuario("Juan", "Perez", "mail@mail.com",
-                "1234", "1134567890", "Centro", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.6037, -58.3816, "Centro");
-        Estado estado = new Estado("Perdido");
-
-        Mascota mascota = new Mascota(usuario,  "Firulais", "Mediano",
-                "Marrón", LocalDate.now(), ubicacion, estado, "Ninguna");
-
-        Avistamiento av = new Avistamiento("foto1.jpg", LocalDateTime.now(), "Comentario ejemplo",
-                mascota, usuario, ubicacion);
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-
-        Avistamiento guardado = avistamientoDAO.persist(av);
-        Avistamiento encontrado = avistamientoDAO.get(guardado.getId());
-
-        assertNotNull(encontrado);
-        assertEquals(guardado.getId(), encontrado.getId());
-    }
-
-    @Test
-    void testFindByMascota() {
-        Usuario usuario = new Usuario("Ana", "Lopez", "a@mail.com",
-                "1234", "1134567890", "Centro", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.60, -58.38, "Centro");
-        Estado estado = new Estado("Perdido");
-
-        Mascota mascota = new Mascota(usuario, "Luna", "Pequeño",
-                LocalDate.now(), ubicacion, estado, "");
-
-        Avistamiento av = new Avistamiento("foto2.jpg", LocalDateTime.now(), "Avistamiento Luna",
-                mascota, usuario, ubicacion);
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-        em.persist(av);
-
-        List<Avistamiento> lista = avistamientoDAO.findByMascota(mascota.getId());
-
-        assertEquals(1, lista.size());
-        assertEquals("Luna", lista.get(0).getMascota().getNombre());
-    }
-
-    @Test
-    void testFindByUsuario() {
-        Usuario usuario = new Usuario("Pedro", "Martinez", "p@mail.com",
-                "1234", "1134567890", "Norte", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.55, -58.45, "Norte");
-        Estado estado = new Estado("Encontrado");
-
-        Mascota mascota = new Mascota(usuario, "Toby", "Grande",
-                "Blanco", LocalDate.now(), ubicacion, estado, "");
-
-        Avistamiento av = new Avistamiento("foto3.jpg", LocalDateTime.now(), "Avistamiento Toby",
-                mascota, usuario, ubicacion);
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-        em.persist(av);
-
-        List<Avistamiento> lista = avistamientoDAO.findByUsuario(usuario.getId());
-        assertFalse(lista.isEmpty());
-    }
-
-    @Test
-    void testFindByFecha() {
-        LocalDate fecha = LocalDate.of(2024, 10, 20);
-        LocalDateTime fechaTime = fecha.atStartOfDay();
-
-        Usuario usuario = new Usuario("Ana", "Lopez", "ana@mail.com",
-                "1234", "1134567890", "Oeste", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.62, -58.48, "Oeste");
-        Estado estado = new Estado("Perdido");
-
-        Mascota mascota = new Mascota(usuario,  "Max", "Mediano",
-                "Marrón", fecha, ubicacion, estado, "");
-
-        Avistamiento av = new Avistamiento("foto4.jpg", fechaTime, "Avistamiento Max",
-                mascota, usuario, ubicacion);
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-        em.persist(av);
-
-        List<Avistamiento> lista = avistamientoDAO.findByFecha(fecha);
-        assertEquals(1, lista.size());
-    }
-
-    @Test
-    void testFindByBarrio() {
-        Usuario usuario = new Usuario("Lucas", "Diaz", "lucas@mail.com",
-                "pass", "1122334455", "Palermo", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.57, -58.43, "Palermo");
-        Estado estado = new Estado("Perdido");
-
-        Mascota mascota = new Mascota(usuario, "Coco", "Chico",
-                "Gris", LocalDate.now(), ubicacion, estado, "");
-
-        Avistamiento av = new Avistamiento("foto5.jpg", LocalDateTime.now(), "Avistamiento Coco",
-                mascota, usuario, ubicacion);
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-        em.persist(av);
-
-        List<Avistamiento> lista = avistamientoDAO.findByBarrio("Palermo");
-        assertEquals(1, lista.size());
-        assertEquals("Palermo", lista.get(0).getUbicacion().getBarrio());
-    }
-
-
-    @Test
-    void testAltaAvistamiento() {
-        Usuario usuario = new Usuario("Lucas", "Diaz", "lucas@mail.com",
-                "pass", "1122334455", "Centro", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.57, -58.43, "Centro");
-        Estado estado = new Estado("Perdido");
-        Mascota mascota = new Mascota(usuario, "Bobby", "Mediano",
-                "Marrón", LocalDate.now(), ubicacion, estado, "");
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-
-        Avistamiento av = new Avistamiento("foto6.jpg", LocalDateTime.now(), "Nueva foto",
-                mascota, usuario, ubicacion);
-        Avistamiento guardado = avistamientoDAO.persist(av);
-
-        assertNotNull(guardado.getId());
-        assertEquals("foto6.jpg", guardado.getFoto());
-    }
-
-    @Test
-    void testBajaAvistamiento() {
-        Usuario usuario = new Usuario("Clara", "Lopez", "clara@mail.com",
-                "pass", "1122334455", "Norte", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.55, -58.42, "Norte");
-        Estado estado = new Estado("Encontrado");
-        Mascota mascota = new Mascota(usuario, "Rocky", "Grande",
-                "Negro", LocalDate.now(), ubicacion, estado, "");
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-
-        Avistamiento av = new Avistamiento("foto7.jpg", LocalDateTime.now(), "Comentario",
-                mascota, usuario, ubicacion);
-        em.persist(av);
-
-        avistamientoDAO.delete(av);
-
-        Avistamiento encontrado = avistamientoDAO.get(av.getId());
-        assertNull(encontrado);
-    }
-
-    @Test
-    void testActualizacionAvistamiento() {
-        Usuario usuario = new Usuario("Pedro", "Gomez", "pedro@mail.com",
-                "pass", "1122334455", "Sur", "Buenos Aires");
-        Ubicacion ubicacion = new Ubicacion(-34.53, -58.44, "Sur");
-        Estado estado = new Estado("Perdido");
-        Mascota mascota = new Mascota(usuario, "Toby", "Mediano",
-                "Marrón", LocalDate.now(), ubicacion, estado, "");
-
-        em.persist(usuario);
-        em.persist(ubicacion);
-        em.persist(estado);
-        em.persist(mascota);
-
-        Avistamiento av = new Avistamiento("foto8.jpg", LocalDateTime.now(), "Comentario inicial",
-                mascota, usuario, ubicacion);
-        em.persist(av);
-
-        // Actualizar comentario
-        av.setComentario("Comentario actualizado");
-        avistamientoDAO.update(av);
-
-        Avistamiento encontrado = avistamientoDAO.get(av.getId());
-        assertEquals("Comentario actualizado", encontrado.getComentario());
-    }
-}

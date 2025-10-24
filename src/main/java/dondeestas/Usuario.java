@@ -109,4 +109,9 @@ public class Usuario {
     public String getTelefono() {
         return  telefono;
     }
+
+    public Mascota crearMascota(){
+        Mascota mascota = null;
+        return mascota;        
+    }
 }

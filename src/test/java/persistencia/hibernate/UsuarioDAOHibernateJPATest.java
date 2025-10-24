@@ -16,15 +16,12 @@ class UsuarioDAOHibernateJPATest {
         usuarioDAO = new UsuarioDAOHibernateJPA();
     }
 
-    // Usamos el AfterEach para LIMPIAR toda la tabla después de cada prueba.
-    // Esta limpieza DEBE estar en su propia transacción.
     @AfterEach
     void limpiarDatos() {
         EntityManager em = EMF.getEMF().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            // Ejecuta un comando SQL/JPQL de limpieza
             em.createQuery("DELETE FROM Usuario").executeUpdate();
             tx.commit();
         } catch (Exception e) {
@@ -39,14 +36,12 @@ class UsuarioDAOHibernateJPATest {
 
     @Test
     void testGetByEmailNotFound() {
-        // La prueba es simple, no necesita transacciones extra
         Usuario fetched = usuarioDAO.getByEmail("noexiste@example.com");
         assertNull(fetched);
     }
 
     @Test
     void testSaveAndGetByEmail() {
-        // El persist() ya maneja la transacción interna
         Usuario u = new Usuario("Juan", "Perez", "juan@example.com", "1234", "1234567890", "Centro", "CiudadX");
         usuarioDAO.persist(u);
 
@@ -57,11 +52,9 @@ class UsuarioDAOHibernateJPATest {
 
     @Test
     void testUpdateUsuario() {
-        // La operación de escritura se encapsula
         Usuario u = new Usuario("Ana", "Lopez", "ana@example.com", "pass", "9876543210", "Norte", "CiudadY");
         usuarioDAO.persist(u);
 
-        // La operación de actualización se encapsula
         u.setApellido("Antonic");
         usuarioDAO.update(u);
 
@@ -74,7 +67,7 @@ class UsuarioDAOHibernateJPATest {
         Usuario u = new Usuario("Carlos", "Gomez", "carlos@example.com", "123", "1122334455", "Sur", "CiudadZ");
         usuarioDAO.persist(u);
 
-        usuarioDAO.delete(u); // La eliminación se encapsula
+        usuarioDAO.delete(u);
 
         Usuario fetched = usuarioDAO.getByEmail("carlos@example.com");
         assertNull(fetched);

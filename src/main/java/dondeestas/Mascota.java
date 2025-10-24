@@ -43,10 +43,6 @@ public class Mascota {
     @Column(length = 500)
     private String descripcionExtra;
 
-    public Mascota(Usuario usuario, String luna, String pequeño, LocalDate now, Ubicacion ubicacion, Estado estado, String s) {
-    }
-
-
     public String getNombre(){
         return nombre;
     }

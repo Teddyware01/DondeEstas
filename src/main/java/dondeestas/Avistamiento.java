@@ -1,6 +1,8 @@
 package dondeestas;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,6 +34,15 @@ public class Avistamiento {
 
     @Column(length = 500)
     private String comentario;
+
+/*    public Avistamiento(Mascota mascota, Ubicacion ubiAvistamiento, String fotoPath, LocalDate now, String s, Usuario usuario) {
+        this.mascota = mascota;
+        this.ubicacion = ubiAvistamiento;
+        this.foto = fotoPath;
+        this.fecha = LocalDateTime.now();
+        this.comentario = s;
+        this.usuario = usuario;
+    }*/
 
     public Usuario getUsuarioAvistador() {
         return usuario;

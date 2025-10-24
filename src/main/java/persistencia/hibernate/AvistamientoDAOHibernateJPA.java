@@ -2,6 +2,7 @@ package persistencia.hibernate;
 
 import dondeestas.Avistamiento;
 import dondeestas.Mascota;
+import dondeestas.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
@@ -40,7 +41,7 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
     }
 
 
-    @Override
+    /*@Override
     public List<Avistamiento> findByUsuario(Long idUsuario) {
         EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> resultado = null;
@@ -55,8 +56,20 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
         } finally {
             em.close();
         }
-
         return resultado;
+    }*/
+
+    @Override
+    public List<Avistamiento> findByUsuario(Usuario usuario) {
+        try (EntityManager em = EMF.getEMF().createEntityManager()) {
+            TypedQuery<Avistamiento> consulta = em.createQuery(
+                    // Asumo que el atributo en Avistamiento es 'usuario' (quien reporta)
+                    "SELECT a FROM Avistamiento a WHERE a.usuario = :usuario",
+                    Avistamiento.class
+            );
+            consulta.setParameter("usuario", usuario);
+            return consulta.getResultList();
+        }
     }
 
     @Override
