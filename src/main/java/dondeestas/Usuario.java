@@ -1,8 +1,10 @@
 package dondeestas;
 
 import jakarta.persistence.*;
+import persistencia.DAO.FactoryDAO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,8 +112,31 @@ public class Usuario {
         return  telefono;
     }
 
-    public Mascota crearMascota(){
-        Mascota mascota = null;
-        return mascota;        
+    private void agregarMascota(Mascota mascota){
+        this.mascotas.add(mascota);
+        mascota.setUsuario(this);
     }
+
+    public void agregarAvistamiento(Avistamiento avistamiento) {
+        this.avistamientos.add(avistamiento);
+    }
+
+
+
+
+    //recibe objetos instanciados, pero la "BACK REFERENCE" en ellos se actualiza aca.
+    public Mascota crearMascota(String nombre, String tamano, String color, LocalDate fecha, Ubicacion ubicacion, Estado estado, String descripcionExtra ){
+        Mascota mascota = new Mascota(this, nombre, tamano, color, fecha, ubicacion,estado, descripcionExtra);
+        FactoryDAO.getMascotaDAO().persist(mascota);
+        estado.addMascota(mascota);
+        FactoryDAO.getEstadoDAO().update(estado);
+        ubicacion.addMascota(mascota);
+        FactoryDAO.getUbicacionDAO().update(ubicacion);
+        this.agregarMascota(mascota);
+        return mascota;
+    }
+
 }
+
+
+

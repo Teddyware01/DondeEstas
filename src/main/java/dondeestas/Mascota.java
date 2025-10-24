@@ -1,7 +1,11 @@
 package dondeestas;
 
 import jakarta.persistence.*;
+import persistencia.DAO.AvistamientoDAO;
+import persistencia.DAO.FactoryDAO;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,11 +47,12 @@ public class Mascota {
     @Column(length = 500)
     private String descripcionExtra;
 
-    public String getNombre(){
+    public String getNombre() {
         return nombre;
     }
 
-    public Mascota() {}
+    public Mascota() {
+    }
 
     public Mascota(Usuario usuario, String nombre,
                    String tamano, String color, LocalDate fecha,
@@ -82,4 +87,71 @@ public class Mascota {
     public String getTamano() {
         return tamano;
     }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public List<Avistamiento> getAvistamientos() {
+        return avistamientos;
+    }
+
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public String getDescripcionExtra() {
+        return descripcionExtra;
+    }
+
+    public void setDescripcionExtra(String descripcionExtra) {
+        this.descripcionExtra = descripcionExtra;
+    }
+
+    //recibe objetos instanciados, pero la "BACK REFERENCE" en ellos se actualiza aca.
+    public Avistamiento crearAvistamiento(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
+        Avistamiento avistamiento = new Avistamiento(foto, fecha, comentario, this, usuario, ubicacion);
+        this.avistamientos.add(avistamiento);
+        usuario.agregarAvistamiento(avistamiento);
+        ubicacion.addAvistamiento(avistamiento);
+        FactoryDAO.getAvistamientoDAO().persist(avistamiento);
+        FactoryDAO.getMascotaDAO().update(this);
+        FactoryDAO.getUsuarioDAO().update(usuario);
+        FactoryDAO.getUbicacionDAO().update(ubicacion);
+        return avistamiento;
+    }
+
 }
+
+

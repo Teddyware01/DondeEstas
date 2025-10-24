@@ -54,4 +54,11 @@ public class Ubicacion {
     public double getLongitud() {
         return longitud;
     }
+
+    public void addMascota(Mascota mascota) {
+        mascotas.add(mascota);
+    }
+    public void addAvistamiento(Avistamiento avistamiento) {
+        avistamientos.add(avistamiento);
+    }
 }

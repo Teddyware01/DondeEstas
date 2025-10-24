@@ -24,4 +24,8 @@ public class Estado {
         this.nombreEstado = nombreEstado;
         this.mascotas = new ArrayList<>();
     }
+
+    public void addMascota(Mascota mascota) {
+        mascotas.add(mascota);
+    }
 }
