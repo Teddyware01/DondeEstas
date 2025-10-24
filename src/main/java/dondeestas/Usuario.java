@@ -109,4 +109,7 @@ public class Usuario {
     public String getTelefono() {
         return  telefono;
     }
+    public String getNombre(){
+        return nombre;
+    }
 }
