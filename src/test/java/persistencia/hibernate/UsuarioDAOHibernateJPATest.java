@@ -1,10 +1,16 @@
 package persistencia.hibernate;
 
+import dondeestas.Estado;
+import dondeestas.Mascota;
+import dondeestas.Ubicacion;
 import dondeestas.Usuario;
 import org.junit.jupiter.api.*;
 import persistencia.EMF;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioDAOHibernateJPATest {
@@ -33,6 +39,20 @@ class UsuarioDAOHibernateJPATest {
             em.close();
         }
     }
+
+
+    @Test
+    void testAltaUsuario() {
+        Usuario usuario = new Usuario("Juan", "Perez", "juan@mail.com",
+                "1234", "123456789", "Centro", "Ciudad");
+
+        usuarioDAO.persist(usuario);
+        Usuario encontrado = usuarioDAO.get(usuario.getId());
+
+        assertNotNull(encontrado);
+        assertEquals("Juan", encontrado.getNombre());
+    }
+
 
     @Test
     void testGetByEmailNotFound() {
