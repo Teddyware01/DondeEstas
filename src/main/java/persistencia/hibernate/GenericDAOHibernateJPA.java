@@ -11,71 +11,36 @@ import java.util.List;
 public class GenericDAOHibernateJPA<T>
         implements GenericDAO<T> {
 
+
+
     protected Class<T> persistentClass;
-    public GenericDAOHibernateJPA(Class<T> clase) {
+    protected EntityManager em;
+
+    public GenericDAOHibernateJPA(Class<T> clase, EntityManager em) {
         this.persistentClass = clase;
+        this.em=em;
     }
     public Class<T> getPersistentClass() {
         return persistentClass;
+
     }
 
     @Override
     public T persist(T entity) {
-        EntityManager em = EMF.getEMF().createEntityManager();
-        EntityTransaction tx = null;
-        try {
-            tx = em.getTransaction();
-            tx.begin();
-            em.persist(entity);
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        em.persist(entity);
         return entity;
     }
 
 
-/*    @Override
-    public T update(T entity) {
-        EntityManager em = EMF.getEMF().createEntityManager();
-        EntityTransaction etx = em.getTransaction();
-        etx.begin();
-        T entityMerged = em.merge(entity);
-        etx.commit();
-        em.close();
-        return entityMerged;
-    }
-*/
-
     @Override
     public T update(T entity) {
-        EntityManager em = EMF.getEMF().createEntityManager();
-        EntityTransaction tx = null;
         T entityMerged = null;
-        try {
-            tx = em.getTransaction();
-            tx.begin();
-            entityMerged = em.merge(entity);
-            tx.commit();
-            return entityMerged;
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+        entityMerged = em.merge(entity);
+        return entityMerged;
     }
 
     @Override
     public void delete(T entity) {
-        EntityTransaction tx = null;
-        try (EntityManager em = EMF.getEMF().createEntityManager()) {
-            tx = em.getTransaction();
-            tx.begin();
-
             Object id = em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
             T attached = em.find(persistentClass, id);
 
@@ -83,48 +48,28 @@ public class GenericDAOHibernateJPA<T>
                 em.remove(attached);
             }
 
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw e;
-        }
     }
 
     @Override
     public void delete(Long id) {
-        EntityTransaction tx = null;
-        try(EntityManager em = EMF.getEMF().createEntityManager()){
-            tx = em.getTransaction();
-            tx.begin();
-
             T entity = em.find(persistentClass, id);
             if (entity != null){
                 em.remove(entity);
             }
-
-            tx.commit();
-        } catch (RuntimeException e) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            throw e;
-        }
     }
 
     @Override
     public T get(Long id) {
-        try (EntityManager em = EMF.getEMF().createEntityManager()) {
-            T entity = em.find(persistentClass, id);
-            return entity;
-        }
+        T entity = em.find(persistentClass, id);
+        return entity;
     }
 
     @Override
     public List<T> getAll(String columnOrder) {
-        try (EntityManager em = EMF.getEMF().createEntityManager()) {
             Query consulta = em.createQuery("SELECT e FROM " +
                     getPersistentClass().getSimpleName() +
                     " e order by e." + columnOrder);
 
             return (List<T>) consulta.getResultList();
         }
-    }
 }

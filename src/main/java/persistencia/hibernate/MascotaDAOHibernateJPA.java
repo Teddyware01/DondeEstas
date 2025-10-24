@@ -11,8 +11,8 @@ import java.util.List;
 public class MascotaDAOHibernateJPA extends GenericDAOHibernateJPA<Mascota>
         implements MascotaDAO {
 
-    public MascotaDAOHibernateJPA() {
-        super(Mascota.class);
+    public MascotaDAOHibernateJPA(EntityManager em) {
+        super(Mascota.class,em);
     }
 
     @Override

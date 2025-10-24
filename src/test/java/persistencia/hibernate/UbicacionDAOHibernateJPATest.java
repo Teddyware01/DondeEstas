@@ -18,7 +18,7 @@ class UbicacionDAOHibernateJPATest {
     @BeforeAll
     static void inicializar() {
         em = EMF.getEMF().createEntityManager();
-        ubicacionDAO = new UbicacionDAOHibernateJPA();
+        ubicacionDAO = new UbicacionDAOHibernateJPA(em);
     }
 
     @BeforeEach

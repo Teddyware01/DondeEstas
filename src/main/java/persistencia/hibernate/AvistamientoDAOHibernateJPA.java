@@ -16,13 +16,12 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
         implements AvistamientoDAO {
 
 
-    public AvistamientoDAOHibernateJPA() {
-        super(Avistamiento.class);
+    public AvistamientoDAOHibernateJPA(EntityManager em) {
+        super(Avistamiento.class,em);
     }
 
     @Override
     public List<Avistamiento> findByMascota(Long idMascota) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> resultado = null;
 
         try {
@@ -42,7 +41,6 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
 
     @Override
     public List<Avistamiento> findByUsuario(Long idUsuario) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> resultado = null;
 
         try {
@@ -61,7 +59,7 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
 
     @Override
     public List<Avistamiento> findByFecha(LocalDate fecha) {
-        EntityManager em = EMF.getEMF().createEntityManager();
+
         List<Avistamiento> resultado = null;
 
         try {
@@ -81,7 +79,6 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
     @Override
     public List<Avistamiento> findByBarrio(String barrio) {
 
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<Avistamiento> resultado = null;
 
         try {

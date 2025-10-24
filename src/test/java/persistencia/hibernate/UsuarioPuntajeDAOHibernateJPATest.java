@@ -21,7 +21,7 @@ class UsuarioPuntajeDAOHibernateJPATest {
     @BeforeAll
     static void setUp() {
         em = EMF.getEMF().createEntityManager();
-        usuarioPuntajeDAO = new UsuarioPuntajeDAOHibernateJPA();
+        usuarioPuntajeDAO = new UsuarioPuntajeDAOHibernateJPA(em);
     }
 
     @BeforeEach

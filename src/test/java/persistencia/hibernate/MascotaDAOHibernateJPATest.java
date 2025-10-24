@@ -17,14 +17,16 @@ class MascotaDAOHibernateJPATest {
     private static MascotaDAOHibernateJPA mascotaDAO;
     private static UsuarioDAOHibernateJPA usuarioDAO;
     private static EstadoDAOHibernateJPA estadoDAO;
+
     private static UbicacionDAOHibernateJPA ubicacionDAO;
+    private static EntityManager em = EMF.getEMF().createEntityManager();
 
     @BeforeAll
     static void inicializar() {
-        mascotaDAO = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
-        usuarioDAO = (UsuarioDAOHibernateJPA) FactoryDAO.getUsuarioDAO();
-        estadoDAO = (EstadoDAOHibernateJPA) FactoryDAO.getEstadoDAO();
-        ubicacionDAO = (UbicacionDAOHibernateJPA) FactoryDAO.getUbicacionDAO();
+        mascotaDAO = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO(em);
+        usuarioDAO = (UsuarioDAOHibernateJPA) FactoryDAO.getUsuarioDAO(em);
+        estadoDAO = (EstadoDAOHibernateJPA) FactoryDAO.getEstadoDAO(em);
+        ubicacionDAO = (UbicacionDAOHibernateJPA) FactoryDAO.getUbicacionDAO(em);
     }
 
     @AfterEach

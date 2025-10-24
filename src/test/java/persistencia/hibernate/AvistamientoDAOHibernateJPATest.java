@@ -22,7 +22,7 @@ class AvistamientoDAOHibernateJPATest {
     @BeforeAll
     void setUpAll() {
         em = EMF.getEMF().createEntityManager();
-        avistamientoDAO = new AvistamientoDAOHibernateJPA();
+        avistamientoDAO = new AvistamientoDAOHibernateJPA(em);
     }
 
     @BeforeEach

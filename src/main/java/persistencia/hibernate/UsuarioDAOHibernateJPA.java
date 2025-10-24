@@ -13,28 +13,24 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario>
         implements UsuarioDAO {
 
 
-    public UsuarioDAOHibernateJPA() {
-        super(Usuario.class);
+    public UsuarioDAOHibernateJPA(EntityManager em) {
+        super(Usuario.class,em);
     }
 
 
 
     public Usuario getByEmail(String mail) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         try {
             return em.createQuery("SELECT u FROM " +
                             this.getPersistentClass().getSimpleName() + " u WHERE u.email = :email", Usuario.class)
                     .setParameter("email", mail).getSingleResult();
         } catch (NoResultException e) {
             return null;
-        } finally {
-            em.close();
         }
     }
 
     @Override
     public boolean existsByEmail(String email) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         boolean existe = false;
 
         try {
@@ -53,7 +49,6 @@ public class UsuarioDAOHibernateJPA extends GenericDAOHibernateJPA<Usuario>
 
     @Override
     public List<Usuario> findByBarrio(String barrio) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         try {
             return em.createQuery("SELECT u FROM " +
                             this.getPersistentClass().getSimpleName() + " u WHERE u.barrio = :barrio", Usuario.class)

@@ -12,14 +12,13 @@ public class UbicacionDAOHibernateJPA extends GenericDAOHibernateJPA<Ubicacion>
         implements UbicacionDAO {
 
 
-    public UbicacionDAOHibernateJPA() {
-        super(Ubicacion.class);
+    public UbicacionDAOHibernateJPA(EntityManager em) {
+        super(Ubicacion.class,em);
     }
 
 
     @Override
     public List<Ubicacion> findByBarrio(String barrio) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<Ubicacion> resultado = null;
 
         try {
@@ -39,7 +38,6 @@ public class UbicacionDAOHibernateJPA extends GenericDAOHibernateJPA<Ubicacion>
     //Interesante de ver, podemos probarlo.
     @Override
     public List<Ubicacion> findWithinRadio(double lat, double lon, double radioKm) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<Ubicacion> resultado = null;
 
         try {

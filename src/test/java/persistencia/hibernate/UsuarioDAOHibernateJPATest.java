@@ -16,17 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class UsuarioDAOHibernateJPATest {
 
     private static UsuarioDAOHibernateJPA usuarioDAO;
+    private static EntityManager em;
 
     @BeforeAll
     static void inicializar() {
-        usuarioDAO = new UsuarioDAOHibernateJPA();
+        em = EMF.getEMF().createEntityManager();
+        usuarioDAO = new UsuarioDAOHibernateJPA(em);
     }
 
     // Usamos el AfterEach para LIMPIAR toda la tabla después de cada prueba.
     // Esta limpieza DEBE estar en su propia transacción.
     @AfterEach
     void limpiarDatos() {
-        EntityManager em = EMF.getEMF().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

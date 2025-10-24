@@ -23,7 +23,7 @@ class UsuarioMedallaDAOHibernateJPATest {
     @BeforeAll
     static void setUp() {
         em = EMF.getEMF().createEntityManager();
-        usuarioMedallaDAO = new UsuarioMedallaDAOHibernateJPA();
+        usuarioMedallaDAO = new UsuarioMedallaDAOHibernateJPA(em);
     }
 
     @BeforeEach

@@ -13,13 +13,12 @@ public class UsuarioPuntajeDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
         implements UsuarioPuntajeDAO {
 
 
-    public UsuarioPuntajeDAOHibernateJPA() {
-        super(UsuarioPuntaje.class);
+    public UsuarioPuntajeDAOHibernateJPA(EntityManager em) {
+        super(UsuarioPuntaje.class,em);
     }
 
     @Override
     public List<UsuarioPuntaje> findByUsuario(Long idUsuario) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<UsuarioPuntaje> resultado = null;
 
         try {
@@ -37,7 +36,6 @@ public class UsuarioPuntajeDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
 
     @Override
     public Integer getTotalPuntosByUsuario(Long idUsuario) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         Integer total = 0;
 
         try {
@@ -57,7 +55,6 @@ public class UsuarioPuntajeDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
 
     @Override
     public List<UsuarioPuntaje> findByTipo(Puntaje tipoPuntaje) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<UsuarioPuntaje> resultado = null;
 
         try {
@@ -75,7 +72,6 @@ public class UsuarioPuntajeDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
 
     @Override
     public List<Usuario> findTopUsuariosByPuntaje(int limit) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<Usuario> resultado = null;
 
         try {

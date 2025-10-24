@@ -12,13 +12,12 @@ public class UsuarioMedallaDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
         implements UsuarioMedallaDAO {
 
 
-    public UsuarioMedallaDAOHibernateJPA() {
-        super(UsuarioMedalla.class);
+    public UsuarioMedallaDAOHibernateJPA(EntityManager em) {
+        super(UsuarioMedalla.class, em);
     }
 
     @Override
     public List<UsuarioMedalla> findByUsuario(Long idUsuario) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<UsuarioMedalla> resultado = null;
 
         try {
@@ -36,7 +35,6 @@ public class UsuarioMedallaDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
 
     @Override
     public boolean usuarioTieneMedalla(Long idUsuario, Medalla tipoMedalla) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         boolean tieneMedalla = false;
 
         try {
@@ -57,7 +55,6 @@ public class UsuarioMedallaDAOHibernateJPA extends GenericDAOHibernateJPA<Usuari
 
     @Override
     public List<UsuarioMedalla> findByTipo(Medalla tipoMedalla) {
-        EntityManager em = EMF.getEMF().createEntityManager();
         List<UsuarioMedalla> resultado = null;
 
         try {
