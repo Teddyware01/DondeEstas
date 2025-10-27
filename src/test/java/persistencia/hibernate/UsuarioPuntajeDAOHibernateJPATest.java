@@ -74,25 +74,6 @@ class UsuarioPuntajeDAOHibernateJPATest {
         assertNull(encontrado);
     }
 
-    @Test
-    void testActualizacionUsuarioPuntaje() {
-        Usuario usuario = new Usuario("Pedro", "Martinez", "pedro@mail.com", "1234", "111222333", "Centro", "CiudadX");
-        Puntaje p1 = new Puntaje(10, "Subir Foto");
-        Puntaje p2 = new Puntaje(5, "Comentar");
-        em.persist(usuario);
-        em.persist(p1);
-        em.persist(p2);
-
-        UsuarioPuntaje up = new UsuarioPuntaje(usuario, p1, LocalDate.now());
-        em.persist(up);
-
-        // Actualizamos el puntaje a otro tipo
-        up.setPuntaje(p2);
-        usuarioPuntajeDAO.update(up);
-
-        UsuarioPuntaje encontrado = usuarioPuntajeDAO.get(up.getId());
-        assertEquals(5, encontrado.getPuntaje().getCantidad());
-    }
 
     @Test
     void testFindByUsuario() {

@@ -17,12 +17,9 @@ public class  Medalla {
     @Column(nullable = false)
     private String nombreMedalla;
 
-    @OneToMany(mappedBy = "medalla", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UsuarioMedalla> usuarios;
 
     public Medalla(String  nombreMedalla) {
         this.nombreMedalla = nombreMedalla;
-        this.usuarios = new ArrayList<>();
     }
     public Medalla() {}
 

@@ -1,16 +1,22 @@
 package dondeestas;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import persistencia.DAO.FactoryDAO;
+import persistencia.DAO.UsuarioDAO;
+import persistencia.EMF;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,27 +72,14 @@ public class Usuario {
         this.mascotas = new ArrayList<>();
         this.is_admin = false;
         this.puntajes = new ArrayList<>();
-    }
 
-    public Usuario(List<UsuarioMedalla> medallas) {
-        this.medallas = medallas;
     }
 
     public Usuario() {
 
     }
 
-    public void verMascotas(String barrio) {
-    }
 
-    public void verRanking() {
-    }
-
-    public void editarUsuario() {
-    }
-
-    public void verPerfil() {
-    }
 
     public Long getId() {
         return id;
@@ -104,6 +97,11 @@ public class Usuario {
         this.apellido = apellido;
     }
 
+
+    public String getNombre() {
+        return nombre;
+    }
+
     public String getApellido() {
         return apellido;
     }
@@ -115,6 +113,14 @@ public class Usuario {
     private void agregarMascota(Mascota mascota){
         this.mascotas.add(mascota);
         mascota.setUsuario(this);
+    }
+
+    public static Usuario crearYGuardar(String nombre, String apellido, String email,
+                                        String contrasena, String telefono, String barrio, String ciudad){
+        Usuario usu = new Usuario( nombre,  apellido,  email, contrasena, telefono,  barrio,  ciudad);
+        UsuarioDAO usuarioDAO = FactoryDAO.getUsuarioDAO();
+        usuarioDAO.persist(usu);
+        return usu;
     }
 
     public void agregarAvistamiento(Avistamiento avistamiento) {
@@ -134,6 +140,66 @@ public class Usuario {
         FactoryDAO.getUbicacionDAO().update(ubicacion);
         this.agregarMascota(mascota);
         return mascota;
+    }
+
+
+    public void agregarPuntaje(Puntaje puntaje){
+        UsuarioPuntaje usuPun = new UsuarioPuntaje(this, puntaje, LocalDate.now());
+        FactoryDAO.getUsuarioPuntajeDAO().persist(usuPun);
+        this.puntajes.add(usuPun);
+        FactoryDAO.getUsuarioDAO().update(this);
+    }
+
+    public void agregarMedalla(Medalla medalla){
+        UsuarioMedalla usuMed = new UsuarioMedalla(this, medalla);
+        FactoryDAO.getUsuarioMedallaDAO().persist(usuMed);
+        this.medallas.add(usuMed);
+        FactoryDAO.getUsuarioDAO().update(this);
+    }
+
+    public List<Mascota> verMascotas() {
+        return  mascotas;
+    }
+
+
+
+
+    public  void editarUsuario(String nombre, String apellido, String email,
+                                        String contrasena, String telefono, String barrio, String ciudad){
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.contrasena = contrasena;
+        this.telefono = telefono;
+        this.barrio = barrio;
+        this.ciudad = ciudad;
+
+        UsuarioDAO usuarioDAO = FactoryDAO.getUsuarioDAO();
+        usuarioDAO.update(this);
+    }
+
+    public void borrarUsuario(){
+        FactoryDAO.getUsuarioDAO().delete(this);
+    }
+
+    public static Usuario getUsuario(Long id){
+        return FactoryDAO.getUsuarioDAO().get(id);
+    }
+
+    public List<UsuarioMedalla> verDetalleMedallas() {
+        return  medallas;
+    }
+
+    public List<UsuarioPuntaje> verDetallePuntajes() {
+        return  puntajes;
+    }
+
+    public List<Medalla> verMedallas() {
+        return medallas.stream().map(um->um.getMedalla()).collect(Collectors.toList());
+    }
+
+    public Integer getTotalPuntos() {
+        return FactoryDAO.getUsuarioPuntajeDAO().getTotalPuntosByUsuario(getId());
     }
 
 }

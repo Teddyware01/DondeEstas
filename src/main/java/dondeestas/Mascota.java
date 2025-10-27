@@ -93,7 +93,6 @@ public class Mascota {
     }
 
 
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -150,6 +149,37 @@ public class Mascota {
         FactoryDAO.getUsuarioDAO().update(usuario);
         FactoryDAO.getUbicacionDAO().update(ubicacion);
         return avistamiento;
+    }
+
+    public void actualizarEstado(Estado estado) {
+        this.estado = estado;
+        FactoryDAO.getEstadoDAO().update(estado);
+    }
+
+
+    public void borrarMascota() {
+        FactoryDAO.getMascotaDAO().delete(this);
+    }
+
+    public static Mascota getMascota(Long id) {
+        return FactoryDAO.getMascotaDAO().get(id);
+    }
+
+
+    //recibe objetos instanciados, pero la "BACK REFERENCE" en ellos se actualiza aca.
+    public void crearMascota(String nombre, String tamano, String color, LocalDate fecha, Ubicacion ubicacion, Estado estado, String descripcionExtra) {
+        this.nombre = nombre;
+        this.tamano = tamano;
+        this.color = color;
+        this.fecha = fecha;
+        this.ubicacion = ubicacion;
+        this.estado = estado;
+        this.descripcionExtra = descripcionExtra;
+        FactoryDAO.getMascotaDAO().update(this);
+    }
+
+    public List<Avistamiento> verAvistamientos() {
+        return avistamientos;
     }
 
 }

@@ -19,9 +19,6 @@ public class Puntaje {
     @Column(nullable = false)
     private String tipoPuntaje;
 
-    @OneToMany(mappedBy = "puntaje", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UsuarioPuntaje> usuarios;
-
 
     public Puntaje(int cantidad,  String tipoPuntaje) {
         this.cantidad = cantidad;
