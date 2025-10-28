@@ -28,4 +28,8 @@ public class Estado {
     public void addMascota(Mascota mascota) {
         mascotas.add(mascota);
     }
+
+    public String getNombreEstado() {
+        return nombreEstado;
+    }
 }

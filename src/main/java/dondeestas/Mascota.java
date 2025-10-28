@@ -1,13 +1,14 @@
 package dondeestas;
 
 import jakarta.persistence.*;
-import persistencia.DAO.AvistamientoDAO;
 import persistencia.DAO.FactoryDAO;
+import persistencia.hibernate.MascotaDAOHibernateJPA;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "mascotas")
@@ -21,7 +22,7 @@ public class Mascota {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // <---- CORRECCIÓN APLICADA AQUÍ
     private List<Avistamiento> avistamientos;
 
     @Column(nullable = false)
@@ -47,10 +48,6 @@ public class Mascota {
     @Column(length = 500)
     private String descripcionExtra;
 
-    public String getNombre() {
-        return nombre;
-    }
-
     public Mascota() {
     }
 
@@ -68,82 +65,70 @@ public class Mascota {
         this.descripcionExtra = descripcionExtra;
     }
 
-    public Long getId() {
-        return id;
+    // --- Métodos de Persistencia Estáticos (Active Record Lite) ---
+
+    public static Mascota crearYGuardar(Usuario usuario, String nombre, String tamano, String color, LocalDate fecha, Ubicacion ubicacion, Estado estado, String descripcionExtra) {
+        Mascota mascota = new Mascota(usuario, nombre, tamano, color, fecha, ubicacion, estado, descripcionExtra);
+        FactoryDAO.getMascotaDAO().persist(mascota);
+        return mascota;
     }
 
-    public Ubicacion getUbicacion() {
-        return ubicacion;
+    public static Mascota getMascota(Long id) {
+        return FactoryDAO.getMascotaDAO().get(id);
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public static void guardarMascota(Mascota mascota) {
+        FactoryDAO.getMascotaDAO().update(mascota);
     }
 
-    public void setTamano(String tamano) {
-        this.tamano = tamano;
+    // --- Métodos de Búsqueda Estáticos (De la Entidad) ---
+
+    public static List<Mascota> findByEstado(Estado estado) {
+        MascotaDAOHibernateJPA dao = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
+        return dao.findByEstado(estado);
     }
 
-    public String getTamano() {
-        return tamano;
+    public static List<Mascota> findByUsuario(Long idUsuario) {
+        MascotaDAOHibernateJPA dao = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
+        return dao.findByUsuario(idUsuario);
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public static List<Mascota> findByBarrio(String barrio) {
+        MascotaDAOHibernateJPA dao = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
+        return dao.findByBarrio(barrio);
     }
 
-
-    public Usuario getUsuario() {
-        return usuario;
+    public static List<Mascota> searchByNombreExacto(String nombre) {
+        MascotaDAOHibernateJPA dao = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
+        return dao.searchByNombreExacto(nombre);
     }
 
-    public List<Avistamiento> getAvistamientos() {
-        return avistamientos;
+    public static List<Mascota> searchByNombreContains(String cadena) {
+        MascotaDAOHibernateJPA dao = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
+        return dao.searchByNombreContains(cadena);
     }
 
+    // --- Métodos de Instancia ---
 
-    public String getColor() {
-        return color;
+    public void borrarMascota() {
+        FactoryDAO.getMascotaDAO().delete(this);
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public void setUbicacion(Ubicacion ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
+    public void actualizarEstado(Estado estado) {
         this.estado = estado;
+        FactoryDAO.getMascotaDAO().update(this);
     }
 
-    public String getDescripcionExtra() {
-        return descripcionExtra;
-    }
-
-    public void setDescripcionExtra(String descripcionExtra) {
-        this.descripcionExtra = descripcionExtra;
-    }
-
-    //recibe objetos instanciados, pero la "BACK REFERENCE" en ellos se actualiza aca.
-    public Avistamiento crearAvistamiento(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
+    public Avistamiento registrarAvistamiento(String foto, LocalDateTime fecha, String comentario, Usuario usuario, Ubicacion ubicacion) {
+        // Avistamiento necesita un constructor con Mascota, Usuario, Ubicacion y los datos
+        // NOTA: EL CONSTRUCTOR DE Avistamiento EN TU CÓDIGO ANTERIOR NO COINCIDE CON ESTA FIRMA.
+        // Asumo que Avistamiento necesita Mascota, Usuario, Ubicacion y los datos.
         Avistamiento avistamiento = new Avistamiento(foto, fecha, comentario, this, usuario, ubicacion);
+
         this.avistamientos.add(avistamiento);
         usuario.agregarAvistamiento(avistamiento);
         ubicacion.addAvistamiento(avistamiento);
+
         FactoryDAO.getAvistamientoDAO().persist(avistamiento);
         FactoryDAO.getMascotaDAO().update(this);
         FactoryDAO.getUsuarioDAO().update(usuario);
@@ -151,37 +136,65 @@ public class Mascota {
         return avistamiento;
     }
 
-    public void actualizarEstado(Estado estado) {
-        this.estado = estado;
-        FactoryDAO.getEstadoDAO().update(estado);
+    // ELIMINADO: Método crearMascota de instancia redundante.
+
+    // --- Getters y Setters ---
+
+    public String getNombre() {
+        return nombre;
     }
-
-
-    public void borrarMascota() {
-        FactoryDAO.getMascotaDAO().delete(this);
+    public Long getId() {
+        return id;
     }
-
-    public static Mascota getMascota(Long id) {
-        return FactoryDAO.getMascotaDAO().get(id);
+    public Ubicacion getUbicacion() {
+        return ubicacion;
     }
-
-
-    //recibe objetos instanciados, pero la "BACK REFERENCE" en ellos se actualiza aca.
-    public void crearMascota(String nombre, String tamano, String color, LocalDate fecha, Ubicacion ubicacion, Estado estado, String descripcionExtra) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
-        this.tamano = tamano;
-        this.color = color;
-        this.fecha = fecha;
-        this.ubicacion = ubicacion;
-        this.estado = estado;
-        this.descripcionExtra = descripcionExtra;
-        FactoryDAO.getMascotaDAO().update(this);
     }
-
+    public void setTamano(String tamano) {
+        this.tamano = tamano;
+    }
+    public String getTamano() {
+        return tamano;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public List<Avistamiento> getAvistamientos() {
+        return avistamientos;
+    }
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
+    public LocalDate getFecha() {
+        return fecha;
+    }
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+    public void setUbicacion(Ubicacion ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+    public Estado getEstado() {
+        return estado;
+    }
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+    public String getDescripcionExtra() {
+        return descripcionExtra;
+    }
+    public void setDescripcionExtra(String descripcionExtra) {
+        this.descripcionExtra = descripcionExtra;
+    }
     public List<Avistamiento> verAvistamientos() {
         return avistamientos;
     }
-
 }
-
-
