@@ -22,7 +22,7 @@ public class Mascota {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // <---- CORRECCIÓN APLICADA AQUÍ
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Avistamiento> avistamientos;
 
     @Column(nullable = false)
@@ -65,8 +65,6 @@ public class Mascota {
         this.descripcionExtra = descripcionExtra;
     }
 
-    // --- Métodos de Persistencia Estáticos (Active Record Lite) ---
-
     public static Mascota crearYGuardar(Usuario usuario, String nombre, String tamano, String color, LocalDate fecha, Ubicacion ubicacion, Estado estado, String descripcionExtra) {
         Mascota mascota = new Mascota(usuario, nombre, tamano, color, fecha, ubicacion, estado, descripcionExtra);
         FactoryDAO.getMascotaDAO().persist(mascota);
@@ -80,8 +78,6 @@ public class Mascota {
     public static void guardarMascota(Mascota mascota) {
         FactoryDAO.getMascotaDAO().update(mascota);
     }
-
-    // --- Métodos de Búsqueda Estáticos (De la Entidad) ---
 
     public static List<Mascota> findByEstado(Estado estado) {
         MascotaDAOHibernateJPA dao = (MascotaDAOHibernateJPA) FactoryDAO.getMascotaDAO();
@@ -108,8 +104,6 @@ public class Mascota {
         return dao.searchByNombreContains(cadena);
     }
 
-    // --- Métodos de Instancia ---
-
     public void borrarMascota() {
         FactoryDAO.getMascotaDAO().delete(this);
     }
@@ -120,9 +114,6 @@ public class Mascota {
     }
 
     public Avistamiento registrarAvistamiento(String foto, LocalDateTime fecha, String comentario, Usuario usuario, Ubicacion ubicacion) {
-        // Avistamiento necesita un constructor con Mascota, Usuario, Ubicacion y los datos
-        // NOTA: EL CONSTRUCTOR DE Avistamiento EN TU CÓDIGO ANTERIOR NO COINCIDE CON ESTA FIRMA.
-        // Asumo que Avistamiento necesita Mascota, Usuario, Ubicacion y los datos.
         Avistamiento avistamiento = new Avistamiento(foto, fecha, comentario, this, usuario, ubicacion);
 
         this.avistamientos.add(avistamiento);
@@ -135,10 +126,6 @@ public class Mascota {
         FactoryDAO.getUbicacionDAO().update(ubicacion);
         return avistamiento;
     }
-
-    // ELIMINADO: Método crearMascota de instancia redundante.
-
-    // --- Getters y Setters ---
 
     public String getNombre() {
         return nombre;

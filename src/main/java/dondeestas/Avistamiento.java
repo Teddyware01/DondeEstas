@@ -1,9 +1,12 @@
 package dondeestas;
 
 import jakarta.persistence.*;
+import persistencia.DAO.FactoryDAO;
+import persistencia.hibernate.AvistamientoDAOHibernateJPA;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "avistamientos")
@@ -35,19 +38,6 @@ public class Avistamiento {
     @Column(length = 500)
     private String comentario;
 
-/*    public Avistamiento(Mascota mascota, Ubicacion ubiAvistamiento, String fotoPath, LocalDate now, String s, Usuario usuario) {
-        this.mascota = mascota;
-        this.ubicacion = ubiAvistamiento;
-        this.foto = fotoPath;
-        this.fecha = LocalDateTime.now();
-        this.comentario = s;
-        this.usuario = usuario;
-    }*/
-
-    public Usuario getUsuarioAvistador() {
-        return usuario;
-    }
-
     public Avistamiento() {}
     public Avistamiento(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
         this.foto = foto;
@@ -56,6 +46,35 @@ public class Avistamiento {
         this.mascota = mascota;
         this.usuario = usuario;
         this.ubicacion = ubicacion;
+    }
+
+    public static Avistamiento crearYGuardar(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
+        Avistamiento av = new Avistamiento(foto, fecha, comentario, mascota, usuario, ubicacion);
+        FactoryDAO.getAvistamientoDAO().persist(av);
+        return av;
+    }
+
+    public static Avistamiento getAvistamiento(Long id) {
+        return FactoryDAO.getAvistamientoDAO().get(id);
+    }
+
+    public void guardarAvistamiento() {
+        FactoryDAO.getAvistamientoDAO().update(this);
+    }
+
+    public void borrarAvistamiento() {
+        FactoryDAO.getAvistamientoDAO().delete(this.getId());
+    }
+
+
+    public static List<Avistamiento> findByUsuario(Usuario usuario) {
+        AvistamientoDAOHibernateJPA dao = (AvistamientoDAOHibernateJPA) FactoryDAO.getAvistamientoDAO();
+        return dao.findByUsuario(usuario);
+    }
+
+    public static List<Avistamiento> findByMascota(Mascota mascota) {
+        AvistamientoDAOHibernateJPA dao = (AvistamientoDAOHibernateJPA) FactoryDAO.getAvistamientoDAO();
+        return dao.findByMascota(mascota.getId());
     }
 
     public Ubicacion getUbicacion() {
@@ -69,7 +88,7 @@ public class Avistamiento {
     public Mascota getMascota() {
         return mascota;
     }
-   public Usuario getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
@@ -79,10 +98,5 @@ public class Avistamiento {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
-    }
-
-    public String getFoto() {
-        return foto;
-
     }
 }

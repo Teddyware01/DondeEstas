@@ -4,6 +4,7 @@ import dondeestas.Avistamiento;
 import dondeestas.Mascota;
 import dondeestas.Usuario;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import persistencia.DAO.AvistamientoDAO;
@@ -60,14 +61,14 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
     }*/
 
     @Override
-    public List<Avistamiento> findByUsuario(Usuario usuario) {
+    public List<Avistamiento> findByUsuario(Usuario usuario) { // Acepta el Objeto Usuario
         try (EntityManager em = EMF.getEMF().createEntityManager()) {
             TypedQuery<Avistamiento> consulta = em.createQuery(
-                    // Asumo que el atributo en Avistamiento es 'usuario' (quien reporta)
+                    // JPQL compara el objeto entidad completo. Esto es válido en JPA.
                     "SELECT a FROM Avistamiento a WHERE a.usuario = :usuario",
                     Avistamiento.class
             );
-            consulta.setParameter("usuario", usuario);
+            consulta.setParameter("usuario", usuario); // Pasa el Objeto Usuario
             return consulta.getResultList();
         }
     }
@@ -109,5 +110,26 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
         }
 
         return resultado;
+    }
+
+    @Override
+    public void delete(Long id) {
+        EntityManager em = EMF.getEMF().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Avistamiento av = em.find(Avistamiento.class, id);
+            if (av != null) {
+                em.remove(av);
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 }
