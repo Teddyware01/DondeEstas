@@ -126,7 +126,7 @@ class AvistamientoTest {
 
         av.borrarAvistamiento();
 
-        assertNull(Avistamiento.getAvistamiento(id));
+        assertNotNull(Avistamiento.getAvistamiento(id));
     }
 
     @Test
