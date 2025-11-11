@@ -1,5 +1,6 @@
 package dondeestas;
 
+import dondeestas.entity.*;
 import org.junit.jupiter.api.*;
 import persistencia.DAO.FactoryDAO;
 import persistencia.EMF;

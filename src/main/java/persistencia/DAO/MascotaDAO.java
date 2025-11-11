@@ -1,9 +1,8 @@
 package persistencia.DAO;
 
 
-import dondeestas.Estado;
-import dondeestas.Mascota;
-import dondeestas.Usuario;
+import dondeestas.entity.Estado;
+import dondeestas.entity.Mascota;
 
 import java.util.List;
 

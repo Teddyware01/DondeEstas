@@ -1,8 +1,6 @@
 package persistencia.hibernate;
 
-import dondeestas.Avistamiento;
-import dondeestas.Medalla;
-import persistencia.DAO.AvistamientoDAO;
+import dondeestas.entity.Medalla;
 import persistencia.DAO.MedallaDAO;
 
 public class MedallaDAOHibernateJPA extends GenericDAOHibernateJPA<Medalla>

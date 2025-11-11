@@ -1,8 +1,6 @@
 package persistencia.hibernate;
 
-import dondeestas.Avistamiento;
-import dondeestas.Estado;
-import persistencia.DAO.AvistamientoDAO;
+import dondeestas.entity.Estado;
 import persistencia.DAO.EstadoDAO;
 
 public class EstadoDAOHibernateJPA extends GenericDAOHibernateJPA<Estado>

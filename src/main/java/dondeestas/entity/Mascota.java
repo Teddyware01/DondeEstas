@@ -1,4 +1,4 @@
-package dondeestas;
+package dondeestas.entity;
 
 import jakarta.persistence.*;
 import persistencia.DAO.FactoryDAO;
@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "mascotas")

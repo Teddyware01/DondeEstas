@@ -1,14 +1,12 @@
 package persistencia.hibernate;
 
-import dondeestas.Avistamiento;
-import dondeestas.Mascota;
-import dondeestas.Usuario;
+import dondeestas.entity.Avistamiento;
+import dondeestas.entity.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import persistencia.DAO.AvistamientoDAO;
-import persistencia.DAO.MascotaDAO;
 import persistencia.EMF;
 
 import java.time.LocalDate;

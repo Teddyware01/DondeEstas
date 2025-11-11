@@ -1,6 +1,7 @@
 package persistencia.hibernate;
 
-import dondeestas.*;
+import dondeestas.entity.Estado;
+import dondeestas.entity.Mascota;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import persistencia.DAO.MascotaDAO;

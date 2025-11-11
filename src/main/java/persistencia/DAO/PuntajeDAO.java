@@ -1,8 +1,7 @@
 package persistencia.DAO;
 
 
-import dondeestas.Puntaje;
-import dondeestas.Usuario;
+import dondeestas.entity.Puntaje;
 
 public interface PuntajeDAO extends GenericDAO<Puntaje>{
 

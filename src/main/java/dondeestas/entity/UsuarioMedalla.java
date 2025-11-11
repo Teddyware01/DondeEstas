@@ -1,4 +1,4 @@
-package dondeestas;
+package dondeestas.entity;
 
 import jakarta.persistence.*;
 

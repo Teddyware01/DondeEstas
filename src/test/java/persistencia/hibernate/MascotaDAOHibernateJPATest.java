@@ -1,6 +1,9 @@
 package persistencia.hibernate;
 
-import dondeestas.*;
+import dondeestas.entity.Estado;
+import dondeestas.entity.Mascota;
+import dondeestas.entity.Ubicacion;
+import dondeestas.entity.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.*;

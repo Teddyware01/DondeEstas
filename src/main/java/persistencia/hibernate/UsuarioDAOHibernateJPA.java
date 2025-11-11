@@ -1,9 +1,8 @@
 package persistencia.hibernate;
 
-import dondeestas.Usuario;
+import dondeestas.entity.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import persistencia.hibernate.GenericDAOHibernateJPA;
 import persistencia.DAO.UsuarioDAO;
 import persistencia.EMF;
 

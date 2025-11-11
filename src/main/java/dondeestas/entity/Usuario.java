@@ -1,13 +1,11 @@
-package dondeestas;
+package dondeestas.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
 import persistencia.DAO.FactoryDAO;
 import persistencia.DAO.UsuarioDAO;
-import persistencia.EMF;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -202,6 +200,17 @@ public class Usuario {
         return FactoryDAO.getUsuarioPuntajeDAO().getTotalPuntosByUsuario(getId());
     }
 
+    public void setNombre(String nombre) {
+        this.nombre=nombre;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 }
 
 

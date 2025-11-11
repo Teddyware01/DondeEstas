@@ -1,8 +1,7 @@
 package persistencia.DAO;
 
 
-import dondeestas.Estado;
-import dondeestas.Usuario;
+import dondeestas.entity.Estado;
 
 public interface EstadoDAO extends GenericDAO<Estado>{
 

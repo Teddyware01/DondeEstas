@@ -1,8 +1,7 @@
 package persistencia.DAO;
 
 
-import dondeestas.Medalla;
-import dondeestas.Usuario;
+import dondeestas.entity.Medalla;
 
 public interface MedallaDAO extends GenericDAO<Medalla>{
 }

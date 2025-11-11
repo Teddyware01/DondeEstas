@@ -1,4 +1,4 @@
-import dondeestas.Usuario;
+import dondeestas.entity.Usuario;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import persistencia.DAO.FactoryDAO;

@@ -1,5 +1,6 @@
 package dondeestas;
 
+import dondeestas.entity.*;
 import org.junit.jupiter.api.*;
 import persistencia.DAO.FactoryDAO;
 import persistencia.EMF;
@@ -10,7 +11,6 @@ import jakarta.persistence.EntityTransaction;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 

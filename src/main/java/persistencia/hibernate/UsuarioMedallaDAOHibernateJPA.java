@@ -1,7 +1,7 @@
 package persistencia.hibernate;
 
-import dondeestas.Medalla;
-import dondeestas.UsuarioMedalla;
+import dondeestas.entity.Medalla;
+import dondeestas.entity.UsuarioMedalla;
 import jakarta.persistence.EntityManager;
 import persistencia.DAO.UsuarioMedallaDAO;
 import persistencia.EMF;

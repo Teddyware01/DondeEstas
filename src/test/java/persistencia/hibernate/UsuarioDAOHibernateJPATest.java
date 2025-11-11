@@ -1,15 +1,10 @@
 package persistencia.hibernate;
 
-import dondeestas.Estado;
-import dondeestas.Mascota;
-import dondeestas.Ubicacion;
-import dondeestas.Usuario;
+import dondeestas.entity.Usuario;
 import org.junit.jupiter.api.*;
 import persistencia.EMF;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 

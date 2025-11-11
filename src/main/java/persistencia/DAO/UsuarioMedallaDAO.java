@@ -2,10 +2,8 @@ package persistencia.DAO;
 
 
 
-import dondeestas.Medalla;
-import dondeestas.Puntaje;
-import dondeestas.UsuarioMedalla;
-import dondeestas.UsuarioPuntaje;
+import dondeestas.entity.Medalla;
+import dondeestas.entity.UsuarioMedalla;
 
 import java.util.List;
 

@@ -1,15 +1,14 @@
 package dondeestas;
 
+import dondeestas.entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.*;
-import persistencia.EMF;
 import persistencia.DAO.FactoryDAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

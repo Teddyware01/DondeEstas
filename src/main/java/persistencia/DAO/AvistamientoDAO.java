@@ -1,8 +1,8 @@
 package persistencia.DAO;
 
 
-import dondeestas.Avistamiento;
-import dondeestas.Usuario;
+import dondeestas.entity.Avistamiento;
+import dondeestas.entity.Usuario;
 
 import java.time.LocalDate;
 import java.util.List;

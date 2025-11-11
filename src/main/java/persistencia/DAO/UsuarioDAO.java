@@ -1,7 +1,7 @@
 package persistencia.DAO;
 
 
-import dondeestas.Usuario;
+import dondeestas.entity.Usuario;
 
 import java.util.List;
 

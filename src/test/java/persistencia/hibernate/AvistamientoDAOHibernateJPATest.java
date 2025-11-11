@@ -1,6 +1,6 @@
     package persistencia.hibernate;
 
-    import dondeestas.*;
+    import dondeestas.entity.*;
     import org.junit.jupiter.api.*;
     import persistencia.DAO.AvistamientoDAO;
     import persistencia.DAO.FactoryDAO;

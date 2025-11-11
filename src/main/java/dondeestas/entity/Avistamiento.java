@@ -1,10 +1,9 @@
-package dondeestas;
+package dondeestas.entity;
 
 import jakarta.persistence.*;
 import persistencia.DAO.FactoryDAO;
 import persistencia.hibernate.AvistamientoDAOHibernateJPA;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

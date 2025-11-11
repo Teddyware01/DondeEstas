@@ -1,6 +1,6 @@
 import persistencia.DAO.FactoryDAO;
 import persistencia.DAO.UsuarioDAO;
-import dondeestas.Usuario;
+import dondeestas.entity.Usuario;
 
 public class TestHibernate {
     public static void main(String[] args) {

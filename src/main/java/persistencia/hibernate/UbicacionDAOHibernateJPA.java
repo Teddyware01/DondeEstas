@@ -1,6 +1,6 @@
 package persistencia.hibernate;
 
-import dondeestas.Ubicacion;
+import dondeestas.entity.Ubicacion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import persistencia.DAO.UbicacionDAO;

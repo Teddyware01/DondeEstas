@@ -1,8 +1,8 @@
 package persistencia.hibernate;
 
-import dondeestas.Puntaje;
-import dondeestas.Usuario;
-import dondeestas.UsuarioPuntaje;
+import dondeestas.entity.Puntaje;
+import dondeestas.entity.Usuario;
+import dondeestas.entity.UsuarioPuntaje;
 import jakarta.persistence.EntityManager;
 import persistencia.DAO.UsuarioPuntajeDAO;
 import persistencia.EMF;

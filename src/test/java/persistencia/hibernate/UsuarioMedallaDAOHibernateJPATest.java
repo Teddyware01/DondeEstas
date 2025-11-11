@@ -1,8 +1,8 @@
 package persistencia.hibernate;
 
-import dondeestas.Medalla;
-import dondeestas.Usuario;
-import dondeestas.UsuarioMedalla;
+import dondeestas.entity.Medalla;
+import dondeestas.entity.Usuario;
+import dondeestas.entity.UsuarioMedalla;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.junit.jupiter.api.*;

@@ -1,6 +1,6 @@
 package persistencia.hibernate;
 
-import dondeestas.Puntaje;
+import dondeestas.entity.Puntaje;
 import persistencia.DAO.PuntajeDAO;
 
 public class PuntajeDAOHibernateJPA extends GenericDAOHibernateJPA<Puntaje>
