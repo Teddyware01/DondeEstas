@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Estado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(nullable = false)
     private String nombreEstado;
 
@@ -29,7 +31,4 @@ public class Estado {
         mascotas.add(mascota);
     }
 
-    public String getNombreEstado() {
-        return nombreEstado;
-    }
 }

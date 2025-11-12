@@ -1,6 +1,8 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import persistencia.DAO.FactoryDAO;
 import persistencia.hibernate.AvistamientoDAOHibernateJPA;
 
@@ -16,14 +18,17 @@ public class Avistamiento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "mascota_id", nullable = false)
     private Mascota mascota;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "ubicacion_id", nullable = false)
     private Ubicacion ubicacion;
@@ -34,6 +39,8 @@ public class Avistamiento {
     @Column(nullable = false)
     private LocalDateTime fecha;
 
+    @Setter
+    @Getter
     @Column(length = 500)
     private String comentario;
 
@@ -76,26 +83,8 @@ public class Avistamiento {
         return dao.findByMascota(mascota.getId());
     }
 
-    public Ubicacion getUbicacion() {
-        return ubicacion;
-    }
-
     public long getId() {
         return id;
     }
 
-    public Mascota getMascota() {
-        return mascota;
-    }
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
 }

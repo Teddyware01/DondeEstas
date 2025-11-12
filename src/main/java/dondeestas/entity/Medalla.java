@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "medalla")
@@ -10,6 +11,7 @@ public class  Medalla {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(nullable = false)
     private String nombreMedalla;
 
@@ -19,7 +21,4 @@ public class  Medalla {
     }
     public Medalla() {}
 
-    public String getNombreMedalla() {
-        return nombreMedalla;
-    }
 }

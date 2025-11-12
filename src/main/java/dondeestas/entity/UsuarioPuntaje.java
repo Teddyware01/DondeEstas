@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import persistencia.DAO.FactoryDAO;
 
 import java.time.LocalDate;
@@ -9,14 +10,17 @@ import java.time.LocalDate;
 @Table(name = "usuario_puntaje")
 public class UsuarioPuntaje {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "puntaje_id", nullable = false)
     private Puntaje puntaje;
@@ -32,18 +36,6 @@ public class UsuarioPuntaje {
 
     public UsuarioPuntaje() {
 
-    }
-
-    public Puntaje getPuntaje() {
-        return  puntaje;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public static void  verRanking(int limit) {

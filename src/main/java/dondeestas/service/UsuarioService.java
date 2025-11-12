@@ -11,5 +11,5 @@ public interface UsuarioService {
     Optional<Usuario> login(String email, String password);
     List<Usuario> listarTodos();
     void eliminar(Long id);
-
+    Optional<Usuario> buscarPorEmail(String email);
 }

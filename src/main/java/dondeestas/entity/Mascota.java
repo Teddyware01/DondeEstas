@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 import persistencia.DAO.FactoryDAO;
 import persistencia.hibernate.MascotaDAOHibernateJPA;
 
@@ -17,6 +18,7 @@ public class Mascota {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -24,9 +26,11 @@ public class Mascota {
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Avistamiento> avistamientos;
 
+    @Setter
     @Column(nullable = false)
     private String nombre;
 
+    @Setter
     @Column
     private String tamano;
 
@@ -36,10 +40,13 @@ public class Mascota {
     @Column
     private LocalDate fecha;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "ubicacion_id", nullable = false)
     private Ubicacion ubicacion;
 
+
+    @Setter
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
@@ -135,18 +142,11 @@ public class Mascota {
     public Ubicacion getUbicacion() {
         return ubicacion;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public void setTamano(String tamano) {
-        this.tamano = tamano;
-    }
+
     public String getTamano() {
         return tamano;
     }
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -156,30 +156,19 @@ public class Mascota {
     public String getColor() {
         return color;
     }
-    public void setColor(String color) {
-        this.color = color;
-    }
+
     public LocalDate getFecha() {
         return fecha;
     }
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-    public void setUbicacion(Ubicacion ubicacion) {
-        this.ubicacion = ubicacion;
-    }
+
     public Estado getEstado() {
         return estado;
     }
-    public void setEstado(Estado estado) {
-        this.estado = estado;
-    }
+
     public String getDescripcionExtra() {
         return descripcionExtra;
     }
-    public void setDescripcionExtra(String descripcionExtra) {
-        this.descripcionExtra = descripcionExtra;
-    }
+
     public List<Avistamiento> verAvistamientos() {
         return avistamientos;
     }

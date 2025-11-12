@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +9,20 @@ import java.util.List;
 @Entity
 @Table(name = "ubicaciones")
 public class Ubicacion {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @Column(nullable = false)
     private double latitud;
 
+    @Getter
     @Column(nullable = false)
     private double longitud;
 
+    @Getter
     @Column(nullable = false)
     private String barrio;
 
@@ -37,22 +42,6 @@ public class Ubicacion {
 
     public Ubicacion() {
 
-    }
-
-    public String getBarrio() {
-        return barrio;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public double getLatitud() {
-        return latitud;
-    }
-
-    public double getLongitud() {
-        return longitud;
     }
 
     public void addMascota(Mascota mascota) {

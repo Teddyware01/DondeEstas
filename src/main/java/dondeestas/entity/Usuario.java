@@ -1,6 +1,10 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import persistencia.DAO.FactoryDAO;
 import persistencia.DAO.UsuarioDAO;
@@ -16,22 +20,34 @@ public class Usuario {
 
 
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
+    @Getter
     @Column(nullable = false)
     private String nombre;
 
+    @Getter
+    @Setter
     @Column(nullable = false)
     private String apellido;
 
+    @Getter
+    @Setter
+    @Email
+    @NotNull
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
+    @Getter
+    @Setter
     private String contrasena;
 
+    @Getter
     @Column
     private String telefono;
 
@@ -77,36 +93,6 @@ public class Usuario {
 
     }
 
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public String getTelefono() {
-        return  telefono;
-    }
 
     private void agregarMascota(Mascota mascota){
         this.mascotas.add(mascota);
@@ -200,17 +186,6 @@ public class Usuario {
         return FactoryDAO.getUsuarioPuntajeDAO().getTotalPuntosByUsuario(getId());
     }
 
-    public void setNombre(String nombre) {
-        this.nombre=nombre;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
 }
 
 

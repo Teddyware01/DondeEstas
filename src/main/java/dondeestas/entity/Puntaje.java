@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "puntaje")
@@ -11,9 +12,11 @@ public class Puntaje {
     private Long id;
 
     //Es la cantidad de puntos que "paga" cada tipo.
+    @Getter
     @Column(nullable = false)
     private int cantidad;
 
+    @Getter
     @Column(nullable = false)
     private String tipoPuntaje;
 
@@ -24,11 +27,4 @@ public class Puntaje {
     }
     public Puntaje() {}
 
-    public String getTipoPuntaje() {
-        return  tipoPuntaje;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
 }
