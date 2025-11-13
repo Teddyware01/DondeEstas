@@ -1,6 +1,7 @@
 package dondeestas.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 import persistencia.DAO.FactoryDAO;
 import persistencia.hibernate.MascotaDAOHibernateJPA;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @Entity
 @Table(name = "mascotas")
 public class Mascota {
@@ -51,7 +53,9 @@ public class Mascota {
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
 
-    @Column(length = 500)
+    @Getter
+    @Setter
+    @Column(name = "descripcion_extra", length = 500)
     private String descripcionExtra;
 
     public Mascota() {
@@ -131,42 +135,6 @@ public class Mascota {
         FactoryDAO.getUsuarioDAO().update(usuario);
         FactoryDAO.getUbicacionDAO().update(ubicacion);
         return avistamiento;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-    public Long getId() {
-        return id;
-    }
-    public Ubicacion getUbicacion() {
-        return ubicacion;
-    }
-
-    public String getTamano() {
-        return tamano;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-    public List<Avistamiento> getAvistamientos() {
-        return avistamientos;
-    }
-    public String getColor() {
-        return color;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public String getDescripcionExtra() {
-        return descripcionExtra;
     }
 
     public List<Avistamiento> verAvistamientos() {

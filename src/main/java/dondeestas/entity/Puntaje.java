@@ -17,7 +17,7 @@ public class Puntaje {
     private int cantidad;
 
     @Getter
-    @Column(nullable = false)
+    @Column(name = "tipo_puntaje", nullable = false)
     private String tipoPuntaje;
 
 

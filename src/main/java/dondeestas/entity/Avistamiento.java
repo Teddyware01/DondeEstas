@@ -36,7 +36,9 @@ public class Avistamiento {
     @Column
     private String foto;
 
-    @Column(nullable = false)
+
+    @Setter
+    @Getter    @Column(nullable = false)
     private LocalDateTime fecha;
 
     @Setter

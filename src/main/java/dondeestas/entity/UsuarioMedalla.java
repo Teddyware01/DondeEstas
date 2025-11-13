@@ -2,6 +2,7 @@ package dondeestas.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -19,12 +20,13 @@ public class UsuarioMedalla {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @Setter
     @Getter
     @ManyToOne
     @JoinColumn(name = "medalla_id", nullable = false)
     private Medalla medalla;
 
-    @Column
+    @Column(name = "fecha_obtencion")
     private LocalDate fechaObtencion;
 
     // getters y setters
@@ -34,7 +36,4 @@ public class UsuarioMedalla {
         this.medalla = medalla;
     }
 
-    public void setMedalla(Medalla medalla) {
-        medalla = medalla;
-    }
 }

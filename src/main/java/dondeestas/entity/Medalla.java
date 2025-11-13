@@ -12,7 +12,7 @@ public class  Medalla {
     private Long id;
 
     @Getter
-    @Column(nullable = false)
+    @Column(name ="nombre_medalla", nullable = false)
     private String nombreMedalla;
 
 

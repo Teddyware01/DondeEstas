@@ -19,9 +19,15 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarioService.listarTodos();
+    public ResponseEntity<List<Usuario>> listarUsuarios() {
+        List<Usuario> usuarios = usuarioService.listarTodos();
+        if (usuarios.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(usuarios);
     }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obtenerUsuario(@PathVariable Long id,
                                                   @RequestHeader("token") String token) {
@@ -41,7 +47,9 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<Usuario> crearUsuario(@Valid @RequestBody Usuario usuario) {
         Usuario nuevo = usuarioService.registrar(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+        if  (nuevo == null) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+        }else return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
 
@@ -84,10 +92,15 @@ public class UsuarioController {
         }
 
         Usuario usuario = usuarioOpt.get();
+        usuario.setId(id);
         usuario.setNombre(usuarioActualizado.getNombre());
         usuario.setEmail(usuarioActualizado.getEmail());
         usuario.setContrasena(usuarioActualizado.getContrasena());
-        // actualiza otros campos si hay
+        usuario.setBarrio(usuarioActualizado.getBarrio());
+        usuario.setCiudad(usuarioActualizado.getCiudad());
+        usuario.setIsAdmin(usuarioActualizado.getIsAdmin());
+        usuario.setTelefono(usuarioActualizado.getTelefono());
+        // actualizar otros campos si hay
 
         Usuario guardado = usuarioService.registrar(usuario);
         return ResponseEntity.ok(guardado);

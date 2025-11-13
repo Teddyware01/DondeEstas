@@ -2,6 +2,7 @@ package dondeestas.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class Ubicacion {
     @Column(nullable = false)
     private String barrio;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "ubicacion")
     private List<Avistamiento> avistamientos;
 

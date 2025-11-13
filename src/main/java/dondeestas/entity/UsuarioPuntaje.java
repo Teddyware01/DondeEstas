@@ -25,7 +25,7 @@ public class UsuarioPuntaje {
     @JoinColumn(name = "puntaje_id", nullable = false)
     private Puntaje puntaje;
 
-    @Column
+    @Column(name = "fecha_obtencion")
     private LocalDate fechaObtencion;
 
     public UsuarioPuntaje(Usuario usuario, Puntaje puntaje, LocalDate fechaObtencion) {

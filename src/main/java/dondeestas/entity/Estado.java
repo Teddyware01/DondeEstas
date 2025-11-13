@@ -15,7 +15,7 @@ public class Estado {
     private Long id;
 
     @Getter
-    @Column(nullable = false)
+    @Column(name = "nombre_estado", nullable = false)
     private String nombreEstado;
 
     @OneToMany(mappedBy = "estado")

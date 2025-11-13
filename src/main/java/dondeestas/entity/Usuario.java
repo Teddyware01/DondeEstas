@@ -11,6 +11,7 @@ import persistencia.DAO.UsuarioDAO;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class Usuario {
 
 
 
+    @Setter
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,34 +45,51 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
+    @NotNull
     @Getter
     @Setter
     private String contrasena;
 
     @Getter
+    @Setter
+    @NotNull
     @Column
     private String telefono;
 
     @Column
+    @Getter
+    @Setter
     private String barrio;
 
     @Column
+    @Getter
+    @Setter
     private String ciudad;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Avistamiento> avistamientos;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mascota> mascotas;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioMedalla> medallas;
 
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioPuntaje> puntajes;
 
-    @Column(nullable = false)
-    private Boolean is_admin;
+    @Getter
+    @Setter
+    @Column(name = "is_admin", nullable = false)
+    private Boolean isAdmin = false;
 
     public Usuario(String nombre, String apellido, String email,
                    String contrasena, String telefono, String barrio, String ciudad) {
@@ -84,7 +103,7 @@ public class Usuario {
         this.medallas = new ArrayList<>();
         this.avistamientos = new ArrayList<>();
         this.mascotas = new ArrayList<>();
-        this.is_admin = false;
+        this.isAdmin = false;
         this.puntajes = new ArrayList<>();
 
     }
