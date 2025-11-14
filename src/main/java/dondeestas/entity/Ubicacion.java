@@ -47,10 +47,4 @@ public class Ubicacion {
 
     }
 
-    public void addMascota(Mascota mascota) {
-        mascotas.add(mascota);
-    }
-    public void addAvistamiento(Avistamiento avistamiento) {
-        avistamientos.add(avistamiento);
-    }
 }

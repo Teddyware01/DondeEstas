@@ -5,11 +5,8 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import persistencia.DAO.FactoryDAO;
-import persistencia.hibernate.AvistamientoDAOHibernateJPA;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "avistamientos")
@@ -17,6 +14,7 @@ public class Avistamiento {
 
 
     @Id
+    @Getter @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -66,37 +64,8 @@ public class Avistamiento {
         this.ubicacion = ubicacion;
     }
 
-    public static Avistamiento crearYGuardar(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
-        Avistamiento av = new Avistamiento(foto, fecha, comentario, mascota, usuario, ubicacion);
-        FactoryDAO.getAvistamientoDAO().persist(av);
-        return av;
-    }
-
-    public static Avistamiento getAvistamiento(Long id) {
-        return FactoryDAO.getAvistamientoDAO().get(id);
-    }
-
-    public void guardarAvistamiento() {
-        FactoryDAO.getAvistamientoDAO().update(this);
-    }
-
-    public void borrarAvistamiento() {
-        FactoryDAO.getAvistamientoDAO().delete(this.getId());
-    }
 
 
-    public static List<Avistamiento> findByUsuario(Usuario usuario) {
-        AvistamientoDAOHibernateJPA dao = (AvistamientoDAOHibernateJPA) FactoryDAO.getAvistamientoDAO();
-        return dao.findByUsuario(usuario);
-    }
 
-    public static List<Avistamiento> findByMascota(Mascota mascota) {
-        AvistamientoDAOHibernateJPA dao = (AvistamientoDAOHibernateJPA) FactoryDAO.getAvistamientoDAO();
-        return dao.findByMascota(mascota.getId());
-    }
-
-    public long getId() {
-        return id;
-    }
 
 }

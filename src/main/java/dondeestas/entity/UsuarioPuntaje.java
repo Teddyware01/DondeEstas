@@ -2,7 +2,6 @@ package dondeestas.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import persistencia.DAO.FactoryDAO;
 
 import java.time.LocalDate;
 
@@ -36,10 +35,6 @@ public class UsuarioPuntaje {
 
     public UsuarioPuntaje() {
 
-    }
-
-    public static void  verRanking(int limit) {
-        FactoryDAO.getUsuarioPuntajeDAO().findTopUsuariosByPuntaje(limit);
     }
 
 
