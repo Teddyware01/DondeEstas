@@ -29,8 +29,8 @@ public class MascotaService {
     }
 
     // ---------- LEER ----------
-    public Mascota buscarPorId(Long id) {
-        return mascotaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Mascota no encontrada"));
+    public Optional<Mascota> buscarPorId(Long id) {
+        return mascotaRepository.findById(id);
     }
 
     public List<Mascota> listarTodas() {

@@ -53,11 +53,6 @@ public class UsuarioController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public void eliminarUsuario(@PathVariable Long id) {
-        usuarioService.eliminar(id);
-    }
-
     @PostMapping("/autenticacion")
     public ResponseEntity<Void> autenticarUsuario(
             @RequestHeader("email") String emailUsuario,
@@ -92,9 +87,11 @@ public class UsuarioController {
         }
 
         Usuario usuario = usuarioOpt.get();
-        usuario.setId(id);
         usuario.setNombre(usuarioActualizado.getNombre());
-        usuario.setEmail(usuarioActualizado.getEmail());
+        usuario.setApellido(usuarioActualizado.getApellido());
+        if (!usuario.getEmail().equals(usuarioActualizado.getEmail())) {
+            usuario.setEmail(usuarioActualizado.getEmail());
+        }
         usuario.setContrasena(usuarioActualizado.getContrasena());
         usuario.setBarrio(usuarioActualizado.getBarrio());
         usuario.setCiudad(usuarioActualizado.getCiudad());

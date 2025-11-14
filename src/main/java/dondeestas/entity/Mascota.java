@@ -55,7 +55,7 @@ public class Mascota {
     @Getter
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "ubicacion_id", nullable = false)
+    @JoinColumn(name = "ubicacion_id", nullable = true)
     private Ubicacion ubicacion;
 
 
@@ -63,7 +63,7 @@ public class Mascota {
     @Getter
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "estado_id", nullable = false)
+    @JoinColumn(name = "estado_id", nullable = true)
     private Estado estado;
 
     @Getter
