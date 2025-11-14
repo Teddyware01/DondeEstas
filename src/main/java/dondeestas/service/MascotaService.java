@@ -56,21 +56,37 @@ public class MascotaService {
     public List<Mascota> buscarPorNombreContiene(String cadena) {
         return mascotaRepository.findByNombreContainingIgnoreCase(cadena);
     }
-
     @Transactional
     public Mascota actualizarMascota(Long id, Mascota nuevaMascota) {
         return mascotaRepository.findById(id)
                 .map(existente -> {
-                    existente.setNombre(nuevaMascota.getNombre());
-                    existente.setTamano(nuevaMascota.getTamano());
-                    existente.setUsuario(nuevaMascota.getUsuario());
-                    existente.setUbicacion(nuevaMascota.getUbicacion());
-                    existente.setEstado(nuevaMascota.getEstado());
-                    existente.setDescripcionExtra(nuevaMascota.getDescripcionExtra());
+                    if (nuevaMascota.getNombre() != null) {
+                        existente.setNombre(nuevaMascota.getNombre());
+                    }
+                    if (nuevaMascota.getTamano() != null) {
+                        existente.setTamano(nuevaMascota.getTamano());
+                    }
+                    if (nuevaMascota.getColor() != null) {
+                        existente.setColor(nuevaMascota.getColor());
+                    }
+                    if (nuevaMascota.getUsuario() != null) {
+                        existente.setUsuario(nuevaMascota.getUsuario());
+                    }
+                    if (nuevaMascota.getUbicacion() != null) {
+                        existente.setUbicacion(nuevaMascota.getUbicacion());
+                    }
+                    if (nuevaMascota.getEstado() != null) {
+                        existente.setEstado(nuevaMascota.getEstado());
+                    }
+                    if (nuevaMascota.getDescripcionExtra() != null) {
+                        existente.setDescripcionExtra(nuevaMascota.getDescripcionExtra());
+                    }
+
                     return mascotaRepository.save(existente);
                 })
                 .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
     }
+
 
     @Transactional
     public void eliminarMascota(Long id) {

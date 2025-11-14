@@ -8,4 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, Long> {
+
+
 }

@@ -24,7 +24,19 @@ public class MascotaController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping // tiene que arrancar listando a las mascotas perdidas
+
+    // Listado de todas las mascotas del sistema
+    @GetMapping("/")
+    public ResponseEntity<List<Mascota>> listarTodas() {
+        List<Mascota> mascotas = mascotaService.listarTodas();
+        if (mascotas.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(mascotas);
+
+    }
+
+    @GetMapping("/perdidas") // tiene que arrancar listando a las mascotas perdidas
     public ResponseEntity<List<Mascota>> listarMascotasPerdidas() {
         List<Mascota> perdidas = mascotaService.listarMascotasPerdidas();
 
@@ -62,8 +74,20 @@ public class MascotaController {
     }
 
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Mascota> actualizarMascota(@PathVariable Long id,
+                                                     @RequestBody Mascota nuevaMascota) {
+        try {
+            Mascota mascotaActualizada = mascotaService.actualizarMascota(id, nuevaMascota);
+            return ResponseEntity.ok(mascotaActualizada);
+        } catch (RuntimeException e) {
+            // Por ejemplo, si no se encuentra la mascota
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+    }
 
-
+/*
     @PutMapping("/{id}")
     public ResponseEntity<Mascota> editarMascota(@PathVariable Long id,
                                                  @RequestBody Mascota mascotaActualizada) {
@@ -80,7 +104,7 @@ public class MascotaController {
         Mascota guardada = mascotaService.registrarMascota(mascota);
         return ResponseEntity.ok(guardada);
     }
-
+*/
     @DeleteMapping("/{id}")
     public void eliminarMascota(@PathVariable Long id) {
         mascotaService.eliminarMascota(id);
@@ -117,16 +141,6 @@ public class MascotaController {
     }
 
 
-    // Listado de todas las mascotas del sistema
-    @GetMapping("/todas")
-    public ResponseEntity<List<Mascota>> listarTodas() {
-        List<Mascota> mascotas = mascotaService.listarTodas();
-        if (mascotas.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return ResponseEntity.ok(mascotas);
-
-    }
 
 
 }
