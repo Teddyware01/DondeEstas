@@ -3,6 +3,7 @@ package dondeestas.service;
 import dondeestas.entity.Estado;
 import dondeestas.entity.Mascota;
 import dondeestas.repository.MascotaRepository;
+import dondeestas.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,16 +14,17 @@ import java.util.Optional;
 @Service
 public class MascotaService {
 
-    @Autowired
     private MascotaRepository mascotaRepository;
 
-    // ---------- CREAR ----------
-    @Transactional
+    @Autowired
+    public MascotaService(MascotaRepository mascotaRepository) {
+        this.mascotaRepository = mascotaRepository;
+    }
+
     public Mascota registrarMascota(Mascota mascota) {
         return mascotaRepository.save(mascota);
     }
 
-    // ---------- LEER ----------
     public Optional<Mascota> buscarPorId(Long id) {
         return mascotaRepository.findById(id);
     }
@@ -51,7 +53,6 @@ public class MascotaService {
         return mascotaRepository.findByNombreContainingIgnoreCase(cadena);
     }
 
-    // ---------- ACTUALIZAR ----------
     @Transactional
     public Mascota actualizarMascota(Long id, Mascota nuevaMascota) {
         return mascotaRepository.findById(id)
@@ -64,7 +65,7 @@ public class MascotaService {
                     existente.setDescripcionExtra(nuevaMascota.getDescripcionExtra());
                     return mascotaRepository.save(existente);
                 })
-                .orElseThrow(() -> new RuntimeException("Mascota no encontrada con ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Mascota no encontrada"));
     }
 
     @Transactional

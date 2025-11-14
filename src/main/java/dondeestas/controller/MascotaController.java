@@ -2,6 +2,7 @@ package dondeestas.controller;
 
 import dondeestas.entity.Mascota;
 import dondeestas.service.MascotaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,24 @@ public class MascotaController {
     @Autowired
     private MascotaService mascotaService;
 
-    // Crear mascota
-    @PostMapping
-    public ResponseEntity<Mascota> crearMascota(@RequestBody Mascota mascota) {
-        Mascota nueva = mascotaService.registrarMascota(mascota);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+    @GetMapping // tiene que arrancar listando a las mascotas perdidas
+    public ResponseEntity<List<Mascota>> listarMascotasPerdidas() {
+        List<Mascota> perdidas = mascotaService.listarMascotasPerdidas();
+
+        if (perdidas.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(perdidas);
     }
 
-    // Editar mascota
+    @PostMapping
+    public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody Mascota mascota) {
+        Mascota nueva = mascotaService.registrarMascota(mascota);
+        if  (nueva == null) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+        }else return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Mascota> editarMascota(@PathVariable Long id,
                                                  @RequestBody Mascota mascotaActualizada) {
@@ -36,34 +47,29 @@ public class MascotaController {
         Mascota mascota = mascotaOpt.get();
         mascota.setNombre(mascotaActualizada.getNombre());
         mascota.setEstado(mascotaActualizada.getEstado());
-        // otros campos según tu entity
+        // ver si faltan campos agregar
 
         Mascota guardada = mascotaService.registrarMascota(mascota);
         return ResponseEntity.ok(guardada);
     }
 
-    // Eliminar mascota
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarMascota(@PathVariable Long id) {
+    public void eliminarMascota(@PathVariable Long id) {
         mascotaService.eliminarMascota(id);
-        return ResponseEntity.noContent().build();
     }
 
-    // Ver todas las mascotas de un usuario
     @GetMapping("/usuario/{idUsuario}")
     public List<Mascota> listarMascotasPorUsuario(@PathVariable Long idUsuario) {
         return mascotaService.listarMascotasPorUsuario(idUsuario);
     }
 
-    // Listado de todas las mascotas perdidas
-    @GetMapping("/perdidas")
-    public List<Mascota> listarMascotasPerdidas() {
-        return mascotaService.listarMascotasPerdidas();
-    }
-    // Listado de todas las mascotas encontradas
     @GetMapping("/encontradas")
-    public List<Mascota> listarMascotasEncontradas() {
-        return mascotaService.listarMascotasEncontradas();
+    public ResponseEntity<List<Mascota>> listarMascotasEncontradas() {
+        List<Mascota> perdidas = mascotaService.listarMascotasEncontradas();
+        if (perdidas.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(perdidas, HttpStatus.OK);
     }
 
 }

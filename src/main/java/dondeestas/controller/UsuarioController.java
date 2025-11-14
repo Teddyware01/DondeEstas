@@ -100,7 +100,6 @@ public class UsuarioController {
         usuario.setCiudad(usuarioActualizado.getCiudad());
         usuario.setIsAdmin(usuarioActualizado.getIsAdmin());
         usuario.setTelefono(usuarioActualizado.getTelefono());
-        // actualizar otros campos si hay
 
         Usuario guardado = usuarioService.registrar(usuario);
         return ResponseEntity.ok(guardado);

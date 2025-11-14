@@ -10,8 +10,7 @@ public class Puntaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    //Es la cantidad de puntos que "paga" cada tipo.
+    
     @Getter
     @Column(nullable = false)
     private int cantidad;

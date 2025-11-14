@@ -18,8 +18,12 @@ import java.util.Optional;
 @Service
 public class AvistamientoService {
 
-    @Autowired
     private AvistamientoRepository avistamientoRepository;
+
+    @Autowired
+    public AvistamientoService(AvistamientoRepository avistamientoRepository) {
+        this.avistamientoRepository = avistamientoRepository;
+    }
 
     @Autowired
     private MascotaRepository mascotaRepository;
@@ -30,7 +34,7 @@ public class AvistamientoService {
     @Autowired
     private UbicacionRepository ubicacionRepository;
 
-    @Transactional // Garantiza que la operación es atómica
+    @Transactional
     public Avistamiento registrar(Avistamiento avistamiento) {
 
         Avistamiento nuevoAvistamiento = avistamientoRepository.save(avistamiento);
@@ -38,7 +42,6 @@ public class AvistamientoService {
     }
 
     public Optional<Avistamiento> buscarPorId(Long id) {
-        // findById retorna un Optional, estándar de Spring Data
         return avistamientoRepository.findById(id);
     }
 
@@ -47,8 +50,6 @@ public class AvistamientoService {
     }
 
     public List<Avistamiento> buscarPorUsuario(Long usuarioId) {
-        // Asumiendo que definiste el método en la interfaz AvistamientoRepository:
-        // List<Avistamiento> findByUsuarioId(Long usuarioId);
         return avistamientoRepository.findByUsuarioId(usuarioId);
     }
 
@@ -75,11 +76,8 @@ public class AvistamientoService {
                 ubicacionAsociada.getAvistamientos().remove(av);
                 ubicacionRepository.save(ubicacionAsociada);
             }
-
-            // 2. Ejecutar la baja. Spring Data gestiona la transacción.
             avistamientoRepository.delete(av);
         } else {
-            // Manejo de la excepción si el avistamiento no existe (puedes lanzar una excepción 404)
             throw new IllegalArgumentException("Avistamiento con ID " + id + " no encontrado.");
         }
     }
@@ -89,9 +87,7 @@ public class AvistamientoService {
         return avistamientoRepository.findById(id).map(avistamientoExistente -> {
             avistamientoExistente.setComentario(datosActualizados.getComentario());
             avistamientoExistente.setFecha(datosActualizados.getFecha());
-            // etc...
 
-            // Spring Data save() funciona como persist (si es nuevo) o merge (si existe)
             return avistamientoRepository.save(avistamientoExistente);
         });
     }
