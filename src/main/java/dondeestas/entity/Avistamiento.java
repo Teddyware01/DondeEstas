@@ -1,5 +1,6 @@
 package dondeestas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,15 +21,18 @@ public class Avistamiento {
 
     @Getter
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @Getter
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "mascota_id", nullable = false)
     private Mascota mascota;
 
     @Getter
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ubicacion_id", nullable = false)
     private Ubicacion ubicacion;
@@ -38,7 +42,8 @@ public class Avistamiento {
 
 
     @Setter
-    @Getter    @Column(nullable = false)
+    @Getter
+    @Column(nullable = false)
     private LocalDateTime fecha;
 
     @Setter

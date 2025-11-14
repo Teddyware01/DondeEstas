@@ -16,6 +16,11 @@ public class AvistamientoController {
     @Autowired
     private AvistamientoService avistamientoService;
 
+    @GetMapping("/")
+    public List<Avistamiento> getAvistamientos() {
+        return avistamientoService.listarTodos();
+    }
+
     @PostMapping
     // @RequestBody: Spring toma el JSON del cuerpo de la petición y lo convierte a un objeto Avistamiento.
     public ResponseEntity<Avistamiento> registrarAvistamiento(@RequestBody Avistamiento avistamiento) {

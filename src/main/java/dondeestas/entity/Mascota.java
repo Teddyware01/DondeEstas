@@ -1,5 +1,6 @@
 package dondeestas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,34 +22,46 @@ public class Mascota {
     private Long id;
 
     @Setter
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Avistamiento> avistamientos;
 
+    @Getter
     @Setter
     @Column(nullable = false)
     private String nombre;
 
+    @Getter
     @Setter
     @Column
     private String tamano;
 
     @Column
+    @Setter
+    @Getter
     private String color;
 
+    @Setter
+    @Getter
     @Column
     private LocalDate fecha;
 
     @Setter
+    @Getter
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ubicacion_id", nullable = false)
     private Ubicacion ubicacion;
 
 
     @Setter
+    @Getter
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -23,8 +24,8 @@ public class MascotaService {
     }
 
     // ---------- LEER ----------
-    public Optional<Mascota> buscarPorId(Long id) {
-        return mascotaRepository.findById(id);
+    public Mascota buscarPorId(Long id) {
+        return mascotaRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Mascota no encontrada"));
     }
 
     public List<Mascota> listarTodas() {
@@ -72,10 +73,6 @@ public class MascotaService {
         mascotaRepository.deleteById(id);
     }
 
-    public List<Mascota> listarMascotasPorUsuario(Long idUsuario) {
-        return mascotaRepository.findByUsuarioId(idUsuario);
-    }
-
 
     public List<Mascota> listarMascotasPerdidas() {
         return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("PERDIDO");
@@ -84,5 +81,4 @@ public class MascotaService {
     public List<Mascota> listarMascotasEncontradas() {
         return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("ENCONTRADO");
     }
-
 }

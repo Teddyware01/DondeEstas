@@ -45,6 +45,9 @@ public class AvistamientoService {
     public List<Avistamiento> buscarPorMascota(Long mascotaId) {
         return avistamientoRepository.findByMascotaId(mascotaId);
     }
+    public List<Avistamiento> listarTodos() {
+        return avistamientoRepository.findAll();
+    }
 
     public List<Avistamiento> buscarPorUsuario(Long usuarioId) {
         // Asumiendo que definiste el método en la interfaz AvistamientoRepository:

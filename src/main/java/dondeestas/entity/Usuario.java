@@ -1,5 +1,6 @@
 package dondeestas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -67,21 +68,25 @@ public class Usuario {
     private String ciudad;
 
     @Getter
+    @JsonIgnore
     @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Avistamiento> avistamientos;
 
     @Getter
+    @JsonIgnore
     @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mascota> mascotas;
 
     @Getter
+    @JsonIgnore
     @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioMedalla> medallas;
 
     @Getter
+    @JsonIgnore
     @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioPuntaje> puntajes;
