@@ -136,9 +136,6 @@ public class Usuario {
     }
 
 
-
-
-    //recibe objetos instanciados, pero la "BACK REFERENCE" en ellos se actualiza aca.
     public Mascota crearMascota(String nombre, String tamano, String color, LocalDate fecha, Ubicacion ubicacion, Estado estado, String descripcionExtra ){
         Mascota mascota = new Mascota(this, nombre, tamano, color, fecha, ubicacion,estado, descripcionExtra);
         FactoryDAO.getMascotaDAO().persist(mascota);
