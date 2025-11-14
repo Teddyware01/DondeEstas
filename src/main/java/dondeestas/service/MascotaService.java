@@ -28,7 +28,6 @@ public class MascotaService {
         return mascotaRepository.save(mascota);
     }
 
-    // ---------- LEER ----------
     public Optional<Mascota> buscarPorId(Long id) {
         return mascotaRepository.findById(id);
     }

@@ -43,19 +43,16 @@ public class AvistamientoController {
             @PathVariable Long usuarioId,
             @PathVariable Long mascotaId) {
 
-        // Buscar el usuario
         Optional<Usuario> usuario = usuarioService.buscarPorId(usuarioId);
         if (usuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // Buscar la mascota
         Optional<Mascota> mascota = mascotaService.buscarPorId(mascotaId);
         if (mascota.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // Asignar usuario y mascota al avistamiento
         avistamiento.setUsuario(usuario.get());
         avistamiento.setMascota(mascota.get());
 
@@ -67,9 +64,6 @@ public class AvistamientoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
-
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Avistamiento> getAvistamientoPorId(@PathVariable Long id) {

@@ -24,8 +24,6 @@ public class MascotaController {
     @Autowired
     private UsuarioService usuarioService;
 
-
-    // Listado de todas las mascotas del sistema
     @GetMapping("/")
     public ResponseEntity<List<Mascota>> listarTodas() {
         List<Mascota> mascotas = mascotaService.listarTodas();
@@ -36,7 +34,7 @@ public class MascotaController {
 
     }
 
-    @GetMapping("/perdidas") // tiene que arrancar listando a las mascotas perdidas
+    @GetMapping("/perdidas")
     public ResponseEntity<List<Mascota>> listarMascotasPerdidas() {
         List<Mascota> perdidas = mascotaService.listarMascotasPerdidas();
 
@@ -52,20 +50,15 @@ public class MascotaController {
             @Valid @RequestBody Mascota mascota,
             @PathVariable Long usuarioId) {
 
-        // Buscar el usuario por ID
         Optional<Usuario> usuario = usuarioService.buscarPorId(usuarioId);
         if (usuario.isEmpty()) {
-            // Retorna 404 si no existe el usuario
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // Asignar el usuario a la mascota
         mascota.setUsuario(usuario.get());
 
-        // Guardar la mascota
         Mascota nueva = mascotaService.registrarMascota(mascota);
 
-        // Retornar la respuesta según si se creó correctamente
         if (nueva == null) {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
         } else {
@@ -81,30 +74,11 @@ public class MascotaController {
             Mascota mascotaActualizada = mascotaService.actualizarMascota(id, nuevaMascota);
             return ResponseEntity.ok(mascotaActualizada);
         } catch (RuntimeException e) {
-            // Por ejemplo, si no se encuentra la mascota
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
     }
 
-/*
-    @PutMapping("/{id}")
-    public ResponseEntity<Mascota> editarMascota(@PathVariable Long id,
-                                                 @RequestBody Mascota mascotaActualizada) {
-        Optional<Mascota> mascotaOpt = Optional.ofNullable(mascotaService.actualizarMascota(id, mascotaActualizada));
-        if (mascotaOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        Mascota mascota = mascotaOpt.get();
-        mascota.setNombre(mascotaActualizada.getNombre());
-        mascota.setEstado(mascotaActualizada.getEstado());
-        // ver si faltan campos agregar
-
-        Mascota guardada = mascotaService.registrarMascota(mascota);
-        return ResponseEntity.ok(guardada);
-    }
-*/
     @DeleteMapping("/{id}")
     public void eliminarMascota(@PathVariable Long id) {
         mascotaService.eliminarMascota(id);
@@ -119,14 +93,13 @@ public class MascotaController {
         return ResponseEntity.ok(mascotas);
     }
 
-    // Ver UNA mascota segun su id mascotas de un usuario
     @GetMapping("/{id}")
     public ResponseEntity<Mascota> obtenerMascotaPorId(@PathVariable Long id) {
     Optional<Mascota> mascota = mascotaService.buscarPorId(id);
     if (mascota.isEmpty()) {
-        return ResponseEntity.notFound().build(); // 404 NOT FOUND
+        return ResponseEntity.notFound().build();
     }else{
-        return ResponseEntity.ok(mascota.get()); // 200 OK
+        return ResponseEntity.ok(mascota.get());
     }
 
     }

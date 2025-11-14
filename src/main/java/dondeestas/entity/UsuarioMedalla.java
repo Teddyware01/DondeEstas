@@ -29,7 +29,6 @@ public class UsuarioMedalla {
     @Column(name = "fecha_obtencion")
     private LocalDate fechaObtencion;
 
-    // getters y setters
     public UsuarioMedalla() {}
     public UsuarioMedalla(Usuario usuario, Medalla medalla) {
         this.usuario = usuario;
