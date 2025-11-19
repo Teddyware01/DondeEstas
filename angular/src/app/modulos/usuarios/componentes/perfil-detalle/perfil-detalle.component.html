@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div *ngIf="loading" class="alert alert-info">Cargando perfil...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div *ngIf="usuario && !loading" class="card">
+    <div class="card-header bg-primary text-white">
+      <h4>Perfil de {{ usuario.nombre }} {{ usuario.apellido }}</h4>
+    </div>
+    <div class="card-body">
+
+      <h5>Información de Contacto</h5>
+      <p><strong>Email:</strong> {{ usuario.email }}</p>
+      <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+      <p><strong>Ubicación:</strong> {{ usuario.barrio || 'N/A' }}, {{ usuario.ciudad }}</p>
+      <hr>
+
+      <h5>Colaboración y Ranking</h5>
+      <p><strong>Puntaje Total:</strong> {{ usuario.puntajes || 0 }} puntos</p>
+      <p><strong>Medallas:</strong>
+        <span *ngIf="usuario.medallas && usuario.medallas.length > 0">
+                    <span *ngFor="let medalla of usuario.medallas" class="badge bg-success me-2">{{ medalla }}</span>
+                </span>
+        <span *ngIf="!usuario.medallas || usuario.medallas.length === 0">Ninguna</span>
+      </p>
+      <p><strong>Posición Estimada:</strong> {{ getPosicionRanking() }}</p>
+      <hr>
+
+      <h5>Publicaciones</h5>
+
+      <h6>Mascotas Reportadas ({{ usuario.mascotas?.length || 0 }})</h6>
+      <ul *ngIf="usuario.mascotas?.length" class="list-group list-group-flush">
+        <li *ngFor="let mascota of usuario.mascotas" class="list-group-item">
+          {{ mascota.nombre }} ({{ mascota.estado.nombre }}) - {{ mascota.fecha }}
+        </li>
+      </ul>
+      <p *ngIf="!usuario.mascotas || usuario.mascotas.length === 0">El usuario no tiene mascotas publicadas.</p>
+
+      <h6>Avistamientos Reportados ({{ usuario.avistamientos?.length || 0 }})</h6>
+      <ul *ngIf="usuario.avistamientos?.length" class="list-group list-group-flush">
+        <li *ngFor="let avistamiento of usuario.avistamientos" class="list-group-item">
+          Avistamiento de Mascota ID {{ avistamiento.mascota.id }} el {{ avistamiento.fecha | date:'short' }}
+        </li>
+      </ul>
+      <p *ngIf="!usuario.avistamientos || usuario.avistamientos.length === 0">El usuario no ha reportado avistamientos.</p>
+
+    </div>
+  </div>
+</div>

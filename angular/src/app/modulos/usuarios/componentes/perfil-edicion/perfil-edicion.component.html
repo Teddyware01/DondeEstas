@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h3>Editar Mi Perfil</h3>
+
+  <div *ngIf="errorEdicion" class="alert alert-warning">{{ errorEdicion }}</div>
+  <div *ngIf="edicionExitosa" class="alert alert-success">Perfil actualizado con éxito.</div>
+
+  <form (ngSubmit)="onGuardarCambios()" *ngIf="usuario">
+
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" [(ngModel)]="usuario.nombre" name="nombre" class="form-control" required>
+      </div>
+      <div class="col-md-6 form-group">
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" [(ngModel)]="usuario.apellido" name="apellido" class="form-control" required>
+      </div>
+    </div>
+
+    <div class="form-group mt-3">
+      <label for="email">Email</label>
+      <input type="email" id="email" [ngModel]="usuario.email" name="email" class="form-control" disabled title="El email no puede ser modificado aquí">
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-4 form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" [(ngModel)]="usuario.telefono" name="telefono" class="form-control" required>
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="ciudad" [(ngModel)]="usuario.ciudad" name="ciudad" class="form-control" required>
+      </div>
+      <div class="col-md-4 form-group">
+        <label for="barrio">Barrio</label>
+        <input type="text" id="barrio" [(ngModel)]="usuario.barrio" name="barrio" class="form-control">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-4">Guardar Cambios</button>
+  </form>
+
+  <div class="mt-5 pt-3 border-top">
+    <button class="btn btn-danger" (click)="onSolicitarBaja()">Solicitar Baja del Sistema</button>
+    <small class="text-muted ms-3">Esta acción eliminará tu cuenta y publicaciones.</small>
+  </div>
+</div>
