@@ -50,6 +50,8 @@ public class Mascota {
     @Column
     private LocalDate fecha;
 
+
+
     @Setter
     @Getter
     @JsonIgnore
@@ -69,6 +71,18 @@ public class Mascota {
     @Setter
     @Column(name = "descripcion_extra", length = 500)
     private String descripcionExtra;
+
+
+
+    @Getter
+    @Setter
+    @Column(nullable = true)
+    private Double latitud;
+
+    @Getter
+    @Setter
+    @Column(nullable = true)
+    private Double longitud;
 
     public Mascota() {
     }

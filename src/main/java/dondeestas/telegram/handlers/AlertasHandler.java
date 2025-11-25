@@ -44,7 +44,13 @@ public class AlertasHandler extends BaseHandler {
         }
 
         // Obtener la lista de mascotas según filtro y ubicación
-        List<Mascota>  mascotas = mascotaService.listarCercanosConFiltro(lat, lon, DISTANCIA_MAX_KM, filtro);
+        List<Mascota> mascotas;
+        switch (filtro) {
+            case "propio": mascotas = mascotaService.listarMascotasPerdidasPropias();
+            case "ajeno": mascotas = mascotaService.listarMascotasPerdidasAjenas();
+            default: mascotas = mascotaService.listarMascotasPerdidas();
+        }
+        mascotas = MascotaService.filtrarPorDistancia(mascotas, lat, lon, DISTANCIA_MAX_KM);
 
         // Formatear respuesta y enviar al usuario
         String respuesta = formatearMascotas(mascotas, filtro);

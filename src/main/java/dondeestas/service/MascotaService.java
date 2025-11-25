@@ -4,14 +4,14 @@ import dondeestas.entity.Estado;
 import dondeestas.entity.Mascota;
 import dondeestas.repository.MascotaRepository;
 import dondeestas.repository.UsuarioRepository;
+import net.sf.geographiclib.Geodesic;
+import net.sf.geographiclib.GeodesicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 import java.util.NoSuchElementException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class MascotaService {
@@ -101,13 +101,31 @@ public class MascotaService {
         return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("ENCONTRADO");
     }
 
-    public List<Mascota> listarCercanosConFiltro(Double lat, Double lon, int distanciaMaxKm, String filtro) {
-        switch (filtro) {
-            case "todos":;
-            case "propios":;
-            case "ajenos":;
+    public static List<Mascota> filtrarPorDistancia(List<Mascota> mascotas, double lat, double lon, double maxKm) {
+        List<Mascota> filtradas = new ArrayList<>();
+
+        for (Mascota m : mascotas) {
+            if (m.getLatitud() == null || m.getLongitud() == null) continue;
+
+            GeodesicData result = Geodesic.WGS84.Inverse(lat, lon, m.getLatitud(), m.getLongitud());
+            double distanceKm = result.s12 / 1000.0; // convertir metros a km
+
+            if (distanceKm <= maxKm) {
+                filtradas.add(m);
+            }
         }
+
+        return filtradas;
+    }
+
+    public List<Mascota> listarMascotasPerdidasAjenas(){
         //TODO
-        return List.of();
+        //Falta corregir implementacion de estados
+        return null;
+    }
+    public List<Mascota> listarMascotasPerdidasPropias(){
+        //TODO
+        //Falta corregir implementacion de estados
+        return null;
     }
 }
