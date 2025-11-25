@@ -23,9 +23,6 @@ public class FactoryDAO {
     public static PuntajeDAO getPuntajeDAO() {
         return new PuntajeDAOHibernateJPA();
     }
-    public static UbicacionDAO getUbicacionDAO() {
-        return new UbicacionDAOHibernateJPA();
-    }
     public static UsuarioMedallaDAO getUsuarioMedallaDAO() {
         return new UsuarioMedallaDAOHibernateJPA();
     }

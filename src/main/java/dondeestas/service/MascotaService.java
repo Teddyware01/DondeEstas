@@ -44,9 +44,6 @@ public class MascotaService {
         return mascotaRepository.findByEstado(estado);
     }
 
-    public List<Mascota> buscarPorBarrio(String barrio) {
-        return mascotaRepository.findByUbicacion_BarrioIgnoreCase(barrio);
-    }
 
     public List<Mascota> buscarPorNombreExacto(String nombre) {
         return mascotaRepository.findByNombre(nombre);
@@ -70,9 +67,6 @@ public class MascotaService {
                     }
                     if (nuevaMascota.getUsuario() != null) {
                         existente.setUsuario(nuevaMascota.getUsuario());
-                    }
-                    if (nuevaMascota.getUbicacion() != null) {
-                        existente.setUbicacion(nuevaMascota.getUbicacion());
                     }
                     if (nuevaMascota.getEstado() != null) {
                         existente.setEstado(nuevaMascota.getEstado());

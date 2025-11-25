@@ -56,14 +56,6 @@ public class Mascota {
     @Getter
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "ubicacion_id", nullable = true)
-    private Ubicacion ubicacion;
-
-
-    @Setter
-    @Getter
-    @JsonIgnore
-    @ManyToOne
     @JoinColumn(name = "estado_id", nullable = true)
     private Estado estado;
 
@@ -88,15 +80,13 @@ public class Mascota {
     }
 
     public Mascota(Usuario usuario, String nombre,
-                   String tamano, String color, LocalDate fecha,
-                   Ubicacion ubicacion, Estado estado, String descripcionExtra) {
+                   String tamano, String color, LocalDate fecha, Estado estado, String descripcionExtra) {
         this.usuario = usuario;
         this.avistamientos = new ArrayList<>();
         this.nombre = nombre;
         this.tamano = tamano;
         this.color = color;
         this.fecha = fecha;
-        this.ubicacion = ubicacion;
         this.estado = estado;
         this.descripcionExtra = descripcionExtra;
     }
@@ -109,7 +99,6 @@ public class Mascota {
                 ", tamano='" + tamano + '\'' +
                 ", color='" + color + '\'' +
                 ", fecha=" + fecha +
-                ", ubicacionId=" + (ubicacion != null ? ubicacion.getId() : null) +
                 ", descripcionExtra='" + descripcionExtra + '\'' +
                 ", avistamientosCount=" + (avistamientos != null ? avistamientos.size() : 0) +
                 '}';

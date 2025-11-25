@@ -11,5 +11,4 @@ public interface AvistamientoDAO extends GenericDAO<Avistamiento>{
     List<Avistamiento> findByMascota(Long idMascota);
     List<Avistamiento> findByUsuario(Usuario usuario);
     List<Avistamiento> findByFecha(LocalDate fecha);
-    List<Avistamiento> findByBarrio(String barrio);
 }

@@ -32,13 +32,6 @@ public class Avistamiento {
     @JoinColumn(name = "mascota_id", nullable = false)
     private Mascota mascota;
 
-    @Setter
-    @Getter
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "ubicacion_id", nullable = true)
-    private Ubicacion ubicacion;
-
     @Column
     @Nullable
     private String foto;
@@ -55,13 +48,12 @@ public class Avistamiento {
     private String comentario;
 
     public Avistamiento() {}
-    public Avistamiento(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario, Ubicacion ubicacion) {
+    public Avistamiento(String foto, LocalDateTime fecha, String comentario, Mascota mascota, Usuario usuario) {
         this.foto = foto;
         this.fecha = fecha;
         this.comentario = comentario;
         this.mascota = mascota;
         this.usuario = usuario;
-        this.ubicacion = ubicacion;
     }
 
 

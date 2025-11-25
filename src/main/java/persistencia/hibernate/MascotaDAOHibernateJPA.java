@@ -40,17 +40,6 @@ public class MascotaDAOHibernateJPA extends GenericDAOHibernateJPA<Mascota>
         }
     }
 
-    @Override
-    public List<Mascota> findByBarrio(String barrio){
-        try (EntityManager em = EMF.getEMF().createEntityManager()) {
-            TypedQuery<Mascota> consulta = em.createQuery(
-                    "SELECT e FROM Mascota e WHERE e.ubicacion.barrio = :barrio",
-                    Mascota.class
-            );
-            consulta.setParameter("barrio", barrio);
-            return consulta.getResultList();
-        }
-    }
 
     @Override
     public List<Mascota> searchByNombreExacto(String nombre) {

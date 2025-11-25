@@ -3,11 +3,9 @@ package dondeestas.service;
 import dondeestas.entity.Avistamiento;
 import dondeestas.entity.Mascota;
 import dondeestas.entity.Usuario;
-import dondeestas.entity.Ubicacion;
 import dondeestas.repository.AvistamientoRepository;
 import dondeestas.repository.MascotaRepository;
 import dondeestas.repository.UsuarioRepository;
-import dondeestas.repository.UbicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +29,7 @@ public class AvistamientoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private UbicacionRepository ubicacionRepository;
+
 
     @Transactional
     public Avistamiento registrar(Avistamiento avistamiento) {
@@ -74,11 +71,6 @@ public class AvistamientoService {
                 usuarioRepository.save(usuarioAsociado);
             }
 
-            Ubicacion ubicacionAsociada = av.getUbicacion();
-            if (ubicacionAsociada != null) {
-                ubicacionAsociada.getAvistamientos().remove(av);
-                ubicacionRepository.save(ubicacionAsociada);
-            }
             avistamientoRepository.delete(av);
         } else {
             throw new IllegalArgumentException("Avistamiento con ID " + id + " no encontrado.");

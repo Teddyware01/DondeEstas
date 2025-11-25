@@ -15,7 +15,6 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
 
     List<Mascota> findByEstado(Estado estado);
 
-    List<Mascota> findByUbicacion_BarrioIgnoreCase(String barrio);
 
     List<Mascota> findByNombre(String nombre);
 
