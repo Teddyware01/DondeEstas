@@ -10,9 +10,6 @@ public class FactoryDAO {
     public static AvistamientoDAO getAvistamientoDAO() {
         return new AvistamientoDAOHibernateJPA();
     }
-    public static EstadoDAO getEstadoDAO() {
-        return new EstadoDAOHibernateJPA();
-    }
     public static MascotaDAO getMascotaDAO() {
         return new MascotaDAOHibernateJPA();
     }

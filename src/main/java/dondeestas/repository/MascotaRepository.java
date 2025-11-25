@@ -1,6 +1,6 @@
 package dondeestas.repository;
 
-import dondeestas.entity.Estado;
+import dondeestas.auxClass.EstadoEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import dondeestas.entity.Mascota;
@@ -13,13 +13,14 @@ import java.util.List;
 public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     List<Mascota> findByUsuarioId(Long idUsuario);
 
-    List<Mascota> findByEstado(Estado estado);
 
 
     List<Mascota> findByNombre(String nombre);
 
     List<Mascota> findByNombreContainingIgnoreCase(String cadena);
 
-    List<Mascota> findByEstado_NombreEstadoStartingWithIgnoreCase(String prefijo);
+
+    List<Mascota> findByEstadoIn(List<EstadoEnum> estados);
+    List<Mascota> findByEstado(EstadoEnum estado);
 
 }

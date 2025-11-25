@@ -1,6 +1,5 @@
 package persistencia.hibernate;
 
-import dondeestas.entity.Estado;
 import dondeestas.entity.Mascota;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -16,17 +15,6 @@ public class MascotaDAOHibernateJPA extends GenericDAOHibernateJPA<Mascota>
         super(Mascota.class);
     }
 
-    @Override
-    public List<Mascota> findByEstado(Estado estado) {
-        try (EntityManager em = EMF.getEMF().createEntityManager()) {
-            TypedQuery<Mascota> consulta = em.createQuery(
-                    "SELECT e FROM Mascota e WHERE e.estado = :estado",
-                    Mascota.class
-            );
-            consulta.setParameter("estado", estado);
-            return consulta.getResultList();
-        }
-    }
 
     @Override
     public List<Mascota> findByUsuario(Long idUsuario) {

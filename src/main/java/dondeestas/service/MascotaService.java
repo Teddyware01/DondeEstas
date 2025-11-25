@@ -1,9 +1,8 @@
 package dondeestas.service;
 
-import dondeestas.entity.Estado;
+import dondeestas.auxClass.EstadoEnum;
 import dondeestas.entity.Mascota;
 import dondeestas.repository.MascotaRepository;
-import dondeestas.repository.UsuarioRepository;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.NoSuchElementException;
 
 @Service
 public class MascotaService {
@@ -40,9 +38,6 @@ public class MascotaService {
         return mascotaRepository.findByUsuarioId(idUsuario);
     }
 
-    public List<Mascota> buscarPorEstado(Estado estado) {
-        return mascotaRepository.findByEstado(estado);
-    }
 
 
     public List<Mascota> buscarPorNombreExacto(String nombre) {
@@ -86,13 +81,14 @@ public class MascotaService {
         mascotaRepository.deleteById(id);
     }
 
-
     public List<Mascota> listarMascotasPerdidas() {
-        return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("PERDIDO");
+        return mascotaRepository.findByEstadoIn(
+                List.of(EstadoEnum.PERDIDO_PROPIO, EstadoEnum.PERDIDO_AJENO)
+        );
     }
 
     public List<Mascota> listarMascotasEncontradas() {
-        return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("ENCONTRADO");
+        return mascotaRepository.findByEstado(EstadoEnum.RECUPERADO);
     }
 
     public static List<Mascota> filtrarPorDistancia(List<Mascota> mascotas, double lat, double lon, double maxKm) {
@@ -113,13 +109,15 @@ public class MascotaService {
     }
 
     public List<Mascota> listarMascotasPerdidasAjenas(){
-        //TODO
-        //Falta corregir implementacion de estados
-        return null;
+        return mascotaRepository.findByEstado(EstadoEnum.PERDIDO_AJENO);
+
     }
     public List<Mascota> listarMascotasPerdidasPropias(){
-        //TODO
-        //Falta corregir implementacion de estados
-        return null;
+        return mascotaRepository.findByEstado(EstadoEnum.PERDIDO_PROPIO);
+    }
+
+
+    public List<Mascota> buscarPorEstado(EstadoEnum estado) {
+        return mascotaRepository.findByEstado(estado);
     }
 }
