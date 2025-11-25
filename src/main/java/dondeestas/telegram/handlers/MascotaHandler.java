@@ -38,7 +38,7 @@ public class MascotaHandler extends BaseHandler {
             String idMascota = partes[1];
             enviarTexto(chatId, "Mostrando ficha de la mascota con ID: " + idMascota);
         } else {
-            enviarTexto(chatId, "Esta es la sección de mascota. Usa /mascota {id} para ver detalles.");
+            enviarTexto(chatId, "Esta es la sección de mascota. Usa /mascota {id}, indicando el identificador de la mascota para ver sus detalles.");
         }
     }
 }

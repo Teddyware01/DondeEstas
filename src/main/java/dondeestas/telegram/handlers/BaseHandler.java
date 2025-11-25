@@ -26,6 +26,14 @@ public abstract class BaseHandler implements BotHandler {
             e.printStackTrace();
         }
     }
+    protected void enviarMensaje(SendMessage message) {
+        try {
+            // execute() es del TelegramLongPollingBot o del cliente que estés usando
+            telegramClient.execute(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     protected Long getChatId(Update update) {
         if (update.hasMessage()) return update.getMessage().getChatId();
