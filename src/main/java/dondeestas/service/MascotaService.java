@@ -100,4 +100,14 @@ public class MascotaService {
     public List<Mascota> listarMascotasEncontradas() {
         return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("ENCONTRADO");
     }
+
+    public List<Mascota> listarCercanosConFiltro(Double lat, Double lon, int distanciaMaxKm, String filtro) {
+        switch (filtro) {
+            case "todos":;
+            case "propios":;
+            case "ajenos":;
+        }
+        //TODO
+        return List.of();
+    }
 }

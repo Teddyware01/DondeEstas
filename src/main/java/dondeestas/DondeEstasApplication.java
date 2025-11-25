@@ -1,28 +1,29 @@
 package dondeestas;
 
-import dondeestas.service.MascotaService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
-import telegram.DondeEstasBot;
-
-import java.util.Properties;
+import dondeestas.telegram.DondeEstasBot;
 
 @SpringBootApplication
 public class DondeEstasApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(DondeEstasApplication.class, args);
 
-        String botToken="8480878618:AAGyi3cGUpz6XuGUz18YlNtvgNvj9444jO4";
+    public static void main(String[] args) throws Exception {
+        var context = SpringApplication.run(DondeEstasApplication.class, args);
 
-        try (TelegramBotsLongPollingApplication botsApplication = new TelegramBotsLongPollingApplication()) {
-            botsApplication.registerBot(botToken, new DondeEstasBot(botToken,));
+        // ⚠️ OBTENER BOT DESDE SPRING
+        DondeEstasBot bot = context.getBean(DondeEstasBot.class);
+
+        // ⚠️ Y OBTENER EL TOKEN DESDE APPLICATION.PROPERTIES
+        String botToken = context.getEnvironment().getProperty("telegram.token");
+
+        try (TelegramBotsLongPollingApplication botsApp = new TelegramBotsLongPollingApplication()) {
+
+            botsApp.registerBot(botToken, bot);
+
             System.out.println("Bot iniciado correctamente!");
-            // Ensure this prcess wait forever
+
             Thread.currentThread().join();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

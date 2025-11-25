@@ -86,5 +86,19 @@ public class Mascota {
         this.estado = estado;
         this.descripcionExtra = descripcionExtra;
     }
+    @Override
+    public String toString() {
+        return "Mascota{" +
+                "id=" + id +
+                ", usuarioId=" + (usuario != null ? usuario.getId() : null) +
+                ", nombre='" + nombre + '\'' +
+                ", tamano='" + tamano + '\'' +
+                ", color='" + color + '\'' +
+                ", fecha=" + fecha +
+                ", ubicacionId=" + (ubicacion != null ? ubicacion.getId() : null) +
+                ", descripcionExtra='" + descripcionExtra + '\'' +
+                ", avistamientosCount=" + (avistamientos != null ? avistamientos.size() : 0) +
+                '}';
+    }
 
 }

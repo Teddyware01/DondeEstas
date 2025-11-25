@@ -1,4 +1,4 @@
-package telegram;
+package dondeestas.telegram;
 
 import dondeestas.entity.Mascota;
 import dondeestas.repository.MascotaRepository;
@@ -25,14 +25,20 @@ public class DondeEstasBot implements LongPollingSingleThreadUpdateConsumer {
     private final MascotaService mascotaService;
     private String botToken;
     private TelegramClient telegramClient;
+    private DispatcherService dispatcher;
 
-    public DondeEstasBot(@Value("${telegram.token}") String botToken, MascotaService mascotaService) {
+    public DondeEstasBot(@Value("${telegram.token}") String botToken, MascotaService mascotaService, DispatcherService dispatcher) {
         super();
         this.botToken = botToken;
+        this.dispatcher=dispatcher;
         this.telegramClient = new OkHttpTelegramClient(botToken);
         this.mascotaService = mascotaService;
     }
-
+    @Override
+    public void consume(Update update) {
+        dispatcher.dispatch(update);
+    }
+    /*
     @Override
     public void consume(Update update) {
         if (!update.hasMessage() || !update.getMessage().hasText()) {
@@ -191,7 +197,7 @@ public class DondeEstasBot implements LongPollingSingleThreadUpdateConsumer {
         SendMessage msg = SendMessage.builder()
                 .chatId(chatId)
                 .text(texto)
-                .parseMode("MarkdownV2")
+//                .parseMode("MarkdownV2")
                 .build();
 
         try {
@@ -200,5 +206,5 @@ public class DondeEstasBot implements LongPollingSingleThreadUpdateConsumer {
             e.printStackTrace();
         }
     }
-
+*/
 }
