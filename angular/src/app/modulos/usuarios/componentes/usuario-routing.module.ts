@@ -5,6 +5,7 @@ import { RegistroComponent } from '../componentes/registro/registro.component';
 import { LoginComponent } from '../componentes/login/login.component';
 import { PerfilEdicionComponent } from '../componentes/perfil-edicion/perfil-edicion.component';
 import { PerfilDetalleComponent } from '../componentes/perfil-detalle/perfil-detalle.component';
+import { PlaygroundLayoutComponent } from '../componentes/playground-layout/playground-layout.component';
 
 const routes: Routes = [
 
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'registro',
     component: RegistroComponent
+  },
+
+  {
+    path: 'playground',
+    component: PlaygroundLayoutComponent
   },
 
   {

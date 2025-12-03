@@ -5,12 +5,9 @@ import { Router } from '@angular/router';
 import {FormsModule} from '@angular/forms';
 
 @Component({
-  selector: 'app-perfil-edicion',
+  selector: 'aspp-perfil-edicion',
+  standalone: false,
   templateUrl: './perfil-edicion.component.html',
-  imports: [
-    FormsModule
-  ],
-  styleUrls: ['./perfil-edicion.component.css']
 })
 export class PerfilEdicionComponent implements OnInit {
 
@@ -31,7 +28,7 @@ export class PerfilEdicionComponent implements OnInit {
   constructor(private usuarioService: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
-    const userId = 1; // por ej
+    const userId = 1; // EJEMPLO
 
     this.usuarioService.obtenerPerfil(userId).subscribe({
       next: (data) => {

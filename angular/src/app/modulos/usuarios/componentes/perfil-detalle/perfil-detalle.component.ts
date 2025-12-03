@@ -2,17 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { Usuario } from '../../../../models/usuario.interface';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-perfil-detalle',
+  standalone: false,
   templateUrl: './perfil-detalle.component.html',
-  imports: [
-    DatePipe,
-    NgIf,
-    NgForOf
-  ],
-  styleUrls: ['./perfil-detalle.component.css']
 })
 export class PerfilDetalleComponent implements OnInit {
 
@@ -51,5 +45,13 @@ export class PerfilDetalleComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  // arreglar metodo, lo hice para que no de error
+  getPosicionRanking(): number | string {
+    if (this.usuario && this.usuario.puntajes) {
+      return 'Nivel ' + Math.floor(this.usuario.puntajes / 100);
+    }
+    return 'Sin ranking';
   }
 }

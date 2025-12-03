@@ -9,5 +9,7 @@ export interface Usuario {
   isAdmin: boolean;
   puntajes?: number;
   medallas?: string[];
+  mascotas?: any[];
+  avistamientos?: any[];
   // falta la contra
 }

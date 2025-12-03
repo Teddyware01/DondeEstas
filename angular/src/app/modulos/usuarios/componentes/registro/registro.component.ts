@@ -5,13 +5,13 @@ import { RegistroRequest } from '../../../../models/auth-request.interface';
 
 @Component({
   selector: 'app-registro',
+  standalone: false,
   templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent implements OnInit {
 
   registroForm: FormGroup;
-  registroExitoso = false;
+  registroExitoso: boolean = false;
   errorRegistro: string | null = null;
 
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {
