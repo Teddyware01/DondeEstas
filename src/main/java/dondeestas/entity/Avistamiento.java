@@ -21,12 +21,12 @@ public class Avistamiento {
     @Getter
     @Setter
     @ManyToOne
-    @JsonIgnore
+    //@JsonIgnore
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @Getter
-    @JsonIgnore
+    //@JsonIgnore
     @Setter
     @ManyToOne
     @JoinColumn(name = "mascota_id", nullable = false)
@@ -34,7 +34,7 @@ public class Avistamiento {
 
     @Setter
     @Getter
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ubicacion_id", nullable = true)
     private Ubicacion ubicacion;

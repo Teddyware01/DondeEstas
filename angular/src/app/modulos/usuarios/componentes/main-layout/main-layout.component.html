@@ -1,0 +1,56 @@
+<div class="d-flex flex-column min-vh-100">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" routerLink="/playground">
+        <i class="bi bi-geo-alt-fill"></i> ¿Dónde Estás?
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/playground" routerLinkActive="active">
+              Inicio
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="#">Reportar Mascota</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="#">Avistamientos</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              Mi Cuenta
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" routerLink="/perfil/editar">Editar Perfil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item text-danger" (click)="logout()">Cerrar Sesión</button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main class="flex-grow-1 py-4 bg-light">
+    <div class="container">
+
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <footer class="bg-dark text-white py-3 mt-auto">
+    <div class="container text-center">
+      <p class="mb-0 small">
+        &copy; 2025 <strong>¿Dónde Estás?</strong> - Volvé a casa.
+      </p>
+      <p class="mb-0 small text-secondary">Trabajo Final TTPS - Opción Java</p>
+    </div>
+  </footer>
+</div>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegistroRequest, LoginRequest } from '../models/auth-request.interface';
 import { Usuario } from '../models/usuario.interface';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,9 @@ export class UsuarioService {
   }
 
   public obtenerPerfil(id: number): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.apiUrl}/${id}`);
+    const tokenSimulado = id.toString() + '123456';
+    const headers = new HttpHeaders().set('token', tokenSimulado);
+    return this.http.get<Usuario>(`${this.apiUrl}/${id}`, { headers: headers });
   }
 
   public borrarUsuario(id: number): Observable<any> {

@@ -26,7 +26,8 @@ public class Mascota {
 
 
     @Getter
-    @Setter    @JsonIgnore
+    @Setter
+    @JsonIgnore
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Avistamiento> avistamientos;
 
@@ -52,7 +53,7 @@ public class Mascota {
 
     @Setter
     @Getter
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ubicacion_id", nullable = true)
     private Ubicacion ubicacion;
@@ -60,7 +61,7 @@ public class Mascota {
 
     @Setter
     @Getter
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = true)
     private Estado estado;

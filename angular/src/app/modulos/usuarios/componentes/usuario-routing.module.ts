@@ -1,44 +1,49 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { RegistroComponent } from '../componentes/registro/registro.component';
-import { LoginComponent } from '../componentes/login/login.component';
-import { PerfilEdicionComponent } from '../componentes/perfil-edicion/perfil-edicion.component';
-import { PerfilDetalleComponent } from '../componentes/perfil-detalle/perfil-detalle.component';
-import { PlaygroundLayoutComponent } from '../componentes/playground-layout/playground-layout.component';
+import { RegistroComponent } from './registro/registro.component';
+import { LoginComponent } from './login/login.component';
+import { PerfilEdicionComponent } from './perfil-edicion/perfil-edicion.component';
+import { PerfilDetalleComponent } from './perfil-detalle/perfil-detalle.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 const routes: Routes = [
-
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-
-  {
-    path: 'registro',
-    component: RegistroComponent
-  },
-
-  {
-    path: 'playground',
-    component: PlaygroundLayoutComponent
-  },
-
   {
     path: 'login',
     component: LoginComponent
   },
-
   {
-    path: 'perfil/editar',
-    component: PerfilEdicionComponent
+    path: 'registro',
+    component: RegistroComponent
   },
-
   {
-    path: 'perfil/:id',
-    component: PerfilDetalleComponent
-  },
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'main',
+        pathMatch: 'full'
+      },
+
+      {
+        path: 'main',
+        component: MainLayoutComponent
+      },
+      {
+        path: 'perfil/editar',
+        component: PerfilEdicionComponent
+      },
+      {
+        path: 'login',
+        component: PerfilEdicionComponent
+      },
+      {
+        path: 'perfil/:id',
+        component: PerfilDetalleComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

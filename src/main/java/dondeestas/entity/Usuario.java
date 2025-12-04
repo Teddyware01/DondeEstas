@@ -68,7 +68,7 @@ public class Usuario {
     private List<Avistamiento> avistamientos;
 
     @Getter
-    @JsonIgnore
+    //@JsonIgnore
     @Setter
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mascota> mascotas;
