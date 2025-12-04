@@ -10,9 +10,6 @@ public class FactoryDAO {
     public static AvistamientoDAO getAvistamientoDAO() {
         return new AvistamientoDAOHibernateJPA();
     }
-    public static EstadoDAO getEstadoDAO() {
-        return new EstadoDAOHibernateJPA();
-    }
     public static MascotaDAO getMascotaDAO() {
         return new MascotaDAOHibernateJPA();
     }
@@ -22,9 +19,6 @@ public class FactoryDAO {
     }
     public static PuntajeDAO getPuntajeDAO() {
         return new PuntajeDAOHibernateJPA();
-    }
-    public static UbicacionDAO getUbicacionDAO() {
-        return new UbicacionDAOHibernateJPA();
     }
     public static UsuarioMedallaDAO getUsuarioMedallaDAO() {
         return new UsuarioMedallaDAOHibernateJPA();

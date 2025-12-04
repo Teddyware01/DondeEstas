@@ -90,25 +90,6 @@ public class AvistamientoDAOHibernateJPA extends GenericDAOHibernateJPA<Avistami
         return resultado;
     }
 
-    @Override
-    public List<Avistamiento> findByBarrio(String barrio) {
-
-        EntityManager em = EMF.getEMF().createEntityManager();
-        List<Avistamiento> resultado = null;
-
-        try {
-            TypedQuery<Avistamiento> consulta = em.createQuery(
-                    "SELECT e FROM Avistamiento e WHERE LOWER(e.ubicacion.barrio) = LOWER(:barrio) "  ,
-                    Avistamiento.class
-            );
-            consulta.setParameter("barrio", barrio);
-            resultado = consulta.getResultList();
-        } finally {
-            em.close();
-        }
-
-        return resultado;
-    }
 
     @Override
     public void delete(Long id) {

@@ -1,17 +1,15 @@
 package dondeestas.service;
 
-import dondeestas.entity.Estado;
+import dondeestas.auxClass.EstadoEnum;
 import dondeestas.entity.Mascota;
 import dondeestas.repository.MascotaRepository;
-import dondeestas.repository.UsuarioRepository;
+import net.sf.geographiclib.Geodesic;
+import net.sf.geographiclib.GeodesicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MascotaService {
@@ -40,13 +38,7 @@ public class MascotaService {
         return mascotaRepository.findByUsuarioId(idUsuario);
     }
 
-    public List<Mascota> buscarPorEstado(Estado estado) {
-        return mascotaRepository.findByEstado(estado);
-    }
 
-    public List<Mascota> buscarPorBarrio(String barrio) {
-        return mascotaRepository.findByUbicacion_BarrioIgnoreCase(barrio);
-    }
 
     public List<Mascota> buscarPorNombreExacto(String nombre) {
         return mascotaRepository.findByNombre(nombre);
@@ -71,9 +63,6 @@ public class MascotaService {
                     if (nuevaMascota.getUsuario() != null) {
                         existente.setUsuario(nuevaMascota.getUsuario());
                     }
-                    if (nuevaMascota.getUbicacion() != null) {
-                        existente.setUbicacion(nuevaMascota.getUbicacion());
-                    }
                     if (nuevaMascota.getEstado() != null) {
                         existente.setEstado(nuevaMascota.getEstado());
                     }
@@ -92,12 +81,43 @@ public class MascotaService {
         mascotaRepository.deleteById(id);
     }
 
-
     public List<Mascota> listarMascotasPerdidas() {
-        return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("PERDIDO");
+        return mascotaRepository.findByEstadoIn(
+                List.of(EstadoEnum.PERDIDO_PROPIO, EstadoEnum.PERDIDO_AJENO)
+        );
     }
 
     public List<Mascota> listarMascotasEncontradas() {
-        return mascotaRepository.findByEstado_NombreEstadoStartingWithIgnoreCase("ENCONTRADO");
+        return mascotaRepository.findByEstado(EstadoEnum.RECUPERADO);
+    }
+
+    public static List<Mascota> filtrarPorDistancia(List<Mascota> mascotas, double lat, double lon, double maxKm) {
+        List<Mascota> filtradas = new ArrayList<>();
+
+        for (Mascota m : mascotas) {
+            if (m.getLatitud() == null || m.getLongitud() == null) continue;
+
+            GeodesicData result = Geodesic.WGS84.Inverse(lat, lon, m.getLatitud(), m.getLongitud());
+            double distanceKm = result.s12 / 1000.0; // convertir metros a km
+
+            if (distanceKm <= maxKm) {
+                filtradas.add(m);
+            }
+        }
+
+        return filtradas;
+    }
+
+    public List<Mascota> listarMascotasPerdidasAjenas(){
+        return mascotaRepository.findByEstado(EstadoEnum.PERDIDO_AJENO);
+
+    }
+    public List<Mascota> listarMascotasPerdidasPropias(){
+        return mascotaRepository.findByEstado(EstadoEnum.PERDIDO_PROPIO);
+    }
+
+
+    public List<Mascota> buscarPorEstado(EstadoEnum estado) {
+        return mascotaRepository.findByEstado(estado);
     }
 }
