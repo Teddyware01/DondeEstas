@@ -1,28 +1,24 @@
-<div class="dashboard-container">
+<div class="main-container">
 
-  <div class="welcome-banner">
-    <h2>🐶 ¡Ayudanos a encontrarlos!</h2>
-    <p>Revisa las últimas publicaciones de mascotas perdidas y encontradas en tu zona.</p>
-  </div>
+  <h2 class="titulo-seccion">Mascotas Perdidas Recientemente</h2>
 
-  <!-- Grilla de Tarjetas -->
-  <div class="cards-grid">
-
-    <!-- *ngFor recorre la lista que definimos en el TS -->
-    <div class="pet-card" *ngFor="let p of publicaciones">
-
-      <!-- Imagen -->
+  <div class="grid-container">
+    <div class="pet-card" *ngFor="let mascota of listaMascotas">
       <div class="card-image">
-        <img [src]="p.imagen" [alt]="p.nombre">
+        <img [src]="mascota.fotoUrl" [alt]="mascota.nombre">
+        <span class="badge-estado">PERDIDO</span>
       </div>
 
-      <!-- Contenido -->
-      <div class="card-content">
-        <h3>{{ p.nombre }}</h3>
-        <p class="location">📍 {{ p.ubicacion }}</p>
-        <p class="desc">{{ p.descripcion }}</p>
+      <div class="card-info">
+        <h3 class="pet-name">{{ mascota.nombre }}</h3>
 
-        <button class="btn-detail">Ver Detalle</button>
+        <div class="pet-details">
+          <p><strong>Raza:</strong> {{ mascota.raza }}</p>
+          <p><strong>Perdido el:</strong> {{ mascota.fechaPerdida | date:'dd/MM/yyyy' }}</p>
+          <p class="ubicacion">📍 {{ mascota.ubicacion }}</p>
+        </div>
+
+        <button class="btn-ver-mas">VER MÁS</button>
       </div>
     </div>
 

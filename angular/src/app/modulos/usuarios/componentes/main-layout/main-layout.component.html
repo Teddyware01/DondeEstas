@@ -3,7 +3,7 @@
   <header class="main-header">
 
     <div class="header-left" routerLink="/dashboard" style="cursor: pointer;">
-      <span class="icon-dog">🐶</span> <!-- Reemplazar con <img> si tienes el logo -->
+      <span class="icon-dog">🐶</span>
       <span class="brand-text">PERROS PERDIDOS</span>
     </div>
 
@@ -15,6 +15,9 @@
     <div class="header-right">
       <button class="btn-login" (click)="logout()">
         INICIAR SESIÓN / SALIR
+      </button>
+      <button class="btn-login" (click)="abrirModalRegistro()">
+        REGISTRARSE
       </button>
     </div>
   </header>
@@ -34,4 +37,9 @@
       <span>® BY TEDDYWARE</span>
     </div>
   </footer>
+  <div class="modal-overlay" *ngIf="mostrarRegistro">
+    <div class="modal-wrapper">
+      <app-registro (cerrarModal)="cerrarModalRegistro()"></app-registro>
+    </div>
+  </div>
 </div>

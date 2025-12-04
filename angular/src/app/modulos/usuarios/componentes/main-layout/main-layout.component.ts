@@ -8,11 +8,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-layout.component.css']
 })
 export class MainLayoutComponent {
-
+  mostrarRegistro: boolean = false;
   constructor(private router: Router) {}
 
   logout(): void {
     console.log('Cerrando sesión...');
     this.router.navigate(['/login']);
+  }
+
+  abrirModalRegistro(): void {
+    this.mostrarRegistro = true;
+  }
+
+  cerrarModalRegistro(): void {
+    this.mostrarRegistro = false;
   }
 }

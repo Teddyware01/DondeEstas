@@ -1,39 +1,53 @@
-.dashboard-container {
-  width: 100%;
+.main-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.welcome-banner {
+.titulo-seccion {
+  color: #5D4037;
   text-align: center;
-  margin-bottom: 30px;
-  color: #4E342E; /* Marrón oscuro */
+  margin-bottom: 40px;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* Grilla: Se adapta a las pantallas */
-.cards-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
 }
 
-/* Tarjeta individual */
+@media (max-width: 900px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pet-card {
-  background-color: #fff;
-  border-radius: 12px;
-  width: 250px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: white;
+  border-radius: 15px;
   overflow: hidden;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: 1px solid #EFEBE9;
+  transition: transform 0.3s ease;
 }
 
 .pet-card:hover {
-  transform: translateY(-5px); /* Efecto de levantar al pasar el mouse */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Imagen y Badge */
 .card-image {
+  height: 250px;
+  width: 100%;
   position: relative;
-  height: 150px;
 }
 
 .card-image img {
@@ -42,55 +56,53 @@
   object-fit: cover;
 }
 
-.badge {
+.badge-estado {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-size: 10px;
-  font-weight: bold;
+  top: 15px;
+  right: 15px;
+  background-color: #e74c3c;
   color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
-/* Colores según estado */
-.badge.PERDIDO { background-color: #e74c3c; } /* Rojo */
-.badge.ENCONTRADO { background-color: #f1c40f; color: #333; } /* Amarillo */
-.badge.ADOPTADO { background-color: #27ae60; } /* Verde */
-
-/* Texto */
-.card-content {
-  padding: 15px;
+.card-info {
+  padding: 20px;
+  text-align: center;
 }
 
-.card-content h3 {
-  margin: 0 0 5px 0;
-  color: #333;
+.pet-name {
+  color: #4E342E;
+  font-size: 1.5rem;
+  margin: 0 0 10px 0;
 }
 
-.location {
-  font-size: 12px;
-  color: #7f8c8d;
-  margin-bottom: 10px;
+.pet-details p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 0.95rem;
 }
 
-.desc {
-  font-size: 13px;
-  color: #555;
-  line-height: 1.4;
-  margin-bottom: 15px;
+.ubicacion {
+  color: #8D6E63 !important;
+  font-weight: bold;
+  margin-top: 10px !important;
 }
 
-.btn-detail {
-  width: 100%;
-  padding: 8px;
-  background-color: #A1887F; /* Marrón claro del layout */
+.btn-ver-mas {
+  margin-top: 15px;
+  background-color: #8D6E63;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 25px;
+  border-radius: 25px;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
-.btn-detail:hover {
-  background-color: #8D6E63;
+.btn-ver-mas:hover {
+  background-color: #6D4C41;
 }

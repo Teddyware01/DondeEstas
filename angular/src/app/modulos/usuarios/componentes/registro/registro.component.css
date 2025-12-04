@@ -1,0 +1,99 @@
+.registro-card {
+  background-color: #FDFBF7;
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  position: relative;
+  border: 1px solid #D7CCC8;
+}
+
+h2 {
+  color: #5D4037;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #8D6E63;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-close:hover {
+  color: #5D4037;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  color: #6D4C41;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #D7CCC8;
+  border-radius: 8px;
+  background-color: #FAFAFA;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #A1887F;
+  background-color: #fff;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #8D6E63;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: #6D4C41;
+}
+
+.btn-submit:disabled {
+  background-color: #D7CCC8;
+  cursor: not-allowed;
+}
+
+.alert-error {
+  color: #D32F2F;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.alert-success {
+  color: #388E3C;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}

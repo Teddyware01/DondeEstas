@@ -9,7 +9,7 @@ import { RegistroComponent } from '../componentes/registro/registro.component';
 import { LoginComponent } from '../componentes/login/login.component';
 import { PerfilEdicionComponent } from '../componentes/perfil-edicion/perfil-edicion.component';
 import { PerfilDetalleComponent } from '../componentes/perfil-detalle/perfil-detalle.component';
-import { DashboardComponent } from '../componentes/dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [

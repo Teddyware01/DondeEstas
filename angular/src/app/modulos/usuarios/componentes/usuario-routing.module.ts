@@ -10,33 +10,28 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'registro',
-    component: RegistroComponent
-  },
-  {
     path: '',
     component: MainLayoutComponent,
     children: [
       {
         path: '',
-        redirectTo: 'main',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
       },
-
       {
-        path: 'main',
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'registro',
+        component: RegistroComponent
+      },
+      {
+        path: 'dashboard',
         component: DashboardComponent
       },
       {
         path: 'perfil/editar',
-        component: PerfilEdicionComponent
-      },
-      {
-        path: 'login',
         component: PerfilEdicionComponent
       },
       {

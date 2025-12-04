@@ -1,32 +1,56 @@
-<div class="container">
-  <h2>Registro de Nuevo Usuario</h2>
+<div class="registro-card">
+  <button type="button" class="btn-close" (click)="cerrar()">✕</button>
 
-  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+  <h2>Crear Cuenta</h2>
 
-    <div class="form-group">
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" formControlName="nombre" class="form-control">
-      <div *ngIf="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched" class="alert alert-danger">
-        El nombre es obligatorio.
+  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" *ngIf="!registroExitoso">
+    <div style="display: flex; gap: 10px;">
+      <div class="form-group" style="flex: 1;">
+        <label>Nombre</label>
+        <input type="text" formControlName="nombre" placeholder="Tu nombre">
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label>Apellido</label>
+        <input type="text" formControlName="apellido" placeholder="Tu apellido">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" formControlName="email" class="form-control">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="ejemplo@email.com">
     </div>
 
     <div class="form-group">
-      <label for="contrasena">Contraseña</label>
-      <input type="password" id="contrasena" formControlName="contrasena" class="form-control">
+      <label>Contraseña</label>
+      <input type="password" formControlName="contrasena" placeholder="******">
     </div>
 
-    <div *ngIf="errorRegistro" class="alert alert-warning mt-3">{{ errorRegistro }}</div>
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" formControlName="telefono" placeholder="Para contactarte si encuentras algo">
+    </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="!registroForm.valid">
-      Registrarse
+    <div class="form-group">
+      <label>Ciudad</label>
+      <input type="text" formControlName="ciudad" placeholder="Tu ciudad actual">
+    </div>
+
+    <div class="form-group">
+      <label>Barrio (Opcional)</label>
+      <input type="text" formControlName="barrio">
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="registroForm.invalid">
+      REGISTRARME
     </button>
+
+    <div class="alert-error" *ngIf="errorRegistro">
+      {{ errorRegistro }}
+    </div>
   </form>
 
-  <p *ngIf="registroExitoso" class="mt-3 text-success">¡Registro completado! Por favor, inicia sesión.</p>
+  <div class="alert-success" *ngIf="registroExitoso">
+    <h3>¡Bienvenido! 🐶</h3>
+    <p>Tu cuenta ha sido creada exitosamente.</p>
+  </div>
 </div>

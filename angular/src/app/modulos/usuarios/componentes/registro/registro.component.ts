@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { RegistroRequest } from '../../../../models/auth-request.interface';
@@ -7,8 +7,11 @@ import { RegistroRequest } from '../../../../models/auth-request.interface';
   selector: 'app-registro',
   standalone: false,
   templateUrl: './registro.component.html',
+  styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent implements OnInit {
+
+  @Output() cerrarModal = new EventEmitter<void>();
 
   registroForm: FormGroup;
   registroExitoso: boolean = false;
@@ -26,8 +29,7 @@ export class RegistroComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit(): void {
     this.registroExitoso = false;
@@ -35,19 +37,20 @@ export class RegistroComponent implements OnInit {
 
     if (this.registroForm.valid) {
       const data: RegistroRequest = this.registroForm.value;
-
       this.usuarioService.registrarUsuario(data).subscribe({
         next: (response) => {
           this.registroExitoso = true;
-          console.log('Registro exitoso', response);
         },
         error: (err) => {
-          this.errorRegistro = 'Error al registrar el usuario. Verifique los datos.';
-          console.error('Error durante el registro:', err);
+          this.errorRegistro = 'Error al registrar. Intente nuevamente.';
         }
       });
     } else {
-      this.errorRegistro = 'Por favor, complete todos los campos requeridos correctamente.';
+      this.errorRegistro = 'Complete todos los campos obligatorios.';
     }
+  }
+
+  cerrar(): void {
+    this.cerrarModal.emit();
   }
 }
