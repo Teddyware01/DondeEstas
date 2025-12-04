@@ -1,0 +1,30 @@
+<div class="dashboard-container">
+
+  <div class="welcome-banner">
+    <h2>🐶 ¡Ayudanos a encontrarlos!</h2>
+    <p>Revisa las últimas publicaciones de mascotas perdidas y encontradas en tu zona.</p>
+  </div>
+
+  <!-- Grilla de Tarjetas -->
+  <div class="cards-grid">
+
+    <!-- *ngFor recorre la lista que definimos en el TS -->
+    <div class="pet-card" *ngFor="let p of publicaciones">
+
+      <!-- Imagen -->
+      <div class="card-image">
+        <img [src]="p.imagen" [alt]="p.nombre">
+      </div>
+
+      <!-- Contenido -->
+      <div class="card-content">
+        <h3>{{ p.nombre }}</h3>
+        <p class="location">📍 {{ p.ubicacion }}</p>
+        <p class="desc">{{ p.descripcion }}</p>
+
+        <button class="btn-detail">Ver Detalle</button>
+      </div>
+    </div>
+
+  </div>
+</div>

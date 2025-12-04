@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { PerfilEdicionComponent } from './perfil-edicion/perfil-edicion.component';
 import { PerfilDetalleComponent } from './perfil-detalle/perfil-detalle.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
 
       {
         path: 'main',
-        component: MainLayoutComponent
+        component: DashboardComponent
       },
       {
         path: 'perfil/editar',
