@@ -1,7 +1,9 @@
 <div class="main-container">
 
   <h2 class="titulo-seccion">Mascotas Perdidas Recientemente</h2>
-
+  <button class="btn-nueva-mascota" (click)="abrirModalCrear()">
+    + Nueva Mascota Perdida
+  </button>
   <div class="grid-container">
     <div class="pet-card" *ngFor="let mascota of listaMascotas">
       <div class="card-image">
@@ -21,6 +23,30 @@
         <button class="btn-ver-mas">VER MÁS</button>
       </div>
     </div>
+  </div>
+</div>
 
+<div class="modal-overlay" *ngIf="mostrarModal">
+  <div class="modal-content">
+    <h2>{{ modoEdicion ? 'Editar Mascota' : 'Nueva Mascota Perdida' }}</h2>
+
+    <form (ngSubmit)="guardarMascota()">
+      <label>Nombre:</label>
+      <input [(ngModel)]="mascotaForm.nombre" name="nombre" required>
+
+      <label>Tamaño:</label>
+      <select [(ngModel)]="mascotaForm.tamano" name="tamano">
+        <option value="Chico">Chico</option>
+        <option value="Mediano">Mediano</option>
+        <option value="Grande">Grande</option>
+      </select>
+
+      <label>Ubicación:</label>
+      <input [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit">Guardar</button>
+      </div>
+    </form>
   </div>
 </div>

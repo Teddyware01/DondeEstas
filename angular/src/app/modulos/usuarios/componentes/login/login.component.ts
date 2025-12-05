@@ -36,4 +36,7 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+  abrirRegistroClick(): void {
+    this.usuarioService.solicitarRegistro();
+  }
 }

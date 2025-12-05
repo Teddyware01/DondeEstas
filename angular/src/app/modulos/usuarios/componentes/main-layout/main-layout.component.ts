@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../../../services/usuario.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-main-layout',
@@ -7,9 +9,11 @@ import { Router } from '@angular/router';
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css']
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit, OnDestroy {
   mostrarRegistro: boolean = false;
-  constructor(private router: Router) {}
+  private subscription: Subscription = new Subscription();
+
+  constructor(public router: Router, private usuarioService: UsuarioService) {}
 
   logout(): void {
     console.log('Cerrando sesión...');
@@ -22,5 +26,18 @@ export class MainLayoutComponent {
 
   cerrarModalRegistro(): void {
     this.mostrarRegistro = false;
+  }
+
+  esPaginaLogin(): boolean {
+    return this.router.url === '/login';
+  }
+
+  ngOnInit(): void {
+    this.subscription = this.usuarioService.abrirRegistro$.subscribe(() => {
+      this.mostrarRegistro = true;
+    });
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

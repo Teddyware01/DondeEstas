@@ -7,6 +7,7 @@ import { PerfilEdicionComponent } from './perfil-edicion/perfil-edicion.componen
 import { PerfilDetalleComponent } from './perfil-detalle/perfil-detalle.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { MascotaComponent } from './mascota/mascota.component';
 
 const routes: Routes = [
   {
@@ -23,10 +24,6 @@ const routes: Routes = [
         component: LoginComponent
       },
       {
-        path: 'registro',
-        component: RegistroComponent
-      },
-      {
         path: 'dashboard',
         component: DashboardComponent
       },
@@ -37,6 +34,9 @@ const routes: Routes = [
       {
         path: 'perfil/:id',
         component: PerfilDetalleComponent
+      },
+      { path: 'mascota/:id',
+        component: MascotaComponent
       }
     ]
   }

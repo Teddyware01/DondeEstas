@@ -23,7 +23,7 @@
   </header>
 
   <main class="content-area">
-    <div class="page-card">
+      <div [class.page-card]="!esPaginaLogin()" [class.login-container]="esPaginaLogin()">
       <router-outlet></router-outlet>
     </div>
   </main>

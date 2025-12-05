@@ -106,3 +106,85 @@
 .btn-ver-mas:hover {
   background-color: #6D4C41;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px; /* Que no sea gigante en PC */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  position: relative;
+  /* Animación opcional para que entre suave */
+  animation: aparecer 0.3s ease-out;
+}
+
+@keyframes aparecer {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #555;
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modal-actions button[type="button"] {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modal-actions button[type="submit"] {
+  background-color: #F8B400;
+  color: white;
+}
+
+.btn-nueva-mascota {
+  background-color: #F8B400;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+}

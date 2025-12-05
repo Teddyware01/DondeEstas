@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { RegistroRequest, LoginRequest } from '../models/auth-request.interface';
 import { Usuario } from '../models/usuario.interface';
 import { HttpHeaders } from '@angular/common/http';
@@ -11,7 +11,8 @@ import { HttpHeaders } from '@angular/common/http';
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
   private authUrl = 'http://localhost:8080/api/auth';
-
+  private abrirRegistroSource = new Subject<void>();
+  public abrirRegistro$ = this.abrirRegistroSource.asObservable();
   constructor(private http: HttpClient) { }
 
   public registrarUsuario(data: RegistroRequest): Observable<any> {
@@ -35,5 +36,9 @@ export class UsuarioService {
 
   public borrarUsuario(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  public solicitarRegistro(): void {
+    this.abrirRegistroSource.next();
   }
 }
