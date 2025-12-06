@@ -16,23 +16,21 @@ export class LoginComponent implements OnInit {
   };
 
   errorLogin: string | null = null;
+  errorMensaje: string = '';
 
   constructor(private usuarioService: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
   }
-
-  onSubmit(): void {
-    this.errorLogin = null;
-
+  onLogin(): void {
+    this.errorMensaje = '';
     this.usuarioService.login(this.model).subscribe({
-      next: (response) => {
-        console.log('Login exitoso', response);
-        this.router.navigate(['/dashboard']);
+      next: (data) => {
+        this.router.navigate(['/todas-mascotas']);
       },
       error: (err) => {
-        this.errorLogin = 'Credenciales inválidas o error de conexión.';
-        console.error('Error durante el login:', err);
+        console.error('Error:', err);
+        this.errorMensaje = 'Credenciales incorrectas o error de servidor';
       }
     });
   }

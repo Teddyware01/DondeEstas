@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UsuarioService } from '../../../../services/usuario.service';
-import { Usuario } from '../../../../models/usuario.interface';
+import { UsuarioService } from '../../../../../services/usuario.service';
+import { Usuario } from '../../../../../models/usuario.interface';
 
 @Component({
   selector: 'app-perfil-detalle',

@@ -12,3 +12,10 @@ export interface LoginRequest {
   email: string;
   contrasena: string;
 }
+
+export interface LoginResponse {
+  token: string;
+  expiration: number;
+  email: string;
+  id: number;
+}

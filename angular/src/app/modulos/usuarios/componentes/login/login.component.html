@@ -10,8 +10,7 @@
             {{ errorLogin }}
           </div>
 
-          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-
+          <form (ngSubmit)="onLogin()">
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input type="email"
@@ -30,10 +29,9 @@
                      [(ngModel)]="model.contrasena"
                      required>
             </div>
-
+            <p *ngIf="errorMensaje" class="error-text">{{ errorMensaje }}</p>
             <button type="submit"
-                    class="btn btn-primary w-100"
-                    [disabled]="!loginForm.form.valid">
+                    class="btn btn-primary w-100">
               Ingresar
             </button>
           </form>

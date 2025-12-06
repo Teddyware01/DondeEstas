@@ -126,10 +126,9 @@
   padding: 30px;
   border-radius: 10px;
   width: 90%;
-  max-width: 500px; /* Que no sea gigante en PC */
+  max-width: 500px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   position: relative;
-  /* Animación opcional para que entre suave */
   animation: aparecer 0.3s ease-out;
 }
 
@@ -187,4 +186,19 @@ form input, form select, form textarea {
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 20px;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: #000;
 }

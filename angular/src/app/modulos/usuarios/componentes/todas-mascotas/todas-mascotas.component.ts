@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MascotaService } from '../../../../services/mascota.service';
 import { Mascota } from '../../../../models/mascota.interface';
 
 @Component({
   selector: 'app-dashboard',
   standalone: false,
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  templateUrl: './todas-mascotas.component.html',
+  styleUrls: ['./todas-mascotas.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class TodasMascotasComponent implements OnInit {
   mostrarModal: boolean = false;
   modoEdicion: boolean = false;
   listaMascotas: Mascota[] = [];
@@ -17,10 +17,19 @@ export class DashboardComponent implements OnInit {
     nombre: '', tamano: '', color: '', fechaPerdida: '', ubicacion: '', estado: 'PERDIDO'
   };
 
-  constructor(private mascotaService: MascotaService) { }
+  constructor(private mascotaService: MascotaService,
+              private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.cargarMascotas();
+    this.mascotaService.obtenerMascotasPerdidas().subscribe({
+      next: (data) => {
+        this.listaMascotas = data;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error("Error al cargar mascotas:", err);
+      }
+    });
   }
 
   cargarMascotas() {

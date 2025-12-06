@@ -26,8 +26,10 @@
   </div>
 </div>
 
-<div class="modal-overlay" *ngIf="mostrarModal">
-  <div class="modal-content">
+
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close-btn" (click)="cerrarModal()">&times;</span>
     <h2>{{ modoEdicion ? 'Editar Mascota' : 'Nueva Mascota Perdida' }}</h2>
 
     <form (ngSubmit)="guardarMascota()">
