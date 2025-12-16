@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import dondeestas.dto.LoginRequest;
+import dondeestas.dto.LoginResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,20 +56,13 @@ public class UsuarioController {
 
 
     @PostMapping("/autenticacion")
-    public ResponseEntity<Void> autenticarUsuario(
-            @RequestHeader("email") String emailUsuario,
-            @RequestHeader("contrasena") String contrasena) {
-
-        Optional<Usuario> usuarioOpt = usuarioService.buscarPorEmail(emailUsuario);
-
-        if (usuarioOpt.isPresent() && usuarioOpt.get().getContrasena().equals(contrasena)) {
+    public ResponseEntity<?> autenticarUsuario(@RequestBody LoginRequest request) {
+        Optional<Usuario> usuarioOpt = usuarioService.buscarPorEmail(request.getEmail());
+        if (usuarioOpt.isPresent() && usuarioOpt.get().getContrasena().equals(request.getContrasena())) {
             String token = usuarioOpt.get().getId() + "123456";
-            return ResponseEntity
-                    .noContent()
-                    .header("token", token)
-                    .build();
+            return ResponseEntity.ok(new LoginResponse(token, usuarioOpt.get().getEmail()));
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
 
@@ -101,6 +96,4 @@ public class UsuarioController {
         Usuario guardado = usuarioService.registrar(usuario);
         return ResponseEntity.ok(guardado);
     }
-
-
 }

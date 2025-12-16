@@ -13,12 +13,22 @@
     </div>
 
     <div class="header-right">
-      <button class="btn-login" (click)="logout()">
-        INICIAR SESIÓN / SALIR
-      </button>
-      <button class="btn-login" (click)="abrirModalRegistro()">
-        REGISTRARSE
-      </button>
+      <ng-container *ngIf="!isLogged()">
+        <button class="btn-login" [routerLink]="['/login']">
+          INICIAR SESIÓN
+        </button>
+        <button class="btn-login" (click)="abrirModalRegistro()">
+          REGISTRARSE
+        </button>
+      </ng-container>
+      <ng-container *ngIf="isLogged()">
+        <button class="btn-login" [routerLink]="['/perfil/edicion']">
+          MI PERFIL
+        </button>
+        <button class="btn-login" (click)="onLogout()">
+          CERRAR SESIÓN
+        </button>
+      </ng-container>
     </div>
   </header>
 

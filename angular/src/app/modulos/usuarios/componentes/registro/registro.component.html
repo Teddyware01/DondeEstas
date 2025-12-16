@@ -2,8 +2,12 @@
   <button type="button" class="btn-close" (click)="cerrar()">✕</button>
 
   <h2>Crear Cuenta</h2>
-
-  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" *ngIf="!registroExitoso">
+  <div class="alert-success" *ngIf="registroExitoso">
+    <h3>¡Bienvenido! 🐶</h3>
+    <p>Tu cuenta ha sido creada exitosamente.</p>
+  </div>
+  <!-- form [formGroup]="registroForm" (ngSubmit)="onSubmit()" *ngIf="!registroExitoso"> -->
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
     <div style="display: flex; gap: 10px;">
       <div class="form-group" style="flex: 1;">
         <label>Nombre</label>
@@ -17,12 +21,12 @@
 
     <div class="form-group">
       <label>Email</label>
-      <input type="email" formControlName="email" placeholder="ejemplo@email.com">
+      <input type="email" id="email" formControlName="email" required autocomplete="off">
     </div>
 
     <div class="form-group">
       <label>Contraseña</label>
-      <input type="password" formControlName="contrasena" placeholder="******">
+      <input type="password" id="contrasena" formControlName="contrasena" required autocomplete="new-password">
     </div>
 
     <div class="form-group">
@@ -48,9 +52,4 @@
       {{ errorRegistro }}
     </div>
   </form>
-
-  <div class="alert-success" *ngIf="registroExitoso">
-    <h3>¡Bienvenido! 🐶</h3>
-    <p>Tu cuenta ha sido creada exitosamente.</p>
-  </div>
 </div>
