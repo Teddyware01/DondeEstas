@@ -5,6 +5,8 @@ import { RegistroRequest, LoginRequest, LoginResponse } from '../models/auth-req
 import { Usuario } from '../models/usuario.interface';
 import { HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +15,13 @@ export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
   private abrirRegistroSource = new Subject<void>();
   public abrirRegistro$ = this.abrirRegistroSource.asObservable();
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient,
+              @Inject(PLATFORM_ID) private platformId: Object) { }
 
   public registrarUsuario(data: RegistroRequest): Observable<any> {
     console.log('Enviando datos de registro:', data);
-    return this.http.post(`${this.apiUrl}/registro`, data);
+    return this.http.post(`${this.apiUrl}`, data);
   }
 
   public login(credentials: LoginRequest): Observable<LoginResponse> {
@@ -32,13 +36,19 @@ export class UsuarioService {
   }
 
   public estaLogueado(): boolean {
-    return !!localStorage.getItem('token');
+    if (isPlatformBrowser(this.platformId)) {
+      return !!localStorage.getItem('token');
+    }
+    return false;
   }
 
   public logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('usuario');
+    }
   }
+
   public editarPerfil(id: number, data: Partial<Usuario>): Observable<Usuario> {
     return this.http.put<Usuario>(`${this.apiUrl}/${id}`, data);
   }

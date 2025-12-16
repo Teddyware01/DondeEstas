@@ -40,4 +40,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  isLogged(): boolean {
+    return this.usuarioService.estaLogueado();
+  }
+
+  onLogout(): void {
+    this.usuarioService.logout();
+    this.router.navigate(['/login']);
+  }
 }
