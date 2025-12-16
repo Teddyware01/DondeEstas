@@ -13,7 +13,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mostrarRegistro: boolean = false;
   private subscription: Subscription = new Subscription();
 
-  constructor(public router: Router, private usuarioService: UsuarioService) {}
+  constructor(public router: Router, public usuarioService: UsuarioService) {}
 
   logout(): void {
     console.log('Cerrando sesión...');
@@ -49,4 +49,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     this.usuarioService.logout();
     this.router.navigate(['/login']);
   }
+
+  idUsuario(): number {
+    return <number>this.usuarioService.obtenerUsuarioId();
+  }
+
 }

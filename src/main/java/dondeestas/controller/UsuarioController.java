@@ -60,7 +60,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioOpt = usuarioService.buscarPorEmail(request.getEmail());
         if (usuarioOpt.isPresent() && usuarioOpt.get().getContrasena().equals(request.getContrasena())) {
             String token = usuarioOpt.get().getId() + "123456";
-            return ResponseEntity.ok(new LoginResponse(token, usuarioOpt.get().getEmail()));
+            return ResponseEntity.ok(new LoginResponse(token, usuarioOpt.get().getEmail(), usuarioOpt.get().getId()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }

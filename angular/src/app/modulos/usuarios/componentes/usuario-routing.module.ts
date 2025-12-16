@@ -28,7 +28,7 @@ const routes: Routes = [
         component: TodasMascotasComponent
       },
       {
-        path: 'perfil/editar',
+        path: 'perfil/:id/editar',
         component: PerfilEdicionComponent
       },
       {

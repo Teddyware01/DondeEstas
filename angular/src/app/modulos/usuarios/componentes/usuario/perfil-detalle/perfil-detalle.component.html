@@ -1,48 +1,215 @@
 <div class="container mt-4">
-  <div *ngIf="loading" class="alert alert-info">Cargando perfil...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-  <div *ngIf="usuario && !loading" class="card">
-    <div class="card-header bg-primary text-white">
-      <h4>Perfil de {{ usuario.nombre }} {{ usuario.apellido }}</h4>
+  <!-- ESTADOS -->
+  <div *ngIf="loading" class="alert alert-info text-center">
+    Cargando perfil...
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger text-center">
+    {{ error }}
+  </div>
+
+  <!-- ================= PERFIL ================= -->
+  <div *ngIf="usuario && !loading" class="perfil-card">
+
+    <h2 class="perfil-nombre">
+      {{ usuario.nombre }} {{ usuario.apellido }}
+    </h2>
+
+    <!-- ================= INFORMACIÓN PERSONAL ================= -->
+    <div class="perfil-section perfil-section-principal">
+      <h3 class="perfil-section-title">
+        Información personal
+      </h3>
+
+      <div class="perfil-grid">
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+        <p><strong>Teléfono:</strong> {{ usuario.telefono || 'N/A' }}</p>
+        <p><strong>Ciudad:</strong> {{ usuario.ciudad || 'N/A' }}</p>
+        <p><strong>Barrio:</strong> {{ usuario.barrio || 'N/A' }}</p>
+      </div>
+
+      <div class="perfil-actions">
+        <button
+          *ngIf="esPerfilPropio"
+          class="perfil-btn-submit outline"
+          (click)="abrirModalEditar()">
+          Editar perfil
+        </button>
+
+        <button
+          *ngIf="esPerfilPropio"
+          class="perfil-btn-danger"
+          (click)="eliminarCuenta()">
+          Eliminar cuenta
+        </button>
+      </div>
     </div>
-    <div class="card-body">
 
-      <h5>Información de Contacto</h5>
-      <p><strong>Email:</strong> {{ usuario.email }}</p>
-      <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
-      <p><strong>Ubicación:</strong> {{ usuario.barrio || 'N/A' }}, {{ usuario.ciudad }}</p>
-      <hr>
+    <!-- ================= COLABORACIÓN Y RANKING ================= -->
+    <div class="perfil-section perfil-section-secundaria">
+      <h3 class="perfil-section-title secundaria">
+        Colaboración y ranking
+      </h3>
 
-      <h5>Colaboración y Ranking</h5>
-      <p><strong>Puntaje Total:</strong> {{ usuario.puntajes || 0 }} puntos</p>
-      <p><strong>Medallas:</strong>
-        <span *ngIf="usuario.medallas && usuario.medallas.length > 0">
-                    <span *ngFor="let medalla of usuario.medallas" class="badge bg-success me-2">{{ medalla }}</span>
-                </span>
-        <span *ngIf="!usuario.medallas || usuario.medallas.length === 0">Ninguna</span>
+      <p class="perfil-dato-destacado">
+        {{ usuario.puntajes || 0 }}
+        <span>puntos acumulados</span>
       </p>
-      <p><strong>Posición Estimada:</strong> {{ getPosicionRanking() }}</p>
-      <hr>
 
-      <h5>Publicaciones</h5>
+      <div class="perfil-subtitulo">Medallas</div>
 
-      <h6>Mascotas Reportadas ({{ usuario.mascotas?.length || 0 }})</h6>
-      <ul *ngIf="usuario.mascotas?.length" class="list-group list-group-flush">
-        <li *ngFor="let mascota of usuario.mascotas" class="list-group-item">
-          {{ mascota.nombre }} ({{ mascota.estado.nombre }}) - {{ mascota.fecha }}
-        </li>
-      </ul>
-      <p *ngIf="!usuario.mascotas || usuario.mascotas.length === 0">El usuario no tiene mascotas publicadas.</p>
+      <div class="perfil-badges">
+        <span
+          *ngFor="let medalla of usuario.medallas"
+          class="perfil-badge">
+          {{ medalla }}
+        </span>
 
-      <h6>Avistamientos Reportados ({{ usuario.avistamientos?.length || 0 }})</h6>
-      <ul *ngIf="usuario.avistamientos?.length" class="list-group list-group-flush">
-        <li *ngFor="let avistamiento of usuario.avistamientos" class="list-group-item">
-          Avistamiento de Mascota ID {{ avistamiento.mascota.id }} el {{ avistamiento.fecha | date:'short' }}
-        </li>
-      </ul>
-      <p *ngIf="!usuario.avistamientos || usuario.avistamientos.length === 0">El usuario no ha reportado avistamientos.</p>
+        <span *ngIf="!usuario.medallas?.length" class="text-muted">
+          Ninguna
+        </span>
+      </div>
 
+      <p class="perfil-posicion">
+        Posición estimada: <strong>{{ getPosicionRanking() }}</strong>
+      </p>
     </div>
+
+    <!-- ================= PUBLICACIONES ================= -->
+    <div class="perfil-section perfil-section-terciaria">
+      <h3 class="perfil-section-title terciaria">
+        Publicaciones
+      </h3>
+
+      <p class="perfil-resumen">
+        Mascotas reportadas:
+        <strong>{{ usuario.mascotas?.length || 0 }}</strong>
+      </p>
+
+      <div
+        class="mascotas-list"
+        *ngIf="usuario.mascotas?.length; else sinMascotas">
+
+        <div
+          class="mascota-item horizontal"
+          *ngFor="let mascota of usuario.mascotas">
+
+          <div class="mascota-linea">
+
+      <span class="mascota-fecha">
+        {{ mascota.fecha | date:'dd/MM/yyyy' }}
+      </span>
+
+            <span class="mascota-nombre">
+        {{ mascota.nombre }}
+      </span>
+
+            <span
+              class="mascota-estado"
+              [ngClass]="mascota.estado">
+        {{ mascota.estado }}
+      </span>
+
+          </div>
+
+          <button
+            class="mascota-btn-ver"
+            (click)="verMascota(mascota.id)">
+            VER
+          </button>
+
+        </div>
+      </div>
+
+
+
+      <ng-template #sinMascotas>
+        <p class="text-muted">
+          No tiene mascotas publicadas.
+        </p>
+      </ng-template>
+
+      <p class="perfil-resumen">
+        Avistamientos reportados:
+        <strong>{{ usuario.avistamientos?.length || 0 }}</strong>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= MODAL EDITAR PERFIL ================= -->
+<div class="modal-backdrop-custom" *ngIf="mostrarModalEditar">
+
+  <div class="perfil-modal">
+
+    <button
+      type="button"
+      class="perfil-modal-close"
+      (click)="cerrarModalEditar()">
+      ✕
+    </button>
+
+    <h2 class="perfil-modal-title">Editar perfil</h2>
+
+    <div class="perfil-alert-success" *ngIf="edicionExitosa">
+      Perfil actualizado correctamente ✔
+    </div>
+
+    <form
+      [formGroup]="perfilForm"
+      (ngSubmit)="guardarCambios()">
+
+      <div class="perfil-form-row">
+        <div class="perfil-form-group">
+          <label>Nombre</label>
+          <input type="text" formControlName="nombre">
+        </div>
+
+        <div class="perfil-form-group">
+          <label>Apellido</label>
+          <input type="text" formControlName="apellido">
+        </div>
+      </div>
+
+      <div class="perfil-form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          [value]="usuario?.email"
+          disabled
+          class="perfil-input-disabled">
+      </div>
+
+      <div class="perfil-form-group">
+        <label>Teléfono</label>
+        <input type="text" formControlName="telefono">
+      </div>
+
+      <div class="perfil-form-group">
+        <label>Ciudad</label>
+        <input type="text" formControlName="ciudad">
+      </div>
+
+      <div class="perfil-form-group">
+        <label>Barrio (Opcional)</label>
+        <input type="text" formControlName="barrio">
+      </div>
+
+      <button
+        type="submit"
+        class="perfil-btn-submit"
+        [disabled]="perfilForm.invalid || !perfilForm.dirty || guardando">
+
+        <span *ngIf="!guardando">GUARDAR CAMBIOS</span>
+        <span *ngIf="guardando">Guardando...</span>
+      </button>
+
+      <div class="perfil-alert-error" *ngIf="errorEdicion">
+        {{ errorEdicion }}
+      </div>
+
+    </form>
   </div>
 </div>

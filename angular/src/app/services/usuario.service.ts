@@ -30,6 +30,7 @@ export class UsuarioService {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
           localStorage.setItem('usuario', JSON.stringify(response.email));
+          localStorage.setItem('id', JSON.stringify(response.id));
         }
       })
     );
@@ -66,4 +67,16 @@ export class UsuarioService {
   public solicitarRegistro(): void {
     this.abrirRegistroSource.next();
   }
+
+
+
+  public obtenerUsuarioId(): number | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const id = localStorage.getItem('id');
+      return id ? Number(JSON.parse(id)) : null;
+    }
+    return null;
+  }
+
+
 }

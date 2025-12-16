@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../../../services/usuario.service';
 import { Usuario } from '../../../../../models/usuario.interface';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-perfil-detalle',
   standalone: false,
+  styleUrls: ['./perfil-detalle.component.css'],
   templateUrl: './perfil-detalle.component.html',
 })
 export class PerfilDetalleComponent implements OnInit {
@@ -14,44 +18,132 @@ export class PerfilDetalleComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
+  esPerfilPropio = false;
+
+  /* ===== MODAL / FORM ===== */
+  mostrarModalEditar = false;
+  perfilForm!: FormGroup;
+  errorEdicion: string | null = null;
+  edicionExitosa = false;
+  guardando = false;
+
   constructor(
     private route: ActivatedRoute,
-    private usuarioService: UsuarioService
-  ) { }
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const userIdParam = params.get('id');
 
-      if (userIdParam) {
-        const userId = Number(userIdParam);
-        this.loading = true;
-        this.error = null;
-
-        this.usuarioService.obtenerPerfil(userId).subscribe({
-          next: (data) => {
-            this.usuario = data;
-            this.loading = false;
-            console.log('Perfil cargado:', data);
-          },
-          error: (err) => {
-            this.error = 'No se pudo cargar el perfil del usuario. Es posible que el ID no exista.';
-            this.loading = false;
-            console.error('Error al cargar perfil:', err);
-          }
-        });
-      } else {
+      if (!userIdParam) {
         this.error = 'ID de usuario no proporcionado en la ruta.';
         this.loading = false;
+        return;
+      }
+
+      const userId = Number(userIdParam);
+      this.loading = true;
+      this.error = null;
+
+      this.usuarioService.obtenerPerfil(userId).subscribe({
+        next: (data) => {
+          this.usuario = data;
+
+          const idUsuarioLogueado = this.usuarioService.obtenerUsuarioId();
+          this.esPerfilPropio = data.id === idUsuarioLogueado;
+
+          this.inicializarFormulario(data);
+
+          this.loading = false;
+          console.log('Perfil cargado:', data);
+        },
+        error: (err) => {
+          this.error = 'No se pudo cargar el perfil del usuario. Es posible que el ID no exista.';
+          this.loading = false;
+          console.error('Error al cargar perfil:', err);
+        }
+      });
+    });
+  }
+
+  /* ================= FORM ================= */
+
+  inicializarFormulario(usuario: Usuario): void {
+    this.perfilForm = this.fb.group({
+      nombre: [usuario.nombre, Validators.required],
+      apellido: [usuario.apellido, Validators.required],
+      telefono: [usuario.telefono],
+      ciudad: [usuario.ciudad, Validators.required],
+      barrio: [usuario.barrio]
+    });
+  }
+
+  abrirModalEditar(): void {
+    this.errorEdicion = null;
+    this.edicionExitosa = false;
+    this.mostrarModalEditar = true;
+  }
+
+  cerrarModalEditar(): void {
+    if (this.usuario) {
+      this.perfilForm.reset({
+        nombre: this.usuario.nombre,
+        apellido: this.usuario.apellido,
+        telefono: this.usuario.telefono,
+        ciudad: this.usuario.ciudad,
+        barrio: this.usuario.barrio
+      });
+    }
+
+    this.errorEdicion = null;
+    this.mostrarModalEditar = false;
+  }
+
+  guardarCambios(): void {
+    if (this.perfilForm.invalid || !this.usuario || this.guardando) {
+      return;
+    }
+
+    this.guardando = true;
+    this.errorEdicion = null;
+
+    const datosActualizados: Usuario = {
+      ...this.usuario,
+      ...this.perfilForm.value
+    };
+
+    this.usuarioService.editarPerfil(<number>this.usuarioService.obtenerUsuarioId(), datosActualizados).subscribe({
+      next: (usuarioActualizado) => {
+        this.usuario = usuarioActualizado;
+        this.guardando = false;
+        this.edicionExitosa = true;
+
+        setTimeout(() => {
+          this.edicionExitosa = false;
+          this.cerrarModalEditar();
+        }, 1200);
+      },
+      error: (err) => {
+        this.guardando = false;
+        this.errorEdicion = 'No se pudieron guardar los cambios.';
+        console.error('Error al actualizar perfil:', err);
       }
     });
   }
 
-  // arreglar metodo, lo hice para que no de error
+  /* ================= OTROS ================= */
+
   getPosicionRanking(): number | string {
     if (this.usuario && this.usuario.puntajes) {
       return 'Nivel ' + Math.floor(this.usuario.puntajes / 100);
     }
     return 'Sin ranking';
   }
+
+  eliminarCuenta():void{
+  }
+  verMascota(id:number):void{}
 }

@@ -22,7 +22,8 @@
         </button>
       </ng-container>
       <ng-container *ngIf="isLogged()">
-        <button class="btn-login" [routerLink]="['/perfil/edicion']">
+        <button class="btn-login" *ngIf="usuarioService.obtenerUsuarioId() as userId"
+                [routerLink]="['/perfil/', userId]">
           MI PERFIL
         </button>
         <button class="btn-login" (click)="onLogout()">

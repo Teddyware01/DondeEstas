@@ -1,0 +1,444 @@
+/* ================= PERFIL CARD ================= */
+.perfil-card {
+  background-color: #FDFBF7;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 700px;
+  margin: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  border: 1px solid #D7CCC8;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.perfil-card h2 {
+  color: #5D4037;
+  text-align: center;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ================= SECCIONES ================= */
+.perfil-section {
+  margin-bottom: 30px;
+}
+
+.perfil-section h3 {
+  color: #6D4C41;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.perfil-grid p {
+  margin: 0;
+  font-size: 14px;
+  color: #5D4037;
+}
+
+/* ================= LISTAS ================= */
+.perfil-section ul {
+  padding-left: 18px;
+}
+
+.perfil-section li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* ================= BADGES ================= */
+.perfil-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.perfil-badge {
+  background-color: #8D6E63;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* ================= BOTONES ================= */
+.perfil-btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #8D6E63;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.perfil-btn-submit:hover {
+  background-color: #6D4C41;
+}
+
+.perfil-btn-submit:disabled {
+  background-color: #D7CCC8;
+  cursor: not-allowed;
+}
+
+.perfil-btn-submit.outline {
+  background: transparent;
+  color: #8D6E63;
+  border: 2px solid #8D6E63;
+}
+
+.perfil-btn-submit.outline:hover {
+  background-color: #8D6E63;
+  color: white;
+}
+
+/* ================= MODAL ================= */
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.perfil-modal {
+  background-color: #FDFBF7;
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  border: 1px solid #D7CCC8;
+  position: relative;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.perfil-modal-title {
+  color: #5D4037;
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.perfil-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #8D6E63;
+  cursor: pointer;
+}
+
+/* ================= FORM ================= */
+.perfil-form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.perfil-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  flex: 1;
+}
+
+.perfil-form-group label {
+  font-size: 14px;
+  color: #6D4C41;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.perfil-form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #D7CCC8;
+  border-radius: 8px;
+  background-color: #FAFAFA;
+  box-sizing: border-box;
+}
+
+.perfil-form-group input:focus {
+  outline: none;
+  border-color: #A1887F;
+  background-color: #fff;
+}
+
+/* ================= INPUT DISABLED ================= */
+.perfil-input-disabled {
+  background-color: #f3f3f3;
+  cursor: not-allowed;
+}
+
+/* ================= ALERTAS ================= */
+.perfil-alert-success {
+  color: #388E3C;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.perfil-alert-error {
+  color: #D32F2F;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+/* ================= TITULO PRINCIPAL ================= */
+.perfil-nombre {
+  font-size: 26px;
+  font-weight: 700;
+  color: #5D4037;
+  text-align: center;
+  margin-bottom: 35px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ================= SECCIONES ================= */
+.perfil-section {
+  margin-bottom: 40px;
+}
+
+/* Sección más importante */
+.perfil-section-principal {
+  border-bottom: 1px solid #E0D6D1;
+  padding-bottom: 30px;
+}
+
+/* ================= TITULOS ================= */
+.perfil-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #5D4037;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* Jerarquía descendente */
+.perfil-section-title.secundaria {
+  font-size: 16px;
+  font-weight: 700;
+  color: #6D4C41;
+}
+
+.perfil-section-title.terciaria {
+  font-size: 15px;
+  font-weight: 600;
+  color: #6D4C41;
+}
+
+/* ================= BOTONES ================= */
+.perfil-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Botón eliminar */
+.perfil-btn-danger {
+  padding: 12px 20px;
+  background-color: #D32F2F;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.perfil-btn-danger:hover {
+  background-color: #B71C1C;
+}
+
+/* ================= RANKING ================= */
+.perfil-dato-destacado {
+  font-size: 28px;
+  font-weight: 700;
+  color: #8D6E63;
+  margin-bottom: 10px;
+}
+
+.perfil-dato-destacado span {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6D4C41;
+}
+
+.perfil-subtitulo {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  color: #5D4037;
+}
+
+.perfil-posicion {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+/* ================= PUBLICACIONES ================= */
+.perfil-resumen {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+/* ================= LISTAS ================= */
+.perfil-section ul {
+  padding-left: 18px;
+  margin-bottom: 15px;
+}
+
+.perfil-section li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+
+/* ================= LISTADO MASCOTAS ================= */
+.mascotas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.mascota-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background-color: #FAFAFA;
+  border: 1px solid #E0D6D1;
+  border-radius: 12px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.mascota-item:hover {
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+
+/* INFO */
+.mascota-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mascota-nombre {
+  font-size: 15px;
+  font-weight: 700;
+  color: #5D4037;
+}
+
+.mascota-meta {
+  font-size: 13px;
+  color: #8D6E63;
+}
+
+/* BOTÓN VER */
+.mascota-btn-ver {
+  padding: 6px 14px;
+  background-color: transparent;
+  color: #8D6E63;
+  border: 2px solid #8D6E63;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mascota-btn-ver:hover {
+  background-color: #8D6E63;
+  color: white;
+}
+
+/* ================= LISTADO ================= */
+.mascotas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.mascota-item.horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #FAFAFA;
+  border: 1px solid #E0D6D1;
+  border-radius: 12px;
+}
+
+/* LINEA PRINCIPAL */
+.mascota-linea {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* FECHA */
+.mascota-fecha {
+  font-size: 12px;
+  color: #9E9E9E;
+  min-width: 80px; /* mantiene alineación */
+}
+
+/* NOMBRE */
+.mascota-nombre {
+  font-size: 15px;
+  font-weight: 700;
+  color: #5D4037;
+  min-width: 120px;
+}
+
+/* ESTADO */
+.mascota-estado {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* COLORES */
+.mascota-estado.PERDIDO_PROPIO {
+  background-color: #D32F2F;
+  color: white;
+}
+
+.mascota-estado.PERDIDO_AJENO {
+  background-color: #F57C00;
+  color: white;
+}
+
+.mascota-estado.RECUPERADO {
+  background-color: #388E3C;
+  color: white;
+}
+
+.mascota-estado.ADOPTADO {
+  background-color: #1976D2;
+  color: white;
+}
