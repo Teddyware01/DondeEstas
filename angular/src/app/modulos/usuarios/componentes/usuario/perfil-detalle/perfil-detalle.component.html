@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container mt-0">
 
   <!-- ESTADOS -->
   <div *ngIf="loading" class="alert alert-info text-center">
@@ -16,7 +16,6 @@
       {{ usuario.nombre }} {{ usuario.apellido }}
     </h2>
 
-    <!-- ================= INFORMACIÓN PERSONAL ================= -->
     <div class="perfil-section perfil-section-principal">
       <h3 class="perfil-section-title">
         Información personal
@@ -46,7 +45,11 @@
       </div>
     </div>
 
-    <!-- ================= COLABORACIÓN Y RANKING ================= -->
+  </div>
+  <!-- ================= INFORMACIÓN PERSONAL ================= -->
+  <div *ngIf="usuario && !loading" class="perfil-card">
+
+  <!-- ================= COLABORACIÓN Y RANKING ================= -->
     <div class="perfil-section perfil-section-secundaria">
       <h3 class="perfil-section-title secundaria">
         Colaboración y ranking
@@ -76,7 +79,12 @@
       </p>
     </div>
 
-    <!-- ================= PUBLICACIONES ================= -->
+
+  </div>
+  <!-- ================= INFORMACIÓN PERSONAL ================= -->
+
+  <!-- ================= PUBLICACIONES ================= -->
+  <div *ngIf="usuario && !loading" class="perfil-card">
     <div class="perfil-section perfil-section-terciaria">
       <h3 class="perfil-section-title terciaria">
         Publicaciones
