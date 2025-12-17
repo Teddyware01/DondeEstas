@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsuarioService } from '../../../../../services/usuario.service';
 import { Usuario } from '../../../../../models/usuario.interface';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil-detalle',
@@ -17,10 +16,7 @@ export class PerfilDetalleComponent implements OnInit {
   usuario: Usuario | null = null;
   loading = true;
   error: string | null = null;
-
   esPerfilPropio = false;
-
-  /* ===== MODAL / FORM ===== */
   mostrarModalEditar = false;
   perfilForm!: FormGroup;
   errorEdicion: string | null = null;
@@ -31,7 +27,8 @@ export class PerfilDetalleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private usuarioService: UsuarioService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -58,11 +55,13 @@ export class PerfilDetalleComponent implements OnInit {
           this.inicializarFormulario(data);
 
           this.loading = false;
+          this.cdRef.detectChanges();
           console.log('Perfil cargado:', data);
         },
         error: (err) => {
           this.error = 'No se pudo cargar el perfil del usuario. Es posible que el ID no exista.';
           this.loading = false;
+          this.cdRef.detectChanges();
           console.error('Error al cargar perfil:', err);
         }
       });

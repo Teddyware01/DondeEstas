@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   mostrarRegistro: boolean = false;
   private subscription: Subscription = new Subscription();
 
-  constructor(public router: Router, public usuarioService: UsuarioService) {}
+  constructor(public router: Router,
+              public usuarioService: UsuarioService,
+              private cdRef: ChangeDetectorRef) {}
 
   logout(): void {
     console.log('Cerrando sesión...');
@@ -32,11 +34,17 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     return this.router.url === '/login';
   }
 
+  esPaginaPerfil(): boolean {
+    return this.router.url.includes('/perfil/');
+  }
+
   ngOnInit(): void {
     this.subscription = this.usuarioService.abrirRegistro$.subscribe(() => {
       this.mostrarRegistro = true;
+      this.cdRef.detectChanges();
     });
   }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

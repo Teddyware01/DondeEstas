@@ -34,7 +34,8 @@
   </header>
 
   <main class="content-area">
-      <div [class.page-card]="!esPaginaLogin()" [class.login-container]="esPaginaLogin()">
+    <div [class.page-card]="!esPaginaLogin() && !esPaginaPerfil()"
+         [class.login-container]="esPaginaLogin()">
       <router-outlet></router-outlet>
     </div>
   </main>
