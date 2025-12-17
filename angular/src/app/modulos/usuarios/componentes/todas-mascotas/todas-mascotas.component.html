@@ -7,15 +7,20 @@
   <div class="grid-container">
     <div class="pet-card" *ngFor="let mascota of listaMascotas">
       <div class="card-image">
-        <img [src]="mascota.fotoUrl" [alt]="mascota.nombre">
-        <span class="badge-estado">PERDIDO</span>
+        <img
+          [src]="mascota.imagenBase64 ? mascota.imagenBase64 : 'assets/placeholder-pet.png'"
+          [alt]="mascota.nombre"
+          class="imagen-mascota"
+        >
+
+        <span class="badge-estado">{{ mascota.estado }}</span>
       </div>
 
       <div class="card-info">
         <h3 class="pet-name">{{ mascota.nombre }}</h3>
 
         <div class="pet-details">
-          <p><strong>Raza:</strong> {{ mascota.raza }}</p>
+          <p><strong>Tamaño:</strong> {{ mascota.tamano }}</p>
           <p><strong>Perdido el:</strong> {{ mascota.fechaPerdida | date:'dd/MM/yyyy' }}</p>
           <p class="ubicacion">📍 {{ mascota.ubicacion }}</p>
         </div>
@@ -42,6 +47,16 @@
         <option value="Grande">Grande</option>
       </select>
 
+      <label>Estado actual:</label>
+      <select [(ngModel)]="mascotaForm.estado" name="estado" required>
+        <option *ngFor="let opcion of estadosPosibles" [value]="opcion.clave">
+          {{ opcion.label }}
+        </option>
+      </select>
+
+      <label>Color:</label>
+      <input [(ngModel)]="mascotaForm.color" name="color">
+
       <label>Fecha de pérdida:</label>
       <input type="date" [(ngModel)]="mascotaForm.fechaPerdida" name="fechaPerdida" required>
 
@@ -51,9 +66,8 @@
       </div>
       <input type="hidden" [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
 
-      <!-- Subir imagen opcional -->
       <label>Imagen (opcional):</label>
-      <input type="file" (change)="onFileSelected($event)">
+      <input type="file" (change)="onFileSelected($event)" accept="image/*">
 
       <div class="modal-actions">
         <button type="button" (click)="cerrarModal()">Cancelar</button>

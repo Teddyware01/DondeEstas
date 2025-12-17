@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 @Getter
 @Entity
 @Table(name = "mascotas")
@@ -25,9 +24,9 @@ public class Mascota {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-
     @Getter
-    @Setter    @JsonIgnore
+    @Setter
+    @JsonIgnore
     @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Avistamiento> avistamientos;
 
@@ -41,9 +40,9 @@ public class Mascota {
     @Column
     private String tamano;
 
-    @Column
     @Setter
     @Getter
+    @Column
     private String color;
 
     @Setter
@@ -51,22 +50,16 @@ public class Mascota {
     @Column
     private LocalDate fecha;
 
-
-
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Getter
     @Setter
     private EstadoEnum estado;
 
-
     @Getter
     @Setter
     @Column(name = "descripcion_extra", length = 500)
     private String descripcionExtra;
-
-
 
     @Getter
     @Setter
@@ -77,6 +70,14 @@ public class Mascota {
     @Setter
     @Column(nullable = true)
     private Double longitud;
+
+    // ===== NUEVO CAMPO PARA IMAGEN =====
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Getter
+    @Setter
+    @Column(columnDefinition = "LONGTEXT")
+    private String imagenBase64;
 
     public Mascota() {
     }
@@ -92,6 +93,7 @@ public class Mascota {
         this.estado = estado;
         this.descripcionExtra = descripcionExtra;
     }
+
     @Override
     public String toString() {
         return "Mascota{" +

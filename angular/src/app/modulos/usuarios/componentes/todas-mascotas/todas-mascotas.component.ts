@@ -14,14 +14,22 @@ export class TodasMascotasComponent implements OnInit {
   modoEdicion: boolean = false;
   listaMascotas: Mascota[] = [];
 
-  // Cambiamos foto a string (base64)
+  // Opciones para el select que coinciden con el Enum de Java
+  estadosPosibles = [
+    { clave: 'PERDIDO_PROPIO', label: 'Perdido por mí (Propio)' },
+    { clave: 'PERDIDO_AJENO', label: 'Vi una mascota perdida (Ajeno)' },
+    { clave: 'RECUPERADO', label: 'Ya fue recuperado' },
+    { clave: 'ADOPTADO', label: 'Ya fue adoptado' }
+  ];
+
+  // Inicializamos con un estado válido del Enum
   mascotaForm: Mascota & { foto?: string | null } = {
     nombre: '',
     tamano: '',
     color: '',
     fechaPerdida: '',
     ubicacion: '',
-    estado: 'PERDIDO',
+    estado: 'PERDIDO_PROPIO',
     foto: null
   };
 
@@ -48,7 +56,16 @@ export class TodasMascotasComponent implements OnInit {
 
   abrirModalCrear(): void {
     this.modoEdicion = false;
-    this.mascotaForm = { nombre: '', tamano: '', color: '', fechaPerdida: '', ubicacion: '', estado: 'PERDIDO', foto: null };
+    // Reseteamos el formulario con valores por defecto seguros
+    this.mascotaForm = {
+      nombre: '',
+      tamano: '',
+      color: '',
+      fechaPerdida: '',
+      ubicacion: '',
+      estado: 'PERDIDO_PROPIO',
+      foto: null
+    };
     this.mostrarModal = true;
 
     if (typeof window !== 'undefined') {
@@ -68,44 +85,54 @@ export class TodasMascotasComponent implements OnInit {
 
   cerrarModal(): void {
     this.mostrarModal = false;
-    this.mascotaForm = { nombre: '', tamano: '', color: '', fechaPerdida: '', ubicacion: '', estado: 'PERDIDO', foto: null };
+    // Limpiamos referencias
+    this.mascotaForm = {
+      nombre: '',
+      tamano: '',
+      color: '',
+      fechaPerdida: '',
+      ubicacion: '',
+      estado: 'PERDIDO_PROPIO',
+      foto: null
+    };
   }
 
   guardarMascota(): void {
+    // Verificación de seguridad para SSR
+    if (typeof window === 'undefined') return;
 
-    const usuarioId = localStorage.getItem('id'); // o donde lo tengas
+    const usuarioId = localStorage.getItem('id');
     if (!usuarioId) {
       console.error('No hay usuario logueado');
       return;
     }
 
-    const payload = { ...this.mascotaForm, usuarioId: Number(usuarioId) };
+    // Preparamos el payload con usuarioId plano (según DTO Java)
+    const payload = {
+      ...this.mascotaForm,
+      usuarioId: Number(usuarioId)
+    };
 
     if (this.modoEdicion) {
-      console.log("EDITANDO");
-      /* algo asi...
-      this.mascotaService.editarMascota(payload).subscribe({
-        next: (res) => {
-          console.log('Mascota editada:', res);
-          this.cerrarModal();
-          this.cargarMascotas();
-        },
-        error: (err) => console.error('Error editando mascota', err)
-      });
-       */
+      // Aquí iría la lógica de edición similar a la de creación
+      console.log("Editando mascota (Lógica pendiente de implementar)");
+      this.cerrarModal(); // Temporal para edición
     } else {
-      console.log("enviandoMASCOTA");
+      console.log("Enviando payload:", payload);
+
       this.mascotaService.crearMascota(payload).subscribe({
         next: (res) => {
-          console.log('Mascota creada:', res);
+          console.log('Mascota creada con éxito:', res);
+          // Cerramos modal y recargamos SOLO si la petición fue exitosa
           this.cerrarModal();
           this.cargarMascotas();
         },
-        error: (err) => console.error('Error creando mascota', err)
+        error: (err) => {
+          console.error('Error creando mascota', err);
+          alert('Error al crear la mascota. Verifica los datos o el tamaño de la imagen.');
+        }
       });
     }
-    this.cerrarModal();
-    this.cargarMascotas();
   }
 
   // Convertir archivo a base64
