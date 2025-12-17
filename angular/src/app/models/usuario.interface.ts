@@ -7,6 +7,7 @@ export interface Usuario {
   barrio?: string;
   ciudad?: string;
   isAdmin: boolean;
+  activo: boolean;
   puntajes?: number;
   medallas?: string[];
   mascotas?: any[];

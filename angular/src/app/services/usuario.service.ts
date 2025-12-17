@@ -78,5 +78,8 @@ export class UsuarioService {
     return null;
   }
 
+  public desactivar(id: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/desactivar/${id}`, {});
+  }
 
 }

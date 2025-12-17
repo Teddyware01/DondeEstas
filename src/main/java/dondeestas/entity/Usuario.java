@@ -22,6 +22,13 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //Para la baja logica, para desactivar cuentas.
+    @Getter
+    @Setter
+    @Column(nullable = false)
+    private Boolean activo = true;
+
+
     @Setter
     @Getter
     @Column(nullable = false)
@@ -104,6 +111,7 @@ public class Usuario {
         this.mascotas = new ArrayList<>();
         this.isAdmin = false;
         this.puntajes = new ArrayList<>();
+        this.activo=true;
 
     }
 

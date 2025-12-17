@@ -27,6 +27,10 @@ export class PerfilDetalleComponent implements OnInit {
   edicionExitosa = false;
   guardando = false;
 
+  /* ===== MODAL ELIMINAR ===== */
+  mostrarModalEliminar = false;
+  eliminando = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -143,7 +147,45 @@ export class PerfilDetalleComponent implements OnInit {
     return 'Sin ranking';
   }
 
-  eliminarCuenta():void{
+  /* ================= ELIMINAR CUENTA ================= */
+
+  eliminarCuenta(): void {
+    this.mostrarModalEliminar = true;
   }
-  verMascota(id:number):void{}
+
+  cerrarModalEliminar(): void {
+    this.mostrarModalEliminar = false;
+  }
+
+  confirmarEliminarCuenta(): void {
+    if (!this.usuario || !this.usuario.id) return;
+
+    this.eliminando = true;
+
+    // Se asume que el método desactivar(id) existe en UsuarioService
+    // y hace la llamada PUT /desactivar/{id}
+    this.usuarioService.desactivar(this.usuario.id).subscribe({
+      next: () => {
+        // Limpiar sesión
+        localStorage.removeItem('token');
+        localStorage.removeItem('usuario');
+
+        this.eliminando = false;
+        this.mostrarModalEliminar = false;
+
+        // Redirigir al login o home
+        this.router.navigate(['/login']);
+        alert('Tu cuenta ha sido desactivada correctamente.');
+      },
+      error: (err) => {
+        console.error('Error al desactivar cuenta', err);
+        this.eliminando = false;
+        alert('Ocurrió un error al intentar eliminar la cuenta. Intente nuevamente.');
+      }
+    });
+  }
+
+  verMascota(id: number): void {
+    // Lógica para ver mascota
+  }
 }

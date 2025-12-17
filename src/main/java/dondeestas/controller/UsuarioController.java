@@ -135,4 +135,31 @@ public class UsuarioController {
         Usuario guardado = usuarioService.registrar(usuario);
         return ResponseEntity.ok(guardado);
     }
+
+    @PutMapping("/desactivar/{id}")
+    public ResponseEntity<Void> desactivarUsuario(@PathVariable Long id,
+                                                  @RequestHeader("Authorization") String authHeader) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String token = authHeader.substring(7);
+        String tokenEsperado = id + "123456";
+
+        if (!token.equals(tokenEsperado)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(id);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        Usuario usuario = usuarioOpt.get();
+        usuario.setActivo(false);
+
+        usuarioService.registrar(usuario);
+        return ResponseEntity.ok().build();
+    }
 }
