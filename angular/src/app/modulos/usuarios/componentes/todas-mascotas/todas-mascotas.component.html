@@ -21,9 +21,14 @@
 
         <div class="pet-details">
           <p><strong>Tamaño:</strong> {{ mascota.tamano }}</p>
-          <p><strong>Perdido el:</strong> {{ mascota.fechaPerdida | date:'dd/MM/yyyy' }}</p>
-          <p class="ubicacion">📍 {{ mascota.ubicacion }}</p>
+          <p><strong>Perdido el:</strong> {{ mascota.fecha | date:'dd/MM/yyyy' }}</p>
         </div>
+        <p class="ubicacion">
+          📍
+          {{ mascota.municipio }}{{ mascota.municipio && mascota.departamento ? ', ' : '' }}
+          {{ mascota.departamento }}{{ (mascota.departamento || mascota.municipio) && mascota.provincia ? ', ' : '' }}
+          {{ mascota.provincia }}
+        </p>
 
         <button class="btn-ver-mas">VER MÁS</button>
       </div>
@@ -58,7 +63,7 @@
       <input [(ngModel)]="mascotaForm.color" name="color">
 
       <label>Fecha de pérdida:</label>
-      <input type="date" [(ngModel)]="mascotaForm.fechaPerdida" name="fechaPerdida" required>
+      <input type="date" [(ngModel)]="mascotaForm.fecha" name="fechaPerdida" required>
 
       <label>Ubicación:</label>
       <div class="map-container">

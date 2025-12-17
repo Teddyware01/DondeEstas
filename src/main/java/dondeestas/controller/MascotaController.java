@@ -1,6 +1,7 @@
 package dondeestas.controller;
 
 import dondeestas.auxClass.EstadoEnum;
+import dondeestas.auxClass.Ubicacion;
 import dondeestas.dto.MascotaCrearDTO;
 import dondeestas.entity.Mascota;
 import dondeestas.entity.Usuario;
@@ -148,8 +149,9 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
 
     mascota.setImagenBase64(dto.getFoto());
     mascota.setUsuario(usuario.get());
-
     // 3. Depuración de UBICACIÓN
+
+    Ubicacion ubicacion;
     if (dto.getUbicacion() != null && dto.getUbicacion().contains(",")) {
         String[] parts = dto.getUbicacion().split(",");
         try {
@@ -157,13 +159,17 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
             double lng = Double.parseDouble(parts[1].trim());
             mascota.setLatitud(lat);
             mascota.setLongitud(lng);
+            ubicacion = Ubicacion.obtenerUbicacionPorLatLon(lat, lng);
+            mascota.setProvincia(ubicacion.getProvincia());
+            mascota.setMunicipio(ubicacion.getMunicipio());
+            mascota.setDepartamento(ubicacion.getDepartamento());
+
         } catch (NumberFormatException e) {
             System.err.println("ERROR: Falló parseo de ubicación. Valor recibido: " + dto.getUbicacion());
             e.printStackTrace(); // <--- IMPORTANTE VER ESTO
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
     Mascota nueva = mascotaService.registrarMascota(mascota);
 
     if (nueva == null) {

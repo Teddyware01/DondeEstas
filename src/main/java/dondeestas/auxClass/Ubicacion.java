@@ -5,7 +5,7 @@ import lombok.Data;
 import org.springframework.web.client.RestTemplate;
 
 @Data
-class Ubicacion {
+public class Ubicacion {
     private String provincia;
     private String departamento;
     private String municipio;

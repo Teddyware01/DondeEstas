@@ -4,11 +4,17 @@ export interface Mascota {
   tamano: string;
   color: string;
   raza?: string;
-  fechaPerdida: string | Date;
-  ubicacion: string; // dsps pasar a objeto estoas
+  fecha: string | Date;
   estado: string;
   descripcionExtra?: string;
   usuarioId?: number;
+
+  //ubicacion queda para enviar lat y long juntos.
+  ubicacion?:string;
+
+  provincia?:string;
+  departamento?:string;
+  municipio?:string;
 
   imagenBase64?: string;
 }

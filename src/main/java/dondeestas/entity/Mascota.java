@@ -79,6 +79,25 @@ public class Mascota {
     @Column(columnDefinition = "LONGTEXT")
     private String imagenBase64;
 
+
+
+    @Setter
+    @Getter
+    @Column(nullable = true)
+    private String provincia;
+
+
+    @Setter
+    @Getter
+    @Column(nullable = true)
+    private String departamento;
+
+
+    @Setter
+    @Getter
+    @Column(nullable = true)
+    private String municipio;
+
     public Mascota() {
     }
 
