@@ -26,7 +26,6 @@
   </div>
 </div>
 
-
 <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <span class="close-btn" (click)="cerrarModal()">&times;</span>
@@ -43,8 +42,19 @@
         <option value="Grande">Grande</option>
       </select>
 
+      <label>Fecha de pérdida:</label>
+      <input type="date" [(ngModel)]="mascotaForm.fechaPerdida" name="fechaPerdida" required>
+
       <label>Ubicación:</label>
-      <input [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
+      <div class="map-container">
+        <div #map class="map"></div>
+      </div>
+      <input type="hidden" [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
+
+      <!-- Subir imagen opcional -->
+      <label>Imagen (opcional):</label>
+      <input type="file" (change)="onFileSelected($event)">
+
       <div class="modal-actions">
         <button type="button" (click)="cerrarModal()">Cancelar</button>
         <button type="submit">Guardar</button>
