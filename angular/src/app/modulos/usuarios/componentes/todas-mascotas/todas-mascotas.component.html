@@ -8,10 +8,11 @@
     <div class="pet-card" *ngFor="let mascota of listaMascotas">
       <div class="card-image">
         <img
-          [src]="mascota.imagenBase64 ? mascota.imagenBase64 : 'images/placeholder-pet.png'"
-          [alt]="mascota.nombre"
+          [src]="mascota.imagenesBase64?.[0] ?? 'images/placeholder-pet.png'"
           class="imagen-mascota"
-        >
+        />
+
+
 
         <span class="badge-estado">{{ mascota.estado }}</span>
       </div>
@@ -72,7 +73,8 @@
       <input type="hidden" [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
 
       <label>Imagen (opcional):</label>
-      <input type="file" (change)="onFileSelected($event)" accept="image/*">
+      <input type="file" (change)="onFilesSelected($event)" accept="image/*" multiple>
+
 
       <div class="modal-actions">
         <button type="button" (click)="cerrarModal()">Cancelar</button>

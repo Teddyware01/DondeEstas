@@ -19,7 +19,8 @@ export class MascotaService {
   obtenerPorId(id: number): Observable<Mascota> {
     return this.http.get<Mascota>(`${this.apiUrl}/${id}`);
   }
-  crearMascota(mascota: Mascota & { foto?: string | null }): Observable<Mascota> {
+
+  crearMascota(mascota: FormData): Observable<Mascota> {
     return this.http.post<Mascota>(`${this.apiUrl}`, mascota);
   }
 

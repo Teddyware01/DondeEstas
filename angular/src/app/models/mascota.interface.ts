@@ -15,6 +15,5 @@ export interface Mascota {
   provincia?:string;
   departamento?:string;
   municipio?:string;
-
-  imagenBase64?: string;
+  imagenesBase64?: string[];
 }

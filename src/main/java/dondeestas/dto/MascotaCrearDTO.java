@@ -1,9 +1,17 @@
 package dondeestas.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
+@Getter
+@Setter
 public class MascotaCrearDTO {
 
+    // Getters y setters
     @NotBlank
     private String nombre;
 
@@ -17,29 +25,24 @@ public class MascotaCrearDTO {
 
     private Long usuarioId; // ahora viene en el body
 
-    // Getters y setters
-    public String getNombre() { return nombre; }
+
+    @Setter
+    private List<String> imagenes;
+
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getTamano() { return tamano; }
     public void setTamano(String tamano) { this.tamano = tamano; }
 
-    public String getColor() { return color; }
     public void setColor(String color) { this.color = color; }
 
-    public String getFechaPerdida() { return fechaPerdida; }
     public void setFechaPerdida(String fechaPerdida) { this.fechaPerdida = fechaPerdida; }
 
-    public String getUbicacion() { return ubicacion; }
     public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
 
-    public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
 
-    public String getFoto() { return foto; }
     public void setFoto(String foto) { this.foto = foto; }
 
-    public Long getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
 
     @Override

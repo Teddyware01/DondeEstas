@@ -3,7 +3,9 @@ package dondeestas.controller;
 import dondeestas.auxClass.EstadoEnum;
 import dondeestas.auxClass.Ubicacion;
 import dondeestas.dto.MascotaCrearDTO;
+import dondeestas.dto.MascotaDTO;
 import dondeestas.entity.Mascota;
+import dondeestas.entity.MascotaImagen;
 import dondeestas.entity.Usuario;
 import dondeestas.service.MascotaService;
 import dondeestas.service.UsuarioService;
@@ -13,10 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -41,16 +43,50 @@ public class MascotaController {
     }
 
     @GetMapping("/perdidas")
-    public ResponseEntity<List<Mascota>> listarMascotasPerdidas() {
+    public ResponseEntity<List<MascotaDTO>> listarMascotasPerdidas() {
+
         List<Mascota> perdidas = mascotaService.listarMascotasPerdidas();
 
         if (perdidas.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return ResponseEntity.ok(perdidas);
+
+        List<MascotaDTO> resultado = perdidas.stream()
+                .map(m -> {
+
+                    List<String> imagenesBase64 = null;
+
+                    if (m.getImagenes() != null && !m.getImagenes().isEmpty()) {
+                        imagenesBase64 = m.getImagenes()
+                                .stream()
+                                .map(img -> {
+                                    // 👇 PREFIJO CLAVE
+                                    return "data:image/jpeg;base64," + img.getImagenBase64();
+                                })
+                                .toList();
+                    }
+
+                    MascotaDTO dto = new MascotaDTO();
+                    dto.setId(m.getId());
+                    dto.setNombre(m.getNombre());
+                    dto.setTamano(m.getTamano());
+                    dto.setColor(m.getColor());
+                    dto.setEstado(m.getEstado().name());
+                    dto.setFecha(m.getFecha());
+                    dto.setProvincia(m.getProvincia());
+                    dto.setDepartamento(m.getDepartamento());
+                    dto.setMunicipio(m.getMunicipio());
+                    dto.setImagenesBase64(imagenesBase64);
+
+                    return dto;
+                })
+                .toList();
+
+        return ResponseEntity.ok(resultado);
     }
 
-/*
+
+    /*
     @PostMapping
     public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO dto) {
         System.out.println("Se recibio mascota: "+dto.toString());
@@ -108,7 +144,7 @@ public class MascotaController {
     }
 
   */
-@PostMapping
+/*@PostMapping
 public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO dto) {
     System.out.println("------------------------------------------------");
     System.out.println("1. DTO Recibido: " + dto);
@@ -177,6 +213,96 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
     } else {
         return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
+}
+*/
+@PostMapping
+public ResponseEntity<Mascota> crearMascota(
+        @RequestPart("mascota") @Valid MascotaCrearDTO dto,
+        @RequestPart(value = "imagenes", required = false) MultipartFile[] imagenes
+) {
+    System.out.println("------------------------------------------------");
+    System.out.println("1. DTO Recibido: " + dto);
+
+    // Verificación de Usuario
+    Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(dto.getUsuarioId());
+    if (usuarioOpt.isEmpty()) {
+        System.err.println("ERROR: Usuario no encontrado con ID: " + dto.getUsuarioId());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    Usuario usuario = usuarioOpt.get();
+    Mascota mascota = new Mascota();
+    mascota.setNombre(dto.getNombre());
+    mascota.setTamano(dto.getTamano());
+    mascota.setColor(dto.getColor());
+    mascota.setUsuario(usuario);
+
+    // 1. Depuración de FECHA
+    if (dto.getFechaPerdida() != null && !dto.getFechaPerdida().isEmpty()) {
+        try {
+            LocalDate fecha = LocalDate.parse(dto.getFechaPerdida(), DateTimeFormatter.ISO_DATE);
+            mascota.setFecha(fecha);
+        } catch (DateTimeParseException e) {
+            System.err.println("ERROR: Falló el parseo de fecha. Valor recibido: " + dto.getFechaPerdida());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    // 2. Depuración de ESTADO
+    try {
+        System.out.println("Intentando parsear estado: " + dto.getEstado());
+        mascota.setEstado(EstadoEnum.valueOf(dto.getEstado().toUpperCase()));
+    } catch (IllegalArgumentException | NullPointerException e) {
+        System.err.println("ERROR: Estado inválido. Valor recibido: " + dto.getEstado());
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    // 3. Depuración de UBICACIÓN
+    if (dto.getUbicacion() != null && dto.getUbicacion().contains(",")) {
+        String[] parts = dto.getUbicacion().split(",");
+        try {
+            double lat = Double.parseDouble(parts[0].trim());
+            double lng = Double.parseDouble(parts[1].trim());
+            mascota.setLatitud(lat);
+            mascota.setLongitud(lng);
+            Ubicacion ubicacion = Ubicacion.obtenerUbicacionPorLatLon(lat, lng);
+            mascota.setProvincia(ubicacion.getProvincia());
+            mascota.setMunicipio(ubicacion.getMunicipio());
+            mascota.setDepartamento(ubicacion.getDepartamento());
+        } catch (NumberFormatException e) {
+            System.err.println("ERROR: Falló parseo de ubicación. Valor recibido: " + dto.getUbicacion());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    // 4. Manejo de imágenes (multipart)
+    if (imagenes != null && imagenes.length > 0) {
+        List<MascotaImagen> listaImagenes = new ArrayList<>();
+        try {
+            for (MultipartFile file : imagenes) {
+                if (!file.isEmpty()) {
+                    String base64 = Base64.getEncoder().encodeToString(file.getBytes());
+                    listaImagenes.add(new MascotaImagen(mascota, base64));
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("ERROR: Falló al procesar las imágenes");
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        mascota.setImagenes(listaImagenes);
+    }
+
+    // Guardar mascota
+    Mascota nueva = mascotaService.registrarMascota(mascota);
+    if (nueva == null) {
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+    }
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
 }
 
     @PutMapping("/{id}")

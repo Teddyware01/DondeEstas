@@ -2,13 +2,16 @@ package dondeestas.service;
 
 import dondeestas.auxClass.EstadoEnum;
 import dondeestas.entity.Mascota;
+import dondeestas.entity.MascotaImagen;
 import dondeestas.repository.MascotaRepository;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -22,9 +25,22 @@ public class MascotaService {
         this.mascotaRepository = mascotaRepository;
     }
 
-    public Mascota registrarMascota(Mascota mascota) {
+    @Transactional
+    public Mascota registrarMascota(Mascota mascota, List<MultipartFile> archivos) throws IOException, IOException {
+        // Agregar imágenes si vienen archivos
+        if (archivos != null) {
+            for (MultipartFile file : archivos) {
+                String base64 = Base64.getEncoder().encodeToString(file.getBytes());
+                MascotaImagen imagen = new MascotaImagen(mascota, base64);
+                mascota.getImagenes().add(imagen);
+            }
+        }
+
+        // Guardar la mascota con sus imágenes
         return mascotaRepository.save(mascota);
     }
+
+    public Mascota registrarMascota(Mascota mascota) { return mascotaRepository.save(mascota); }
 
     public Optional<Mascota> buscarPorId(Long id) {
         return mascotaRepository.findById(id);

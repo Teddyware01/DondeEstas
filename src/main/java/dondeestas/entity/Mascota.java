@@ -71,13 +71,11 @@ public class Mascota {
     @Column(nullable = true)
     private Double longitud;
 
-    // ===== NUEVO CAMPO PARA IMAGEN =====
-    @Lob
-    @Basic(fetch = FetchType.LAZY)
+
     @Getter
     @Setter
-    @Column(columnDefinition = "LONGTEXT")
-    private String imagenBase64;
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MascotaImagen> imagenes = new ArrayList<>();
 
 
 
