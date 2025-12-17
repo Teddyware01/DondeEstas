@@ -8,10 +8,11 @@
     <div class="pet-card" *ngFor="let mascota of listaMascotas">
       <div class="card-image">
         <img
-          [src]="mascota.imagenBase64 ? mascota.imagenBase64 : 'images/placeholder-pet.png'"
-          [alt]="mascota.nombre"
+          [src]="mascota.imagenesBase64?.[0] ?? 'images/placeholder-pet.png'"
           class="imagen-mascota"
-        >
+        />
+
+
 
         <span class="badge-estado">{{ mascota.estado }}</span>
       </div>
@@ -21,9 +22,14 @@
 
         <div class="pet-details">
           <p><strong>Tamaño:</strong> {{ mascota.tamano }}</p>
-          <p><strong>Perdido el:</strong> {{ mascota.fechaPerdida | date:'dd/MM/yyyy' }}</p>
-          <p class="ubicacion">📍 {{ mascota.ubicacion }}</p>
+          <p><strong>Perdido el:</strong> {{ mascota.fecha | date:'dd/MM/yyyy' }}</p>
         </div>
+        <p class="ubicacion">
+          📍
+          {{ mascota.municipio }}{{ mascota.municipio && mascota.departamento ? ', ' : '' }}
+          {{ mascota.departamento }}{{ (mascota.departamento || mascota.municipio) && mascota.provincia ? ', ' : '' }}
+          {{ mascota.provincia }}
+        </p>
 
         <button class="btn-ver-mas">VER MÁS</button>
       </div>
@@ -58,7 +64,7 @@
       <input [(ngModel)]="mascotaForm.color" name="color">
 
       <label>Fecha de pérdida:</label>
-      <input type="date" [(ngModel)]="mascotaForm.fechaPerdida" name="fechaPerdida" required>
+      <input type="date" [(ngModel)]="mascotaForm.fecha" name="fechaPerdida" required>
 
       <label>Ubicación:</label>
       <div class="map-container">
@@ -67,7 +73,8 @@
       <input type="hidden" [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
 
       <label>Imagen (opcional):</label>
-      <input type="file" (change)="onFileSelected($event)" accept="image/*">
+      <input type="file" (change)="onFilesSelected($event)" accept="image/*" multiple>
+
 
       <div class="modal-actions">
         <button type="button" (click)="cerrarModal()">Cancelar</button>

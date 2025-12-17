@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { RankingEntry } from '../models/ranking.interface';
 import { map } from 'rxjs/operators';
 
-  @Injectable({
+@Injectable({
   providedIn: 'root'
 })
 
@@ -51,6 +51,7 @@ export class UsuarioService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
       localStorage.removeItem('usuario');
+      localStorage.removeItem('id');
     }
   }
 
@@ -71,6 +72,8 @@ export class UsuarioService {
   public solicitarRegistro(): void {
     this.abrirRegistroSource.next();
   }
+
+
 
   public obtenerUsuarioId(): number | null {
     if (isPlatformBrowser(this.platformId)) {
@@ -107,4 +110,8 @@ export class UsuarioService {
         })
       );
     }
+
+  public desactivar(id: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/desactivar/${id}`, {});
+  }
 }

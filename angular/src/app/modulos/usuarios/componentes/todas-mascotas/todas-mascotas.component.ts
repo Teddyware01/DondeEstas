@@ -2,7 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@an
 import { MascotaService } from '../../../../services/mascota.service';
 import { Mascota } from '../../../../models/mascota.interface';
 import * as L from 'leaflet';
-
+import { Router } from '@angular/router';
+import {UsuarioService} from '../../../../services/usuario.service';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -14,7 +15,6 @@ export class TodasMascotasComponent implements OnInit {
   modoEdicion: boolean = false;
   listaMascotas: Mascota[] = [];
 
-  // Opciones para el select que coinciden con el Enum de Java
   estadosPosibles = [
     { clave: 'PERDIDO_PROPIO', label: 'Perdido por mí (Propio)' },
     { clave: 'PERDIDO_AJENO', label: 'Vi una mascota perdida (Ajeno)' },
@@ -22,15 +22,15 @@ export class TodasMascotasComponent implements OnInit {
     { clave: 'ADOPTADO', label: 'Ya fue adoptado' }
   ];
 
-  // Inicializamos con un estado válido del Enum
-  mascotaForm: Mascota & { foto?: string | null } = {
+  // Mascota form con array de archivos
+  mascotaForm: Mascota & { fotos?: File[] } = {
     nombre: '',
     tamano: '',
     color: '',
-    fechaPerdida: '',
+    fecha: '',
     ubicacion: '',
     estado: 'PERDIDO_PROPIO',
-    foto: null
+    fotos: []
   };
 
   @ViewChild('map') mapElement!: ElementRef;
@@ -38,7 +38,9 @@ export class TodasMascotasComponent implements OnInit {
   private marker!: L.Marker;
 
   constructor(private mascotaService: MascotaService,
-              private cd: ChangeDetectorRef) { }
+              private usuarioService: UsuarioService,
+              private cd: ChangeDetectorRef,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.cargarMascotas();
@@ -55,17 +57,26 @@ export class TodasMascotasComponent implements OnInit {
   }
 
   abrirModalCrear(): void {
+
+
+    // Si no está logueado → login
+    if (! this.usuarioService.estaLogueado()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Si está logueado → comportamiento original
     this.modoEdicion = false;
-    // Reseteamos el formulario con valores por defecto seguros
     this.mascotaForm = {
       nombre: '',
       tamano: '',
       color: '',
-      fechaPerdida: '',
+      fecha: '',
       ubicacion: '',
       estado: 'PERDIDO_PROPIO',
-      foto: null
+      fotos: []
     };
+
     this.mostrarModal = true;
 
     if (typeof window !== 'undefined') {
@@ -73,32 +84,28 @@ export class TodasMascotasComponent implements OnInit {
     }
   }
 
+
   abrirModalEditar(mascota: Mascota): void {
     this.modoEdicion = true;
-    this.mascotaForm = { ...mascota, foto: null };
+    this.mascotaForm = { ...mascota, fotos: [] };
     this.mostrarModal = true;
-
-    if (typeof window !== 'undefined') {
-      setTimeout(() => this.initMap(), 200);
-    }
+    if (typeof window !== 'undefined') setTimeout(() => this.initMap(), 200);
   }
 
   cerrarModal(): void {
     this.mostrarModal = false;
-    // Limpiamos referencias
     this.mascotaForm = {
       nombre: '',
       tamano: '',
       color: '',
-      fechaPerdida: '',
+      fecha: '',
       ubicacion: '',
       estado: 'PERDIDO_PROPIO',
-      foto: null
+      fotos: []
     };
   }
 
   guardarMascota(): void {
-    // Verificación de seguridad para SSR
     if (typeof window === 'undefined') return;
 
     const usuarioId = localStorage.getItem('id');
@@ -107,51 +114,51 @@ export class TodasMascotasComponent implements OnInit {
       return;
     }
 
-    // Preparamos el payload con usuarioId plano (según DTO Java)
-    const payload = {
-      ...this.mascotaForm,
-      usuarioId: Number(usuarioId)
-    };
-
     if (this.modoEdicion) {
-      // Aquí iría la lógica de edición similar a la de creación
-      console.log("Editando mascota (Lógica pendiente de implementar)");
-      this.cerrarModal(); // Temporal para edición
-    } else {
-      console.log("Enviando payload:", payload);
-
-      this.mascotaService.crearMascota(payload).subscribe({
-        next: (res) => {
-          console.log('Mascota creada con éxito:', res);
-          // Cerramos modal y recargamos SOLO si la petición fue exitosa
-          this.cerrarModal();
-          this.cargarMascotas();
-        },
-        error: (err) => {
-          console.error('Error creando mascota', err);
-          alert('Error al crear la mascota. Verifica los datos o el tamaño de la imagen.');
-        }
-      });
+      console.log("Editando mascota (pendiente de implementar)");
+      this.cerrarModal();
+      return;
     }
+
+    // Crear FormData compatible con @RequestPart("mascota") y @RequestPart("imagenes")
+    const formData = new FormData();
+    const payload = { ...this.mascotaForm, usuarioId: Number(usuarioId) };
+
+    // Extraemos fotos para no incluirlas en el JSON
+    const { fotos, ...payloadSinFotos } = payload;
+
+    // JSON de la mascota
+    formData.append('mascota', new Blob([JSON.stringify(payloadSinFotos)], { type: 'application/json' }));
+
+    // Archivos
+    if (fotos) {
+      fotos.forEach(file => formData.append('imagenes', file));
+    }
+
+    this.mascotaService.crearMascota(formData).subscribe({
+      next: (res) => {
+        console.log('Mascota creada con éxito:', res);
+        this.cerrarModal();
+        this.cargarMascotas();
+      },
+      error: (err) => {
+        console.error('Error creando mascota', err);
+        alert('Error al crear la mascota. Verifica los datos o el tamaño de las imágenes.');
+      }
+    });
   }
 
-  // Convertir archivo a base64
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.mascotaForm.foto = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+  // Manejar selección de múltiples archivos
+  onFilesSelected(event: any): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+    this.mascotaForm.fotos = Array.from(input.files);
   }
 
   private async initMap(): Promise<void> {
     if (typeof window === 'undefined' || !this.mapElement) return;
 
     const L = await import('leaflet');
-
     const coords = this.mascotaForm.ubicacion
       ? this.mascotaForm.ubicacion.split(',').map(Number)
       : [-34.6037, -58.3816];

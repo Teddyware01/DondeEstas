@@ -221,3 +221,46 @@
     </form>
   </div>
 </div>
+
+<div class="modal-backdrop-custom" *ngIf="mostrarModalEliminar">
+
+  <div class="perfil-modal">
+
+    <button
+      type="button"
+      class="perfil-modal-close"
+      (click)="cerrarModalEliminar()">
+      ✕
+    </button>
+
+    <h2 class="perfil-modal-title" style="color: #d9534f;">¿Estás seguro?</h2>
+
+    <div style="text-align: center; margin: 20px 0;">
+      <p>Estás a punto de dar de baja tu cuenta.</p>
+      <p class="text-muted" style="font-size: 0.9em;">
+        Esta acción desactivará tu perfil y cerrará tu sesión actual.
+      </p>
+    </div>
+
+    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+
+      <button
+        type="button"
+        class="perfil-btn-submit outline"
+        (click)="cerrarModalEliminar()">
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="perfil-btn-danger"
+        [disabled]="eliminando"
+        (click)="confirmarEliminarCuenta()">
+        <span *ngIf="!eliminando">Sí, eliminar cuenta</span>
+        <span *ngIf="eliminando">Procesando...</span>
+      </button>
+
+    </div>
+
+  </div>
+</div>

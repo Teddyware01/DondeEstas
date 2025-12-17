@@ -7,7 +7,6 @@ import { UsuarioRoutingModule } from './usuario-routing.module';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { RegistroComponent } from '../componentes/registro/registro.component';
 import { LoginComponent } from '../componentes/login/login.component';
-import { PerfilEdicionComponent } from './usuario/perfil-edicion/perfil-edicion.component';
 import { PerfilDetalleComponent } from './usuario/perfil-detalle/perfil-detalle.component';
 import { TodasMascotasComponent } from './todas-mascotas/todas-mascotas.component';
 import { RankingComponent } from './ranking/ranking.component';
@@ -19,7 +18,6 @@ import { AuthInterceptor } from '../../../interceptors/auth.interceptor';
   declarations: [
     RegistroComponent,
     LoginComponent,
-    PerfilEdicionComponent,
     PerfilDetalleComponent,
     MainLayoutComponent,
     TodasMascotasComponent,
