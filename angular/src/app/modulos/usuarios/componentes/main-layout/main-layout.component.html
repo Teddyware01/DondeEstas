@@ -2,6 +2,10 @@
 
   <header class="main-header">
 
+    <div class="logo-principal" routerLink="/" style="cursor: pointer;">
+      ¿DondeEstas?
+    </div>
+
     <div class="header-left" routerLink="/todas-mascotas" style="cursor: pointer;">
       <span class="icon-dog">🐶</span>
       <span class="brand-text">PERROS PERDIDOS</span>
@@ -49,6 +53,7 @@
       <span>® BY TEDDYWARE</span>
     </div>
   </footer>
+
   <div class="modal-overlay" *ngIf="mostrarRegistro" (click)="cerrarModalRegistro()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-wrapper">

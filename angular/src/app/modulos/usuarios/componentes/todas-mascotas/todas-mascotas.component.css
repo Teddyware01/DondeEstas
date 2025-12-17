@@ -4,53 +4,80 @@
   margin: 0 auto;
 }
 
-.titulo-seccion {
-  color: #5D4037;
+/* --- CABECERA (ESTILO RANKING) --- */
+.mascotas-header {
   text-align: center;
   margin-bottom: 40px;
-  font-size: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
 }
 
+.mascotas-header h2 {
+  color: #3E2723; /* Marrón oscuro */
+  font-family: 'Arial Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #6D4C41;
+  font-size: 16px;
+  font-style: italic;
+  margin-bottom: 25px;
+}
+
+/* --- BOTÓN NUEVA MASCOTA --- */
+.btn-nueva-mascota {
+  background-color: #FBC02D; /* Amarillo/Dorado un poco más suave */
+  color: #3E2723;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-nueva-mascota:hover {
+  background-color: #F9A825;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* --- GRILLA --- */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive automático mejorado */
   gap: 30px;
 }
 
-@media (max-width: 900px) {
-  .grid-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 600px) {
-  .grid-container {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* --- TARJETA (PET CARD) --- */
 .pet-card {
   background-color: white;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  border: 1px solid #EFEBE9;
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #EFEBE9; /* Borde muy sutil */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .pet-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.1);
 }
 
 .card-image {
   height: 250px;
   width: 100%;
   position: relative;
+  background-color: #f0f0f0;
 }
 
-.card-image img {
+.imagen-mascota {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -60,12 +87,14 @@
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: #e74c3c;
+  background-color: #D32F2F; /* Rojo un poco más sobrio */
   color: white;
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .card-info {
@@ -74,62 +103,69 @@
 }
 
 .pet-name {
-  color: #4E342E;
-  font-size: 1.5rem;
+  color: #3E2723;
+  font-size: 1.4rem;
   margin: 0 0 10px 0;
+  font-weight: 800;
+  font-family: 'Arial Black', sans-serif;
 }
 
 .pet-details p {
   margin: 5px 0;
-  color: #666;
-  font-size: 0.95rem;
+  color: #6D4C41;
+  font-size: 0.9rem;
 }
 
 .ubicacion {
   color: #8D6E63 !important;
   font-weight: bold;
-  margin-top: 10px !important;
+  margin-top: 15px !important;
+  font-size: 0.9rem;
 }
 
 .btn-ver-mas {
-  margin-top: 15px;
+  margin-top: 20px;
   background-color: #8D6E63;
   color: white;
   border: none;
   padding: 10px 25px;
-  border-radius: 25px;
+  border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 12px;
   transition: background 0.3s;
 }
 
 .btn-ver-mas:hover {
-  background-color: #6D4C41;
+  background-color: #5D4037;
 }
 
+/* --- MODAL --- */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(62, 39, 35, 0.6); /* Fondo oscuro marrón translúcido */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(2px);
 }
-
 
 .modal-content {
   background-color: white;
   padding: 30px;
-  border-radius: 10px;
+  border-radius: 15px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   position: relative;
   animation: aparecer 0.3s ease-out;
+  max-height: 90vh; /* Evita que se salga de pantalla si es muy alto */
+  overflow-y: auto; /* Scroll si es necesario */
 }
 
 @keyframes aparecer {
@@ -137,81 +173,111 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-form label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #555;
+.modal-header-text h2 {
+  color: #3E2723;
+  font-family: 'Arial Black', sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-form input, form select, form textarea {
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 700;
+  color: #5D4037;
+  font-size: 14px;
+}
+
+/* Inputs del modal estilizados como el Login */
+.modal-input {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 2px solid #EFEBE9;
+  border-radius: 8px;
   box-sizing: border-box;
+  background-color: #FAFAFA;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus {
+  border-color: #A1887F;
+  outline: none;
+  background-color: #fff;
+}
+
+.modal-input-file {
+  margin-top: 5px;
 }
 
 .modal-actions {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
 }
 
-.modal-actions button {
-  padding: 10px 20px;
+.btn-cancelar {
+  flex: 1;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  background-color: #E0E0E0;
+  color: #616161;
+  transition: background 0.2s;
 }
 
-.modal-actions button[type="button"] {
-  background-color: #ccc;
-  color: #333;
+.btn-cancelar:hover {
+  background-color: #BDBDBD;
 }
 
-.modal-actions button[type="submit"] {
-  background-color: #F8B400;
-  color: white;
-}
-
-.btn-nueva-mascota {
-  background-color: #F8B400;
-  color: white;
-  padding: 10px 20px;
+.btn-guardar {
+  flex: 1;
+  padding: 12px;
   border: none;
-  border-radius: 5px;
-  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 20px;
+  font-weight: bold;
+  background-color: #FBC02D;
+  color: #3E2723;
+  transition: background 0.2s;
 }
+
+.btn-guardar:hover {
+  background-color: #F9A825;
+}
+
 .close-btn {
   position: absolute;
-  top: 10px;
+  top: 15px;
   right: 20px;
   font-size: 28px;
   font-weight: bold;
-  color: #aaa;
+  color: #A1887F;
   cursor: pointer;
   transition: color 0.3s;
   line-height: 1;
+  background: none;
+  border: none;
 }
 
 .close-btn:hover {
-  color: #000;
+  color: #3E2723;
 }
 
 .map-container {
   width: 100%;
   height: 200px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ccc;
 }
 
 .map {
   width: 100%;
   height: 100%;
 }
-
-

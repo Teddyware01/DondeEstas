@@ -11,8 +11,40 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: #DQD5CC;
+  /* Corregido el color inválido #DQD5CC por un beige suave similar */
+  background-color: #D7CCC8;
   border-bottom: 1px solid #dcdcdc;
+}
+
+/* --- NUEVOS ESTILOS PARA EL LOGO --- */
+.logo-principal {
+  font-family: 'Arial Black', 'Impact', sans-serif; /* Letra "gordita" */
+  font-weight: 900;
+  font-size: 22px;
+  color: #3E2723; /* Marrón oscuro */
+  text-decoration: none;
+  margin-right: 20px; /* Separación con el siguiente elemento */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  letter-spacing: -0.5px;
+}
+
+.logo-principal:hover {
+  color: #5D4037;
+  /* Efecto de luz blanca */
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #ffffff;
+  transform: scale(1.05);
+}
+/* ----------------------------------- */
+
+.header-left {
+  display: flex;
+  align-items: center;
+  /* Asegura que el logo y el texto de perros no se peguen si la pantalla se achica */
+  gap: 5px;
 }
 
 .brand-text {
@@ -40,6 +72,11 @@
 .icon-star {
   font-size: 24px;
   color: #F4B400;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
 }
 
 .btn-login {

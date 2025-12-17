@@ -1,0 +1,112 @@
+/* --- TARJETA PRINCIPAL --- */
+.login-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  overflow: hidden;
+}
+
+/* --- CABECERA (Color barra navegación) --- */
+.login-header {
+  background-color: #D7CCC8 !important; /* Beige Navbar */
+  border-bottom: 1px solid #D7CCC8;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.login-header h3 {
+  margin: 0;
+  color: #3E2723; /* Marrón oscuro para contraste */
+  font-family: 'Arial Black', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  font-size: 24px;
+}
+
+/* --- INPUTS --- */
+.custom-label {
+  font-weight: 700;
+  color: #5D4037;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.custom-input {
+  border-radius: 8px;
+  border: 2px solid #EFEBE9;
+  padding: 10px 15px;
+  background-color: #FAFAFA;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.custom-input:focus {
+  border-color: #A1887F;
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(161, 136, 127, 0.1);
+  outline: none;
+}
+
+/* --- BOTÓN INGRESAR --- */
+.btn-ingresar {
+  /* ESTADO NORMAL: Color de la barra de navegación */
+  background-color: #D7CCC8 !important;
+  color: #3E2723 !important; /* Letra oscura */
+  border: 2px solid #D7CCC8 !important;
+
+  border-radius: 25px;
+  padding: 12px;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* HOVER: Invierte los colores */
+.btn-ingresar:hover {
+  background-color: #3E2723 !important; /* Fondo oscuro */
+  color: #D7CCC8 !important;            /* Letra clara (color navbar) */
+  border-color: #3E2723 !important;
+
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+.btn-ingresar:active {
+  transform: scale(0.98);
+}
+
+/* --- LINKS Y TEXTOS --- */
+.footer-text {
+  color: #795548;
+  font-size: 14px;
+}
+
+.register-link {
+  color: #5D4037;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+  font-size: 16px;
+}
+
+.register-link:hover {
+  color: #3E2723;
+  border-bottom: 2px solid #A1887F;
+}
+
+.custom-alert {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  background-color: #FFEBEE;
+  color: #C62828;
+}

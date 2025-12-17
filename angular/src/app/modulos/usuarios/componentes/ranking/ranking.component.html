@@ -1,21 +1,57 @@
-<div *ngIf="isLoading">
-  Cargando ranking...
-</div>
+<div class="ranking-container">
 
-<div *ngIf="!isLoading && !errorMessage && rankingList.length > 0">
-  <h2>RANKING DE RESCATISTAS</h2>
+  <div *ngIf="isLoading" class="state-message">
+    <div class="spinner"></div>
+    <p>Cargando ranking de héroes...</p>
+  </div>
 
-  <ol>
-    <li *ngFor="let entry of rankingList; let i = index;">
-      #{{ i + 1 }} {{ entry.nombre }} {{ entry.apellido }} - PUNTOS: {{ entry.puntos }}
-    </li>
-  </ol>
-</div>
+  <div *ngIf="!isLoading && !errorMessage && rankingList.length > 0" class="ranking-content">
 
-<div *ngIf="!isLoading && !errorMessage && rankingList.length === 0">
-  No hay datos de ranking disponibles.
-</div>
+    <div class="ranking-header">
+      <h2>🏆 Ranking de Rescatistas</h2>
+      <p class="subtitle">Los héroes que ayudan a las mascotas a volver a casa.</p>
+    </div>
 
-<div *ngIf="!isLoading && errorMessage">
-  {{ errorMessage }}
+    <ul class="ranking-list">
+      <li *ngFor="let entry of rankingList; let i = index"
+          class="ranking-item"
+          [ngClass]="{
+            'gold-rank': i === 0,
+            'silver-rank': i === 1,
+            'bronze-rank': i === 2
+          }">
+
+        <div class="rank-position">
+          <span *ngIf="i === 0">🥇</span>
+          <span *ngIf="i === 1">🥈</span>
+          <span *ngIf="i === 2">🥉</span>
+          <span *ngIf="i > 2">#{{ i + 1 }}</span>
+        </div>
+
+        <div class="user-info">
+          <span class="user-name">{{ entry.nombre }} {{ entry.apellido }}</span>
+          <span class="user-badge" *ngIf="i === 0">MVP</span>
+        </div>
+
+        <div class="user-points">
+          <span class="points-value">{{ entry.puntos }}</span>
+          <span class="points-label">pts</span>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && rankingList.length === 0" class="state-message">
+    <span class="icon-empty">📭</span>
+    <h3>Aún no hay datos</h3>
+    <p>Sé el primero en sumar puntos rescatando mascotas.</p>
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="state-message error-state">
+    <span class="icon-error">⚠️</span>
+    <h3>Ocurrió un error</h3>
+    <p>{{ errorMessage }}</p>
+  </div>
+
 </div>
