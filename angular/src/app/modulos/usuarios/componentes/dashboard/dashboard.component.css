@@ -1,0 +1,207 @@
+/* 1. LAYOUT GENERAL (Quita el blanco absoluto) */
+.dashboard-wrapper {
+  background-color: #f4f6f9; /* Gris muy suave, tipo panel de administración */
+  min-height: 100vh;
+  padding: 2rem 5%; /* 5% de margen lateral para usar más ancho */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* 2. HERO CARD (Tarjeta blanca superior) */
+.hero-card {
+  background: white;
+  border-radius: 15px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra suave */
+  margin-bottom: 3rem;
+  border-left: 5px solid #007bff; /* Detalle de color a la izquierda */
+}
+
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Para móviles */
+  gap: 2rem;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.brand-name {
+  color: #007bff;
+  font-weight: 800;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.hero-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.img-placeholder {
+  font-size: 5rem;
+  background: #e9ecef;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3. BOTONES DE ACCIÓN (Tarjetas coloridas) */
+.actions-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.icon-circle {
+  background: rgba(255,255,255,0.2);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-right: 1.5rem;
+}
+
+.action-text h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.action-text p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+/* Gradientes para los botones */
+.card-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.card-purple { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+.card-orange { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #444; }
+/* Ajuste de color texto para el naranja si es muy claro */
+.card-orange .action-text h3, .card-orange .action-text p { color: #333; }
+.card-orange .icon-circle { background: rgba(0,0,0,0.1); }
+
+/* 4. SECCIÓN ESTADÍSTICAS */
+.stats-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.stats-header h2 {
+  color: #343a40;
+  font-size: 1.5rem;
+  white-space: nowrap;
+}
+
+.divider-line {
+  height: 2px;
+  background: #dee2e6;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 4px solid transparent; /* Para efecto hover */
+  transition: all 0.3s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+/* Colores inferiores al hacer hover */
+.stat-card:nth-child(1):hover { border-bottom-color: #007bff; }
+.stat-card:nth-child(2):hover { border-bottom-color: #ffc107; }
+.stat-card:nth-child(3):hover { border-bottom-color: #28a745; }
+.stat-card:nth-child(4):hover { border-bottom-color: #17a2b8; }
+
+.stat-icon {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa; /* Fondo grisecito para el icono */
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #212529;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+/* Estilo especial para la tarjeta de Reencuentros */
+.highlight-card .stat-number {
+  color: #28a745;
+}
+.highlight-card .stat-icon {
+  background-color: #e8f5e9; /* Verde muy suave */
+}

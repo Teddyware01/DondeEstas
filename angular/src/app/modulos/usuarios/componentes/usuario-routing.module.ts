@@ -8,6 +8,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { TodasMascotasComponent } from './todas-mascotas/todas-mascotas.component';
 import { MascotaComponent } from './mascota/mascota.component';
 import { RankingComponent } from './ranking/ranking.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        component:DashboardComponent,
         pathMatch: 'full'
       },
       {

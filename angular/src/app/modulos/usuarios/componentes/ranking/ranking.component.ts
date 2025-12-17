@@ -3,7 +3,7 @@ import { UsuarioService } from '../../../../services/usuario.service';
 import { RankingEntry } from '../../../../models/ranking.interface';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-ranking',
   standalone: false,
   templateUrl: './ranking.component.html',
   styleUrls: ['./ranking.component.css']

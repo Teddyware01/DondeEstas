@@ -13,6 +13,7 @@ import { RankingComponent } from './ranking/ranking.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../../../interceptors/auth.interceptor';
+import {DashboardComponent} from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AuthInterceptor } from '../../../interceptors/auth.interceptor';
     PerfilDetalleComponent,
     MainLayoutComponent,
     TodasMascotasComponent,
-    RankingComponent
+    RankingComponent,
+    DashboardComponent
   ],
 
   imports: [
