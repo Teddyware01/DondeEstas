@@ -7,10 +7,13 @@ import { HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { RankingEntry } from '../models/ranking.interface';
+import { map } from 'rxjs/operators';
 
-@Injectable({
+  @Injectable({
   providedIn: 'root'
 })
+
 export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
   private abrirRegistroSource = new Subject<void>();
@@ -18,6 +21,7 @@ export class UsuarioService {
 
   constructor(private http: HttpClient,
               @Inject(PLATFORM_ID) private platformId: Object) { }
+
 
   public registrarUsuario(data: RegistroRequest): Observable<any> {
     console.log('Enviando datos de registro:', data);
@@ -68,8 +72,6 @@ export class UsuarioService {
     this.abrirRegistroSource.next();
   }
 
-
-
   public obtenerUsuarioId(): number | null {
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('id');
@@ -78,5 +80,31 @@ export class UsuarioService {
     return null;
   }
 
+    public obtenerRanking(): Observable<RankingEntry[]> {
+      const rankingUrl = 'http://localhost:8080/api/ranking';
 
+      return this.http.get<any[]>(rankingUrl).pipe(
+        map(rankingItemsDesdeJava => {
+          console.log('Datos recibidos del backend:', rankingItemsDesdeJava); // <-- Log 1
+
+          // Verificamos si el array es nulo o no un array
+          if (!Array.isArray(rankingItemsDesdeJava)) {
+            console.error('El backend no retornó un array.');
+            return []; // Retornar array vacío para evitar errores
+          }
+
+          const listaMapeada = rankingItemsDesdeJava.map(item => {
+            // Validación de existencia de 'usuario' y 'totalPuntos'
+            const nombre = item.usuario?.nombre || 'N/A';
+            const apellido = item.usuario?.apellido || 'N/A';
+            const puntos = item.totalPuntos || 0;
+
+            return { nombre, apellido, puntos } as RankingEntry;
+          });
+
+          console.log('Datos transformados para Angular:', listaMapeada); // <-- Log 2
+          return listaMapeada;
+        })
+      );
+    }
 }

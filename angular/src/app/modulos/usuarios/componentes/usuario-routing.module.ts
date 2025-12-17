@@ -8,6 +8,7 @@ import { PerfilDetalleComponent } from './usuario/perfil-detalle/perfil-detalle.
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { TodasMascotasComponent } from './todas-mascotas/todas-mascotas.component';
 import { MascotaComponent } from './mascota/mascota.component';
+import { RankingComponent } from './ranking/ranking.component';
 
 const routes: Routes = [
   {
@@ -37,7 +38,9 @@ const routes: Routes = [
       },
       { path: 'mascota/:id',
         component: MascotaComponent
-      }
+      },
+      { path: 'ranking',
+        component: RankingComponent },
     ]
   }
 ];

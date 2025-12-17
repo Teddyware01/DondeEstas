@@ -1,0 +1,21 @@
+<div *ngIf="isLoading">
+  Cargando ranking...
+</div>
+
+<div *ngIf="!isLoading && !errorMessage && rankingList.length > 0">
+  <h2>RANKING DE RESCATISTAS</h2>
+
+  <ol>
+    <li *ngFor="let entry of rankingList; let i = index;">
+      #{{ i + 1 }} {{ entry.nombre }} {{ entry.apellido }} - PUNTOS: {{ entry.puntos }}
+    </li>
+  </ol>
+</div>
+
+<div *ngIf="!isLoading && !errorMessage && rankingList.length === 0">
+  No hay datos de ranking disponibles.
+</div>
+
+<div *ngIf="!isLoading && errorMessage">
+  {{ errorMessage }}
+</div>

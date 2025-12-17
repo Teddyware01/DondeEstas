@@ -10,6 +10,7 @@ import { LoginComponent } from '../componentes/login/login.component';
 import { PerfilEdicionComponent } from './usuario/perfil-edicion/perfil-edicion.component';
 import { PerfilDetalleComponent } from './usuario/perfil-detalle/perfil-detalle.component';
 import { TodasMascotasComponent } from './todas-mascotas/todas-mascotas.component';
+import { RankingComponent } from './ranking/ranking.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../../../interceptors/auth.interceptor';
@@ -21,7 +22,8 @@ import { AuthInterceptor } from '../../../interceptors/auth.interceptor';
     PerfilEdicionComponent,
     PerfilDetalleComponent,
     MainLayoutComponent,
-    TodasMascotasComponent
+    TodasMascotasComponent,
+    RankingComponent
   ],
 
   imports: [
