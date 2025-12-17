@@ -2,7 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@an
 import { MascotaService } from '../../../../services/mascota.service';
 import { Mascota } from '../../../../models/mascota.interface';
 import * as L from 'leaflet';
-
+import { Router } from '@angular/router';
+import {UsuarioService} from '../../../../services/usuario.service';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
@@ -37,7 +38,9 @@ export class TodasMascotasComponent implements OnInit {
   private marker!: L.Marker;
 
   constructor(private mascotaService: MascotaService,
-              private cd: ChangeDetectorRef) { }
+              private usuarioService: UsuarioService,
+              private cd: ChangeDetectorRef,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.cargarMascotas();
@@ -54,6 +57,15 @@ export class TodasMascotasComponent implements OnInit {
   }
 
   abrirModalCrear(): void {
+
+
+    // Si no está logueado → login
+    if (! this.usuarioService.estaLogueado()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Si está logueado → comportamiento original
     this.modoEdicion = false;
     this.mascotaForm = {
       nombre: '',
@@ -64,9 +76,14 @@ export class TodasMascotasComponent implements OnInit {
       estado: 'PERDIDO_PROPIO',
       fotos: []
     };
+
     this.mostrarModal = true;
-    if (typeof window !== 'undefined') setTimeout(() => this.initMap(), 200);
+
+    if (typeof window !== 'undefined') {
+      setTimeout(() => this.initMap(), 200);
+    }
   }
+
 
   abrirModalEditar(mascota: Mascota): void {
     this.modoEdicion = true;

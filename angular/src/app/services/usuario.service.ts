@@ -47,6 +47,7 @@ export class UsuarioService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
       localStorage.removeItem('usuario');
+      localStorage.removeItem('id');
     }
   }
 
