@@ -35,11 +35,18 @@
   margin: 0;
   font-size: 1.8rem;
   color: #2c3e50;
+  color: #3E2723; /* Marrón oscuro */
+  font-family: 'Arial Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .subtitle {
   margin: 0.2rem 0 0 0;
   color: #7f8c8d;
+  color: #6D4C41;
+  font-size: 14px;
+  font-style: italic;
 }
 
 /* Botón "Publicar Mascota" (Estilo Moderno) */
