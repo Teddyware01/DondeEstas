@@ -1,45 +1,109 @@
 <div class="main-container">
 
-  <div class="mascotas-header">
-    <h2>🐶 Mascotas Perdidas Recientemente</h2>
-    <p class="subtitle">Ayúdalas a encontrar su camino de regreso.</p>
+  <div class="content-wrapper">
 
-    <button class="btn-nueva-mascota" (click)="abrirModalCrear()">
-      + PUBLICAR MASCOTA
-    </button>
-  </div>
-
-  <div class="grid-container">
-    <div class="pet-card" *ngFor="let mascota of listaMascotas">
-      <div class="card-image">
-        <img
-          [src]="mascota.imagenesBase64?.[0] ?? 'images/placeholder-pet.png'"
-          class="imagen-mascota"
-          alt="Foto de la mascota"
-        />
-        <span class="badge-estado">{{ mascota.estado }}</span>
+    <div class="mascotas-header">
+      <div class="header-texts">
+        <h2>🐶 Mascotas Perdidas Recientemente</h2>
+        <p class="subtitle">Ayúdalas a encontrar su camino de regreso.</p>
       </div>
 
-      <div class="card-info">
-        <h3 class="pet-name">{{ mascota.nombre }}</h3>
+      <button class="btn-nueva-mascota" (click)="abrirModalCrear()">
+        + PUBLICAR MASCOTA
+      </button>
+    </div>
 
-        <div class="pet-details">
-          <p><strong>Tamaño:</strong> {{ mascota.tamano }}</p>
-          <p><strong>Perdido el:</strong> {{ mascota.fecha | date:'dd/MM/yyyy' }}</p>
+    <div class="filtros-panel">
+
+      <div class="search-bar-container">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          placeholder="Buscar por nombre, municipio, barrio..."
+          [(ngModel)]="filtros.texto"
+          (input)="aplicarFiltros()"
+          class="search-input"
+        >
+        <button *ngIf="filtros.texto" class="btn-clear-text" (click)="filtros.texto=''; aplicarFiltros()">✕</button>
+      </div>
+
+      <div class="chips-section">
+
+        <div class="chip-group">
+          <span class="chip-label">Estado:</span>
+          <div class="chips-container">
+            <button
+              *ngFor="let opcion of estadosPosibles"
+              class="chip"
+              [class.chip-selected]="filtros.estados.includes(opcion.clave)"
+              (click)="toggleEstado(opcion.clave)">
+              {{ opcion.label }}
+              <span *ngIf="filtros.estados.includes(opcion.clave)" class="check-icon">✓</span>
+            </button>
+          </div>
         </div>
 
-        <p class="ubicacion">
-          📍
-          {{ mascota.municipio }}{{ mascota.municipio && mascota.departamento ? ', ' : '' }}
-          {{ mascota.departamento }}{{ (mascota.departamento || mascota.municipio) && mascota.provincia ? ', ' : '' }}
-          {{ mascota.provincia }}
-        </p>
+        <div class="chip-group">
+          <span class="chip-label">Tamaño:</span>
+          <div class="chips-container">
+            <button class="chip" [class.chip-selected]="filtros.tamanos.includes('Chico')" (click)="toggleTamano('Chico')">
+              Chico <span *ngIf="filtros.tamanos.includes('Chico')" class="check-icon">✓</span>
+            </button>
+            <button class="chip" [class.chip-selected]="filtros.tamanos.includes('Mediano')" (click)="toggleTamano('Mediano')">
+              Mediano <span *ngIf="filtros.tamanos.includes('Mediano')" class="check-icon">✓</span>
+            </button>
+            <button class="chip" [class.chip-selected]="filtros.tamanos.includes('Grande')" (click)="toggleTamano('Grande')">
+              Grande <span *ngIf="filtros.tamanos.includes('Grande')" class="check-icon">✓</span>
+            </button>
+          </div>
+        </div>
 
-        <button class="btn-ver-mas">VER MÁS</button>
+        <button
+          *ngIf="filtros.estados.length > 0 || filtros.tamanos.length > 0 || filtros.texto"
+          class="btn-limpiar-todo"
+          (click)="limpiarFiltros()">
+          Limpiar filtros 🗑️
+        </button>
       </div>
     </div>
-  </div>
-</div>
+
+    <div class="grid-container">
+      <div class="pet-card" *ngFor="let mascota of listaMascotasFiltrada">
+        <div class="card-image">
+          <img
+            [src]="mascota.imagenesBase64?.[0] ?? 'images/placeholder-pet.png'"
+            class="imagen-mascota"
+            alt="Foto de la mascota"
+          />
+          <span class="badge-estado">{{ mascota.estado }}</span>
+        </div>
+
+        <div class="card-info">
+          <h3 class="pet-name">{{ mascota.nombre }}</h3>
+
+          <div class="pet-details">
+            <p><strong>Tamaño:</strong> {{ mascota.tamano }}</p>
+            <p><strong>Perdido el:</strong> {{ mascota.fecha | date:'dd/MM/yyyy' }}</p>
+          </div>
+
+          <p class="ubicacion">
+            📍
+            {{ mascota.municipio }}{{ mascota.municipio && mascota.departamento ? ', ' : '' }}
+            {{ mascota.departamento }}{{ (mascota.departamento || mascota.municipio) && mascota.provincia ? ', ' : '' }}
+            {{ mascota.provincia }}
+          </p>
+
+          <button class="btn-ver-mas">VER MÁS</button>
+        </div>
+      </div>
+
+      <div class="no-resultados" *ngIf="listaMascotasFiltrada.length === 0">
+        <p>😕 No se encontraron mascotas con esos criterios.</p>
+        <button class="btn-link" (click)="limpiarFiltros()">Ver todas</button>
+      </div>
+    </div>
+
+  </div> </div>
 
 <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
@@ -87,5 +151,25 @@
         <button type="submit" class="btn-guardar">Guardar</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalLogin" (click)="cerrarModalLogin()">
+  <div class="modal-content mini-modal" (click)="$event.stopPropagation()">
+    <span class="close-btn" (click)="cerrarModalLogin()">&times;</span>
+
+    <div class="modal-header-text">
+      <h2 style="font-size: 3rem; margin-bottom: 0;">🔒</h2>
+      <h2>¡Necesitas una cuenta!</h2>
+    </div>
+
+    <div style="text-align: center; margin: 20px 0; color: #5D4037;">
+      <p>Para publicar una mascota perdida y ayudar a que vuelva a casa, necesitas iniciar sesión primero.</p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancelar" (click)="cerrarModalLogin()">Cancelar</button>
+      <button class="btn-guardar" (click)="irALogin()">Iniciar Sesión</button>
+    </div>
   </div>
 </div>
