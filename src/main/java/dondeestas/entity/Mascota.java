@@ -2,6 +2,7 @@ package dondeestas.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dondeestas.auxClass.EstadoEnum;
+import dondeestas.auxClass.TipoAnimalEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,6 +57,12 @@ public class Mascota {
     @Setter
     private EstadoEnum estado;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Getter
+    @Setter
+    private TipoAnimalEnum tipoAnimal;
+
     @Getter
     @Setter
     @Column(name = "descripcion_extra", length = 500)
@@ -100,7 +107,7 @@ public class Mascota {
     }
 
     public Mascota(Usuario usuario, String nombre,
-                   String tamano, String color, LocalDate fecha, EstadoEnum estado, String descripcionExtra) {
+                   String tamano, String color, LocalDate fecha, EstadoEnum estado, TipoAnimalEnum tipoAnimal, String descripcionExtra) {
         this.usuario = usuario;
         this.avistamientos = new ArrayList<>();
         this.nombre = nombre;
@@ -108,6 +115,7 @@ public class Mascota {
         this.color = color;
         this.fecha = fecha;
         this.estado = estado;
+        this.tipoAnimal = tipoAnimal;
         this.descripcionExtra = descripcionExtra;
     }
 

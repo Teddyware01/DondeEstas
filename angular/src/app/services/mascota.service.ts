@@ -16,6 +16,12 @@ export class MascotaService {
     return this.http.get<Mascota[]>(`${this.apiUrl}/perdidas`);
 
   }
+
+  obtenerMascotasTodas(): Observable<Mascota[]> {
+    return this.http.get<Mascota[]>(`${this.apiUrl}/todos`);
+
+  }
+
   obtenerPorId(id: number): Observable<Mascota> {
     return this.http.get<Mascota>(`${this.apiUrl}/${id}`);
   }

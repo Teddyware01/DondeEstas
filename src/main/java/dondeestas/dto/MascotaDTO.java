@@ -15,6 +15,8 @@ public class MascotaDTO {
     private String tamano;
     private String color;
     private String estado;
+    private String tipoAnimal;
+    private String descripcionExtra;
     private LocalDate fecha;
 
     private String provincia;
@@ -27,15 +29,17 @@ public class MascotaDTO {
     }
 
     public MascotaDTO(Long id, String nombre, String tamano, String color,
-                      String estado, LocalDate fecha,
-                      String provincia, String departamento, String municipio,
+                      String estado,String tipoAnimal, LocalDate fecha,
+                      String provincia, String departamento, String municipio,String descripcionExtra,
                       List<String> imagenesBase64) {
         this.id = id;
         this.nombre = nombre;
         this.tamano = tamano;
         this.color = color;
         this.estado = estado;
+        this.tipoAnimal = tipoAnimal;
         this.fecha = fecha;
+        this.descripcionExtra=descripcionExtra;
         this.provincia = provincia;
         this.departamento = departamento;
         this.municipio = municipio;

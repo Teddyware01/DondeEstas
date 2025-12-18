@@ -44,6 +44,21 @@
         </div>
 
         <div class="chip-group">
+          <span class="chip-label">Tipo:</span>
+          <div class="chips-container">
+            <button class="chip" [class.chip-selected]="filtros.tipos.includes('PERRO')" (click)="toggleTipo('PERRO')">
+              Perro <span *ngIf="filtros.tipos.includes('PERRO')" class="check-icon">✓</span>
+            </button>
+            <button class="chip" [class.chip-selected]="filtros.tipos.includes('GATO')" (click)="toggleTipo('GATO')">
+              Gato <span *ngIf="filtros.tipos.includes('GATO')" class="check-icon">✓</span>
+            </button>
+            <button class="chip" [class.chip-selected]="filtros.tipos.includes('OTRO')" (click)="toggleTipo('OTRO')">
+              Otro <span *ngIf="filtros.tipos.includes('OTRO')" class="check-icon">✓</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="chip-group">
           <span class="chip-label">Tamaño:</span>
           <div class="chips-container">
             <button class="chip" [class.chip-selected]="filtros.tamanos.includes('Chico')" (click)="toggleTamano('Chico')">
@@ -59,7 +74,7 @@
         </div>
 
         <button
-          *ngIf="filtros.estados.length > 0 || filtros.tamanos.length > 0 || filtros.texto"
+          *ngIf="filtros.estados.length > 0 || filtros.tamanos.length > 0 || filtros.tipos.length > 0 || filtros.texto"
           class="btn-limpiar-todo"
           (click)="limpiarFiltros()">
           Limpiar filtros 🗑️
@@ -75,7 +90,11 @@
             class="imagen-mascota"
             alt="Foto de la mascota"
           />
-          <span class="badge-estado">{{ mascota.estado }}</span>
+          <span
+            class="badge-estado"
+            [ngClass]="mascota.estado">
+    {{ mascota.estado }}
+  </span>
         </div>
 
         <div class="card-info">
@@ -117,6 +136,13 @@
       <label>Nombre:</label>
       <input [(ngModel)]="mascotaForm.nombre" name="nombre" class="modal-input" required placeholder="Ej: Bobby">
 
+      <label>Tipo de Animal:</label>
+      <select [(ngModel)]="mascotaForm.tipoAnimal" name="tipoAnimal" class="modal-input" required>
+        <option value="PERRO">Perro</option>
+        <option value="GATO">Gato</option>
+        <option value="OTRO">Otro</option>
+      </select>
+
       <label>Tamaño:</label>
       <select [(ngModel)]="mascotaForm.tamano" name="tamano" class="modal-input">
         <option value="Chico">Chico</option>
@@ -133,6 +159,16 @@
 
       <label>Color:</label>
       <input [(ngModel)]="mascotaForm.color" name="color" class="modal-input" placeholder="Ej: Marrón claro">
+
+      <label>Descripción adicional:</label>
+      <textarea
+        [(ngModel)]="mascotaForm.descripcionExtra"
+        name="descripcionExtra"
+        class="modal-input"
+        rows="3"
+        maxlength="500"
+        placeholder="Si tiene collar, cicatrices, o alguna seña particular...">
+      </textarea>
 
       <label>Fecha de pérdida:</label>
       <input type="date" [(ngModel)]="mascotaForm.fecha" name="fechaPerdida" class="modal-input" required>

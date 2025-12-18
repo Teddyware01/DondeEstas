@@ -3,7 +3,7 @@
   background-color: #FDFBF7;
   padding: 30px;
   border-radius: 15px;
-  max-width: 700px;
+  max-width: 1100px;
   margin: auto;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   border: 1px solid #D7CCC8;
@@ -442,4 +442,15 @@
 .mascota-estado.ADOPTADO {
   background-color: #1976D2;
   color: white;
+}
+
+/* TIPO ANIMAL */
+.mascota-tipo {
+  font-size: 11px;             /* Letra pequeña/ligera */
+  font-weight: 600;            /* Peso medio para que se lea bien */
+  text-transform: uppercase;   /* Fuerza mayúsculas (PERRO, GATO) */
+  color: #8D6E63;              /* Color secundario de tu paleta */
+  min-width: 50px;             /* Ancho mínimo para mantener alineación vertical */
+  letter-spacing: 0.5px;       /* Un poco de espacio entre letras */
+  opacity: 0.9;
 }

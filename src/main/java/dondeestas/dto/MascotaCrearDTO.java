@@ -20,6 +20,8 @@ public class MascotaCrearDTO {
     private String fechaPerdida; // String o LocalDate según tu modelo
     private String ubicacion;
     private String estado;
+    private String descripcionExtra;
+    private String tipoAnimal;
 
     private String foto; // base64 opcional
 

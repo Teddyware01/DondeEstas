@@ -105,19 +105,22 @@
 
           <div class="mascota-linea">
 
-      <span class="mascota-fecha">
-        {{ mascota.fecha | date:'dd/MM/yyyy' }}
-      </span>
+  <span class="mascota-fecha">
+    {{ mascota.fecha | date:'dd/MM/yyyy' }}
+  </span>
 
+            <span class="mascota-tipo">
+    {{ mascota.tipoAnimal }}
+  </span>
             <span class="mascota-nombre">
-        {{ mascota.nombre }}
-      </span>
+    {{ mascota.nombre }}
+  </span>
 
             <span
               class="mascota-estado"
               [ngClass]="mascota.estado">
-        {{ mascota.estado }}
-      </span>
+    {{ mascota.estado }}
+  </span>
 
           </div>
 

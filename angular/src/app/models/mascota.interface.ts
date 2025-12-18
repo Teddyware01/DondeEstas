@@ -11,7 +11,7 @@ export interface Mascota {
 
   //ubicacion queda para enviar lat y long juntos.
   ubicacion?:string;
-
+  tipoAnimal:string;
   provincia?:string;
   departamento?:string;
   municipio?:string;

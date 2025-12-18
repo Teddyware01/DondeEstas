@@ -1,34 +1,41 @@
-/* 1. LAYOUT GENERAL (Quita el blanco absoluto) */
+/* 1. LAYOUT GENERAL */
 .dashboard-wrapper {
-  background-color: #f4f6f9; /* Gris muy suave, tipo panel de administración */
+  background-color: #f4f6f9;
   min-height: 100vh;
-  padding: 2rem 5%; /* 5% de margen lateral para usar más ancho */
+  /* CAMBIO: Reduje el padding lateral del 5% al 2rem para usar más ancho */
+  padding: 2rem;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   box-sizing: border-box;
 }
 
-/* 2. HERO CARD (Tarjeta blanca superior) */
+/* 2. HERO CARD */
 .hero-card {
   background: white;
   border-radius: 15px;
-  padding: 3rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra suave */
+  /* CAMBIO: Padding un poco más compacto arriba/abajo */
+  padding: 2rem 3rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   margin-bottom: 3rem;
-  border-left: 5px solid #007bff; /* Detalle de color a la izquierda */
+  border-left: 5px solid #007bff;
 }
 
 .hero-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap; /* Para móviles */
+  align-items: center; /* Centra verticalmente texto e imagen */
   gap: 2rem;
+}
+
+/* CAMBIO: El texto ahora ocupa todo el espacio disponible */
+.hero-text {
+  flex: 1;
 }
 
 .hero-text h1 {
   font-size: 2.5rem;
   color: #2c3e50;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem; /* Menos margen */
+  margin-top: 0;
 }
 
 .brand-name {
@@ -40,29 +47,40 @@
   font-size: 1.25rem;
   color: #6c757d;
   line-height: 1.6;
-  max-width: 600px;
+  max-width: 800px; /* Permitimos que el texto sea más largo antes de bajar de línea */
+  margin-bottom: 0;
 }
 
+/* CAMBIO: Contenedor de imagen más restringido */
 .hero-image-container {
-  flex: 1;
+  flex: 0 0 auto; /* No se estira, solo ocupa lo que mide la imagen */
   display: flex;
   justify-content: flex-end;
 }
 
-.img-placeholder {
-  font-size: 5rem;
-  background: #e9ecef;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* CAMBIO: Estilo específico para hacer la imagen chica */
+.hero-img {
+  max-width: 150px; /* Ajusta este valor si la quieres más chica o grande */
+  height: auto;
+  object-fit: contain;
 }
 
-/* 3. BOTONES DE ACCIÓN (Tarjetas coloridas) */
+/* MEDIA QUERY: Para que en celular se vea bien (uno arriba del otro) */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column-reverse; /* Imagen arriba o abajo, a gusto */
+    text-align: center;
+  }
+  .hero-image-container {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+}
+
+/* 3. BOTONES DE ACCIÓN (Sin cambios mayores, solo grid responsive) */
 .actions-container {
   display: grid;
+  /* Grid responsiva que ocupa todo el ancho */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   margin-bottom: 4rem;
@@ -95,6 +113,7 @@
   justify-content: center;
   font-size: 1.8rem;
   margin-right: 1.5rem;
+  flex-shrink: 0; /* Evita que el circulo se aplaste */
 }
 
 .action-text h3 {
@@ -109,11 +128,9 @@
   font-size: 0.9rem;
 }
 
-/* Gradientes para los botones */
 .card-blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
 .card-purple { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
 .card-orange { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #444; }
-/* Ajuste de color texto para el naranja si es muy claro */
 .card-orange .action-text h3, .card-orange .action-text p { color: #333; }
 .card-orange .icon-circle { background: rgba(0,0,0,0.1); }
 
@@ -140,7 +157,7 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Minimo un poco mas chico para que entren mas */
   gap: 1.5rem;
 }
 
@@ -152,7 +169,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 4px solid transparent; /* Para efecto hover */
+  border-bottom: 4px solid transparent;
   transition: all 0.3s;
 }
 
@@ -161,11 +178,11 @@
   transform: translateY(-2px);
 }
 
-/* Colores inferiores al hacer hover */
 .stat-card:nth-child(1):hover { border-bottom-color: #007bff; }
 .stat-card:nth-child(2):hover { border-bottom-color: #ffc107; }
 .stat-card:nth-child(3):hover { border-bottom-color: #28a745; }
 .stat-card:nth-child(4):hover { border-bottom-color: #17a2b8; }
+.stat-card:nth-child(5):hover { border-bottom-color: #6610f2; }
 
 .stat-icon {
   font-size: 2rem;
@@ -175,7 +192,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9fa; /* Fondo grisecito para el icono */
+  background: #f8f9fa;
+  flex-shrink: 0;
 }
 
 .stat-info {
@@ -198,10 +216,5 @@
   margin-top: 5px;
 }
 
-/* Estilo especial para la tarjeta de Reencuentros */
-.highlight-card .stat-number {
-  color: #28a745;
-}
-.highlight-card .stat-icon {
-  background-color: #e8f5e9; /* Verde muy suave */
-}
+.highlight-card .stat-number { color: #28a745; }
+.highlight-card .stat-icon { background-color: #e8f5e9; }

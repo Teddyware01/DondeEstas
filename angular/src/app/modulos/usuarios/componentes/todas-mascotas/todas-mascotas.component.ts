@@ -14,21 +14,20 @@ import { UsuarioService } from '../../../../services/usuario.service';
 export class TodasMascotasComponent implements OnInit {
 
   // --- Control de UI ---
-  mostrarModal: boolean = false;       // Modal de formulario (Crear/Editar)
-  mostrarModalLogin: boolean = false;  // Modal de aviso "Necesitas login"
+  mostrarModal: boolean = false;
+  mostrarModalLogin: boolean = false;
   modoEdicion: boolean = false;
 
   // --- Listas de Datos ---
-  // listaMascotasOriginal: Mantiene la "fuente de verdad" traída del backend.
   listaMascotasOriginal: Mascota[] = [];
-  // listaMascotasFiltrada: Es la que se itera en el HTML.
   listaMascotasFiltrada: Mascota[] = [];
 
   // --- Filtros (Selección Múltiple) ---
-  filtros: { texto: string, estados: string[], tamanos: string[] } = {
+  filtros: { texto: string, estados: string[], tamanos: string[], tipos: string[] } = {
     texto: '',
-    estados: [], // Array vacío = "Todos"
-    tamanos: []  // Array vacío = "Todos"
+    estados: [],
+    tamanos: [],
+    tipos: []
   };
 
   estadosPosibles = [
@@ -41,8 +40,10 @@ export class TodasMascotasComponent implements OnInit {
   // --- Formulario ---
   mascotaForm: Mascota & { fotos?: File[] } = {
     nombre: '',
+    tipoAnimal: 'PERRO',
     tamano: '',
     color: '',
+    descripcionExtra: '',
     fecha: '',
     ubicacion: '',
     estado: 'PERDIDO_PROPIO',
@@ -70,10 +71,9 @@ export class TodasMascotasComponent implements OnInit {
   // =============================================================
 
   cargarMascotas(): void {
-    this.mascotaService.obtenerMascotasPerdidas().subscribe({
+    this.mascotaService.obtenerMascotasTodas().subscribe({
       next: (data) => {
         this.listaMascotasOriginal = data;
-        // Al cargar, aplicamos los filtros actuales para refrescar la vista
         this.aplicarFiltros();
         this.cd.detectChanges();
       },
@@ -81,18 +81,18 @@ export class TodasMascotasComponent implements OnInit {
     });
   }
 
-  // Toggle para Estado (Selección Múltiple)
+  // Toggle para Estado
   toggleEstado(estadoClave: string): void {
     const index = this.filtros.estados.indexOf(estadoClave);
     if (index > -1) {
-      this.filtros.estados.splice(index, 1); // Quitar si existe
+      this.filtros.estados.splice(index, 1);
     } else {
-      this.filtros.estados.push(estadoClave); // Agregar si no existe
+      this.filtros.estados.push(estadoClave);
     }
     this.aplicarFiltros();
   }
 
-  // Toggle para Tamaño (Selección Múltiple)
+  // Toggle para Tamaño
   toggleTamano(tamanoValor: string): void {
     const index = this.filtros.tamanos.indexOf(tamanoValor);
     if (index > -1) {
@@ -103,18 +103,30 @@ export class TodasMascotasComponent implements OnInit {
     this.aplicarFiltros();
   }
 
+  // Toggle para Tipo de Animal
+  toggleTipo(tipoValor: string): void {
+    const index = this.filtros.tipos.indexOf(tipoValor);
+    if (index > -1) {
+      this.filtros.tipos.splice(index, 1);
+    } else {
+      this.filtros.tipos.push(tipoValor);
+    }
+    this.aplicarFiltros();
+  }
+
   aplicarFiltros(): void {
     const textoBusqueda = this.filtros.texto.toLowerCase().trim();
 
     this.listaMascotasFiltrada = this.listaMascotasOriginal.filter(mascota => {
 
-      // A. Filtro Texto (Nombre, Municipio o Provincia)
+      // A. Filtro Texto (Nombre, Municipio, Provincia O Descripción Extra)
       const coincideTexto = !textoBusqueda ||
         mascota.nombre?.toLowerCase().includes(textoBusqueda) ||
         mascota.municipio?.toLowerCase().includes(textoBusqueda) ||
-        mascota.provincia?.toLowerCase().includes(textoBusqueda);
+        mascota.provincia?.toLowerCase().includes(textoBusqueda) ||
+        mascota.descripcionExtra?.toLowerCase().includes(textoBusqueda); // <--- AGREGADO AQUÍ
 
-      // B. Filtro Estado (Si el array está vacío, pasan todos. Si no, debe incluirse)
+      // B. Filtro Estado
       const coincideEstado = this.filtros.estados.length === 0 ||
         this.filtros.estados.includes(mascota.estado);
 
@@ -122,7 +134,13 @@ export class TodasMascotasComponent implements OnInit {
       const coincideTamano = this.filtros.tamanos.length === 0 ||
         this.filtros.tamanos.includes(mascota.tamano);
 
-      return coincideTexto && coincideEstado && coincideTamano;
+      // D. Filtro Tipo Animal (Versión Robusta)
+      const tipoBackend = mascota.tipoAnimal ? String(mascota.tipoAnimal).toUpperCase() : '';
+
+      const coincideTipo = this.filtros.tipos.length === 0 ||
+        this.filtros.tipos.includes(tipoBackend);
+
+      return coincideTexto && coincideEstado && coincideTamano && coincideTipo;
     });
   }
 
@@ -130,7 +148,8 @@ export class TodasMascotasComponent implements OnInit {
     this.filtros = {
       texto: '',
       estados: [],
-      tamanos: []
+      tamanos: [],
+      tipos: []
     };
     this.listaMascotasFiltrada = [...this.listaMascotasOriginal];
   }
@@ -140,14 +159,11 @@ export class TodasMascotasComponent implements OnInit {
   // =============================================================
 
   abrirModalCrear(): void {
-    // Verificamos si está logueado
     if (!this.usuarioService.estaLogueado()) {
-      // En lugar de alert, mostramos el modal de login
       this.mostrarModalLogin = true;
       return;
     }
 
-    // Si está logueado, procedemos normal
     this.modoEdicion = false;
     this.reiniciarFormulario();
     this.mostrarModal = true;
@@ -157,7 +173,6 @@ export class TodasMascotasComponent implements OnInit {
     }
   }
 
-  // Métodos para el Modal de Aviso de Login
   cerrarModalLogin(): void {
     this.mostrarModalLogin = false;
   }
@@ -167,7 +182,6 @@ export class TodasMascotasComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // Métodos para el Modal de Formulario Mascota
   abrirModalEditar(mascota: Mascota): void {
     this.modoEdicion = true;
     this.mascotaForm = { ...mascota, fotos: [] };
@@ -186,8 +200,10 @@ export class TodasMascotasComponent implements OnInit {
   reiniciarFormulario(): void {
     this.mascotaForm = {
       nombre: '',
+      tipoAnimal: 'PERRO',
       tamano: '',
       color: '',
+      descripcionExtra: '',
       fecha: '',
       ubicacion: '',
       estado: 'PERDIDO_PROPIO',
