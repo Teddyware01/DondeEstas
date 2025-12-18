@@ -1,6 +1,5 @@
 <div class="container mt-0">
 
-  <!-- ESTADOS -->
   <div *ngIf="loading" class="alert alert-info text-center">
     Cargando perfil...
   </div>
@@ -9,7 +8,6 @@
     {{ error }}
   </div>
 
-  <!-- ================= PERFIL ================= -->
   <div *ngIf="usuario && !loading" class="perfil-card">
 
     <h2 class="perfil-nombre">
@@ -46,10 +44,9 @@
     </div>
 
   </div>
-  <!-- ================= INFORMACIÓN PERSONAL ================= -->
+
   <div *ngIf="usuario && !loading" class="perfil-card">
 
-  <!-- ================= COLABORACIÓN Y RANKING ================= -->
     <div class="perfil-section perfil-section-secundaria">
       <h3 class="perfil-section-title secundaria">
         Colaboración y ranking
@@ -79,15 +76,12 @@
       </p>
     </div>
 
-
   </div>
-  <!-- ================= INFORMACIÓN PERSONAL ================= -->
 
-  <!-- ================= PUBLICACIONES ================= -->
   <div *ngIf="usuario && !loading" class="perfil-card">
     <div class="perfil-section perfil-section-terciaria">
       <h3 class="perfil-section-title terciaria">
-        Publicaciones
+        Mascotas Publicadas
       </h3>
 
       <p class="perfil-resumen">
@@ -104,24 +98,23 @@
           *ngFor="let mascota of usuario.mascotas">
 
           <div class="mascota-linea">
-
-  <span class="mascota-fecha">
-    {{ mascota.fecha | date:'dd/MM/yyyy' }}
-  </span>
+            <span class="mascota-fecha">
+              {{ mascota.fecha | date:'dd/MM/yyyy' }}
+            </span>
 
             <span class="mascota-tipo">
-    {{ mascota.tipoAnimal }}
-  </span>
+              {{ mascota.tipoAnimal }}
+            </span>
+
             <span class="mascota-nombre">
-    {{ mascota.nombre }}
-  </span>
+              {{ mascota.nombre }}
+            </span>
 
             <span
               class="mascota-estado"
               [ngClass]="mascota.estado">
-    {{ mascota.estado }}
-  </span>
-
+              {{ mascota.estado }}
+            </span>
           </div>
 
           <button
@@ -133,24 +126,73 @@
         </div>
       </div>
 
-
-
       <ng-template #sinMascotas>
         <p class="text-muted">
           No tiene mascotas publicadas.
         </p>
       </ng-template>
+    </div>
+  </div>
+
+  <div *ngIf="usuario && !loading" class="perfil-card">
+    <div class="perfil-section perfil-section-terciaria">
+      <h3 class="perfil-section-title terciaria">
+        Avistamientos Reportados
+      </h3>
 
       <p class="perfil-resumen">
         Avistamientos reportados:
         <strong>{{ usuario.avistamientos?.length || 0 }}</strong>
       </p>
-    </div>
 
+      <div
+        class="mascotas-list"
+        *ngIf="usuario.avistamientos?.length; else sinAvistamientos">
+
+        <div
+          class="mascota-item horizontal"
+          *ngFor="let avistamiento of usuario.avistamientos">
+
+          <div class="mascota-linea">
+            <span class="mascota-fecha">
+              {{ avistamiento.fecha | date:'dd/MM/yyyy' }}
+            </span>
+
+            <span class="mascota-tipo">
+              {{ avistamiento.tipoAnimal }}
+            </span>
+
+            <span class="mascota-nombre">
+              {{ avistamiento.descripcion || 'Avistamiento' }}
+            </span>
+
+            <span
+              class="mascota-estado"
+              [ngClass]="avistamiento.estado">
+              {{ avistamiento.estado || 'Activo' }}
+            </span>
+          </div>
+
+          <button
+            class="mascota-btn-ver"
+            (click)="verMascota(avistamiento.id)">
+            VER
+          </button>
+
+        </div>
+      </div>
+
+      <ng-template #sinAvistamientos>
+        <p class="text-muted">
+          No ha reportado avistamientos.
+        </p>
+      </ng-template>
+    </div>
   </div>
+
 </div>
 
-<!-- ================= MODAL EDITAR PERFIL ================= -->
+
 <div class="modal-backdrop-custom" *ngIf="mostrarModalEditar">
 
   <div class="perfil-modal">
