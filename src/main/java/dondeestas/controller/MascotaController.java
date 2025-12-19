@@ -277,6 +277,7 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
         mascota.setNombre(dto.getNombre());
         mascota.setTamano(dto.getTamano());
         mascota.setColor(dto.getColor());
+        mascota.setActivo(true);
 
         mascota.setDescripcionExtra(dto.getDescripcionExtra());
         mascota.setUsuario(usuario);
@@ -436,6 +437,39 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(perdidas, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/desactivar/{id}")
+    public ResponseEntity<Void> desactivarMascota(@PathVariable Long id,
+                                                  @RequestHeader("Authorization") String authHeader) {
+
+        // Validación del token
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String token = authHeader.substring(7);
+        String tokenEsperado = id + "123456";  // puedes cambiar la lógica del token si quieres
+
+        if (!token.equals(tokenEsperado)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // Buscar la mascota por ID
+        Optional<Mascota> mascotaOpt = mascotaService.buscarPorId(id);
+        if (mascotaOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // Desactivar la mascota
+        Mascota mascota = mascotaOpt.get();
+        mascota.setActivo(false);
+
+        // Guardar cambios
+        mascotaService.actualizarMascota(mascota.getId(), mascota);
+
+        return ResponseEntity.ok().build();
     }
 
 

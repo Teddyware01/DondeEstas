@@ -36,6 +36,12 @@ public class Mascota {
     @Column(nullable = false)
     private String nombre;
 
+
+    @Getter
+    @Setter
+    @Column(nullable = false)
+    private boolean activo;
+
     @Getter
     @Setter
     @Column
@@ -115,6 +121,7 @@ public class Mascota {
         this.color = color;
         this.fecha = fecha;
         this.estado = estado;
+        this.activo = true;
         this.tipoAnimal = tipoAnimal;
         this.descripcionExtra = descripcionExtra;
     }

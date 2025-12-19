@@ -96,72 +96,61 @@ export class MascotaComponent implements OnInit {
 
   ) {}
 
-
   ngOnInit(): void {
-
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-
     this.mascotaService.obtenerPorId(id).subscribe({
-
       next: (data) => {
-
-// Validamos que data no sea null
-
         if (!data) {
-
           this.errorCarga = true;
-
           this.cargando = false;
-          this.cd.detectChanges(); // <<--- Forzamos actualización
           return;
-
         }
-
 
         this.mascota = data;
 
-
-// --- CORRECCIÓN AQUÍ ---
-
-// Verificamos que exista Y que tenga elementos
-
+        // ... tu lógica de imágenes ...
         if (data.imagenesBase64 && data.imagenesBase64.length > 0) {
-
           this.imagenes = data.imagenesBase64;
-
-          console.log("ENTRE")
-
         } else {
-
           this.imagenes = ['/images/placeholder-pet.png'];
-
         }
-
-// -----------------------
-
-
         this.actualizarImagenPrincipal();
 
-        this.cargando = false; // Importante: quitar el loading aquí
-        this.cd.detectChanges(); // <<--- Forzamos actualización
-
-
-      },
-
-      error: (err) => {
-
-        console.error('Error al cargar mascota:', err);
-
-        this.errorCarga = true;
+        // --- CORRECCIÓN AQUÍ ---
+        // Calculamos si es dueño AHORA que ya tenemos los datos de la mascota
+        this.verificarDuenio();
+        // -----------------------
 
         this.cargando = false;
-
+        this.cd.detectChanges(); // Esto actualizará la vista con el nuevo valor de esDuenio
+      },
+      error: (err) => {
+        console.error('Error', err);
+        this.errorCarga = true;
+        this.cargando = false;
       }
-
     });
-
   }
+
+// Ya no necesitas ngAfterViewInit para esto, puedes borrarlo o dejarlo vacío
+  ngAfterViewInit() {}
+
+// Crea un método helper para mantener el código limpio
+  verificarDuenio(): void {
+    const usuarioLogueadoId = this.usuarioService.obtenerUsuarioId();
+console.log("soy",usuarioLogueadoId)
+    // Validamos que tengamos ambos datos antes de comparar
+    if (usuarioLogueadoId && this.mascota && this.mascota.usuarioId) {
+      // Usamos '==' por si uno es string y el otro number, o '===' si estás seguro del tipo
+      this.esDuenio = (usuarioLogueadoId == this.mascota.usuarioId);
+
+      console.log("Soy dueño?:", this.esDuenio);
+    } else {
+      this.esDuenio = true;
+    }
+  }
+
 
 
 // --- Lógica del Carrusel ---
@@ -205,10 +194,6 @@ export class MascotaComponent implements OnInit {
 
   }
 
-  ngAfterViewInit() {
-    this.esDuenio = this.usuarioService.estaLogueado() &&  (this.usuarioService.obtenerUsuarioId() == this.mascota.usuarioId);
-    console.log("ESDUENIO:", this.esDuenio)
-  }
 
   contactar(): void {
 
@@ -260,12 +245,7 @@ export class MascotaComponent implements OnInit {
 
     console.log('Guardando cambios...', this.mascotaForm);
 
-
-// Simulación de guardado exitoso:
-
-    /*
-
-    this.mascotaService.editar(this.mascota.id, this.mascotaForm).subscribe(updated => {
+    this.mascotaService.editarMascota(this.mascota.id, this.mascotaForm).subscribe(updated => {
 
     this.mascota = updated;
 
@@ -273,10 +253,7 @@ export class MascotaComponent implements OnInit {
 
     });
 
-    */
 
-
-// Actualizamos localmente para ver el efecto (borrar esto al conectar backend)
 
     this.mascota = { ...this.mascotaForm };
 
@@ -307,22 +284,19 @@ export class MascotaComponent implements OnInit {
     console.log('Eliminando mascota...', this.mascota.id);
 
 
-    /* this.mascotaService.eliminar(this.mascota.id).subscribe(() => {
+    this.mascotaService.desactivarMascota(this.mascota.id).subscribe(() => {
 
     this.cerrarModalEliminar();
 
-    this.router.navigate(['/mascotas']);
+    this.router.navigate(['/todas-mascotas']);
 
     });
 
-    */
-
-
-// Simulación (borrar al conectar backend)
-
     this.cerrarModalEliminar();
+    this.router.navigate(['/todas-mascotas']);
 
-    this.router.navigate(['/mascotas']);
+
+
 
   }
 

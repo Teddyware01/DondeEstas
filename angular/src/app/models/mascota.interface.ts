@@ -13,6 +13,7 @@ export interface Mascota {
   ubicacion?:string;
   tipoAnimal:string;
   provincia?:string;
+  activo?:boolean;
   departamento?:string;
   municipio?:string;
   imagenesBase64?: string[];

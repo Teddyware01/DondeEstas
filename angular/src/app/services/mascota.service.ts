@@ -30,10 +30,11 @@ export class MascotaService {
     return this.http.post<Mascota>(`${this.apiUrl}`, mascota);
   }
 
-  editarMascota(id: number, mascota: Mascota): Observable<Mascota> {
+  editarMascota(id: number | undefined, mascota: Mascota): Observable<Mascota> {
     return this.http.put<Mascota>(`${this.apiUrl}/${id}`, mascota);
   }
-  eliminarMascota(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+
+  desactivarMascota(id: number | undefined): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/desactivar/${id}`);
   }
 }
