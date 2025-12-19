@@ -1,104 +1,69 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core'; // <--- Agregar NgZone
 import { CommonModule } from '@angular/common';
-
-import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Agregado Router
-
-import { FormsModule } from '@angular/forms'; // Agregado FormsModule
-
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { MascotaService } from '../../../../services/mascota.service';
-
 import { UsuarioService } from '../../../../services/usuario.service';
-
 import { Mascota } from '../../../../models/mascota.interface';
-import { ChangeDetectorRef } from '@angular/core';
+
+// Import dinámico de Leaflet se maneja en el método initMap,
+// pero declaramos variables globales si usas TS estricto.
+import * as L from 'leaflet';
 
 @Component({
-
   selector: 'app-detalle-mascota',
-
   standalone: true,
-
-  imports: [
-
-    CommonModule,
-
-    RouterModule,
-
-    FormsModule // Necesario para [(ngModel)] en el modal
-
-  ],
-
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './mascota.component.html',
-
   styleUrls: ['./mascota.component.css']
-
 })
-
 export class MascotaComponent implements OnInit {
 
-
   mascota!: Mascota;
-
   cargando = true;
-
   errorCarga = false;
 
-
-// Variables para carrusel
-
+  // Carrusel
   indiceImagenActual = 0;
-
   imagenSeleccionada: string = '';
-
   imagenes: string[] = [];
 
-
-// Variables para Modales y Edición
-
+  // Modales
   mostrarModalEditar = false;
-
   mostrarModalEliminar = false;
+  mascotaForm: any = {};
 
-  mascotaForm: any = {}; // Objeto copia para el formulario
+  esDuenio = true;
 
+  // Mapa
+  @ViewChild('mapEdit') mapElement!: ElementRef;
+  private map!: L.Map;
+  private marker!: L.Marker;
 
-// Control de dueño (Lógica pendiente por tu parte, por defecto true para ver botones)
-
-  esDuenio = false;
-
-
-// Opciones para el select de estado
-
+  // Enums
   estadosPosibles = [
-
-    { clave: 'PERDIDO_PROPIO', label: 'Perdido' },
-
-    { clave: 'ENCONTRADO', label: 'Encontrado' },
-
-    { clave: 'ADOPTADO', label: 'Adoptado' },
-
-    { clave: 'RECUPERADO', label: 'Recuperado' }
-
+    { clave: 'PERDIDO_PROPIO', label: 'Perdido por mí (Propio)' },
+    { clave: 'PERDIDO_AJENO', label: 'Vi una mascota perdida (Ajeno)' },
+    { clave: 'RECUPERADO', label: 'Ya fue recuperado' },
+    { clave: 'ADOPTADO', label: 'Ya fue adoptado' }
   ];
 
-
   constructor(
-
     private route: ActivatedRoute,
-
-    private router: Router, // Inyectamos Router para navegar
-
+    private router: Router,
     private mascotaService: MascotaService,
-
-    private usuarioService:UsuarioService,
-    private cd:ChangeDetectorRef,
-
+    private usuarioService: UsuarioService,
+    private cd: ChangeDetectorRef, // Para forzar actualizaciones manuales
+    private ngZone: NgZone // <--- VITAL: Para meter eventos de Leaflet en Angular
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.cargarDatos(id);
+  }
 
+  // Extraje esto a un método para poder re-usarlo si hiciera falta recargar todo
+  cargarDatos(id: number) {
     this.mascotaService.obtenerPorId(id).subscribe({
       next: (data) => {
         if (!data) {
@@ -109,21 +74,16 @@ export class MascotaComponent implements OnInit {
 
         this.mascota = data;
 
-        // ... tu lógica de imágenes ...
-        if (data.imagenesBase64 && data.imagenesBase64.length > 0) {
-          this.imagenes = data.imagenesBase64;
-        } else {
-          this.imagenes = ['/images/placeholder-pet.png'];
-        }
-        this.actualizarImagenPrincipal();
+        // Actualizar lista de imágenes
+        this.imagenes = (data.imagenesBase64 && data.imagenesBase64.length > 0)
+          ? data.imagenesBase64
+          : ['/images/placeholder-pet.png'];
 
-        // --- CORRECCIÓN AQUÍ ---
-        // Calculamos si es dueño AHORA que ya tenemos los datos de la mascota
+        this.actualizarImagenPrincipal();
         this.verificarDuenio();
-        // -----------------------
 
         this.cargando = false;
-        this.cd.detectChanges(); // Esto actualizará la vista con el nuevo valor de esDuenio
+        this.cd.detectChanges(); // <--- Asegura que la vista inicial pinte todo
       },
       error: (err) => {
         console.error('Error', err);
@@ -133,172 +93,171 @@ export class MascotaComponent implements OnInit {
     });
   }
 
-// Ya no necesitas ngAfterViewInit para esto, puedes borrarlo o dejarlo vacío
-  ngAfterViewInit() {}
-
-// Crea un método helper para mantener el código limpio
   verificarDuenio(): void {
     const usuarioLogueadoId = this.usuarioService.obtenerUsuarioId();
-console.log("soy",usuarioLogueadoId)
-    // Validamos que tengamos ambos datos antes de comparar
-    if (usuarioLogueadoId && this.mascota && this.mascota.usuarioId) {
-      // Usamos '==' por si uno es string y el otro number, o '===' si estás seguro del tipo
-      this.esDuenio = (usuarioLogueadoId == this.mascota.usuarioId);
-
-      console.log("Soy dueño?:", this.esDuenio);
-    } else {
-      this.esDuenio = true;
+    if (usuarioLogueadoId && this.mascota?.usuarioId) {
+      this.esDuenio = (Number(usuarioLogueadoId) === Number(this.mascota.usuarioId));
     }
   }
 
-
-
-// --- Lógica del Carrusel ---
-
-
+  // --- Carrusel ---
   actualizarImagenPrincipal(): void {
-
-    this.imagenSeleccionada = this.imagenes[this.indiceImagenActual];
-
+    if (this.imagenes.length > 0) {
+      this.imagenSeleccionada = this.imagenes[this.indiceImagenActual];
+    }
   }
-
 
   anteriorImagen(): void {
-
-    this.indiceImagenActual =
-
-      (this.indiceImagenActual - 1 + this.imagenes.length) % this.imagenes.length;
-
+    this.indiceImagenActual = (this.indiceImagenActual - 1 + this.imagenes.length) % this.imagenes.length;
     this.actualizarImagenPrincipal();
-
   }
-
 
   siguienteImagen(): void {
-
-    this.indiceImagenActual =
-
-      (this.indiceImagenActual + 1) % this.imagenes.length;
-
+    this.indiceImagenActual = (this.indiceImagenActual + 1) % this.imagenes.length;
     this.actualizarImagenPrincipal();
-
   }
 
-
-// --- Navegación y Contacto ---
-
-
+  // --- Acciones ---
   volver(): void {
-
-    this.router.navigate(['/todas-mascotas']); // Ajusta la ruta a tu listado
-
+    this.router.navigate(['/todas-mascotas']);
   }
-
 
   contactar(): void {
-
     if (this.mascota.telefono) {
-
-// Opción 1: Mostrar alerta simple
-
-      alert(`Contactar al dueño: ${this.mascota.telefono}`);
-
-
+      window.open(`https://wa.me/${this.mascota.telefono}`, '_blank');
     } else {
-
-// Caso: No hay teléfono
-
       alert('El usuario no agregó un medio de contacto.');
-
     }
-
   }
 
-
-// --- Lógica Modal Editar ---
-
+  // --- EDICIÓN (Aquí estaba el problema de flujo) ---
 
   abrirModalEditar(): void {
-
-// Creamos una copia para no modificar la vista hasta guardar
-
+    // 1. Clonar objeto para no tocar la vista principal aún
     this.mascotaForm = { ...this.mascota };
+
+    // 2. Formatear fecha para input type="date" (yyyy-MM-dd) si hace falta
+    if (this.mascotaForm.fecha) {
+      this.mascotaForm.fecha = new Date(this.mascotaForm.fecha).toISOString().split('T')[0];
+    }
 
     this.mostrarModalEditar = true;
 
-
-// Si vas a usar mapa en el modal, inicializalo aquí con un setTimeout
-
+    // 3. Iniciar mapa con delay para asegurar que el DOM existe
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        this.initMap();
+      }, 100);
+    }
   }
-
 
   cerrarModalEditar(): void {
-
     this.mostrarModalEditar = false;
-
+    // Limpiamos mapa si existe para ahorrar memoria
+    if (this.map) {
+      this.map.remove();
+      // @ts-ignore
+      this.map = null;
+    }
   }
-
 
   guardarEdicion(): void {
+    // Validar visualmente
+    if (!this.mascotaForm.nombre) {
+      alert("El nombre es obligatorio");
+      return;
+    }
 
-// Aquí llamarías al servicio update
+    this.mascotaService.editarMascota(this.mascota.id, this.mascotaForm).subscribe({
+      next: (updated) => {
+        // ACTUALIZACIÓN DE FLUJO:
+        // 1. Actualizamos el objeto principal
+        this.mascota = updated;
 
-    console.log('Guardando cambios...', this.mascotaForm);
+        // 2. Si cambiaron cosas visuales (como estado), actualizamos variables derivadas
+        if (updated.imagenesBase64 && updated.imagenesBase64.length > 0) {
+          this.imagenes = updated.imagenesBase64;
+          this.indiceImagenActual = 0;
+          this.actualizarImagenPrincipal();
+        }
 
-    this.mascotaService.editarMascota(this.mascota.id, this.mascotaForm).subscribe(updated => {
+        // 3. Forzamos detección de cambios para que la UI principal reaccione YA
+        this.cd.detectChanges();
 
-    this.mascota = updated;
-
-    this.cerrarModalEditar();
-
+        this.cerrarModalEditar();
+      },
+      error: (err) => {
+        console.error('Error al editar', err);
+        alert('Error al guardar cambios.');
+      }
     });
-
-
-
-    this.mascota = { ...this.mascotaForm };
-
-    this.cerrarModalEditar();
-
   }
 
-
-// --- Lógica Modal Eliminar ---
-
-
-  abrirModalEliminar(): void {
-
-    this.mostrarModalEliminar = true;
-
-  }
-
-
-  cerrarModalEliminar(): void {
-
-    this.mostrarModalEliminar = false;
-
-  }
-
+  // --- ELIMINAR ---
+  abrirModalEliminar(): void { this.mostrarModalEliminar = true; }
+  cerrarModalEliminar(): void { this.mostrarModalEliminar = false; }
 
   confirmarEliminacion(): void {
-
-    console.log('Eliminando mascota...', this.mascota.id);
-
-
-    this.mascotaService.desactivarMascota(this.mascota.id).subscribe(() => {
-
-    this.cerrarModalEliminar();
-
-    this.router.navigate(['/todas-mascotas']);
-
+    this.mascotaService.desactivarMascota(this.mascota.id).subscribe({
+      next: (mascotaActualizada) => {
+        console.log('Mascota desactivada:', mascotaActualizada);
+        // Actualizar la lista local si tienes
+      },
+      error: (err) => console.error('Error al desactivar mascota', err)
     });
 
-    this.cerrarModalEliminar();
     this.router.navigate(['/todas-mascotas']);
-
-
-
-
   }
 
-}
+  // --- MAPA LEAFLET (Corregido con NgZone) ---
 
+  private async initMap(): Promise<void> {
+    if (typeof window === 'undefined' || !this.mapElement) return;
+
+    const L = await import('leaflet');
+
+    // Parsear ubicación
+    let coords: [number, number] = [-34.6037, -58.3816]; // Default BsAs
+    if (this.mascotaForm.ubicacion && this.mascotaForm.ubicacion.includes(',')) {
+      const split = this.mascotaForm.ubicacion.split(',');
+      coords = [parseFloat(split[0]), parseFloat(split[1])];
+    }
+
+    // Reset mapa si ya existía
+    if (this.map) {
+      this.map.off();
+      this.map.remove();
+    }
+
+    // Crear mapa
+    this.map = L.map(this.mapElement.nativeElement).setView(coords, 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(this.map);
+
+    this.marker = L.marker(coords, { draggable: true }).addTo(this.map);
+
+    // --- AQUÍ ESTÁ LA MAGIA PARA EL FLUJO ---
+    // Usamos ngZone.run() para volver a meter a Angular en la jugada
+    // cuando ocurren eventos del mapa.
+
+    this.marker.on('dragend', () => {
+      this.ngZone.run(() => {
+        const pos = this.marker.getLatLng();
+        this.mascotaForm.ubicacion = `${pos.lat},${pos.lng}`;
+        console.log("Nueva ubicación (drag):", this.mascotaForm.ubicacion);
+      });
+    });
+
+    this.map.on('click', (e: any) => {
+      this.ngZone.run(() => {
+        this.marker.setLatLng(e.latlng);
+        this.mascotaForm.ubicacion = `${e.latlng.lat},${e.latlng.lng}`;
+        console.log("Nueva ubicación (click):", this.mascotaForm.ubicacion);
+      });
+    });
+
+    setTimeout(() => { this.map.invalidateSize(); }, 100);
+  }
+}

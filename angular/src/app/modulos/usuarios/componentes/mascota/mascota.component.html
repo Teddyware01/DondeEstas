@@ -157,10 +157,14 @@
       <label>Descripción:</label>
       <textarea [(ngModel)]="mascotaForm.descripcionExtra" name="desc" class="modal-input" rows="3"></textarea>
 
-      <label>Ubicación (Mapa):</label>
+      <label>Fecha de pérdida/hallazgo:</label>
+      <input type="date" [(ngModel)]="mascotaForm.fecha" name="fecha" class="modal-input">
+
+      <label>Ubicación (Arrastra el marcador para corregir):</label>
       <div class="map-container-mini">
-        <div #mapEdit class="map"></div>
+        <div #mapEdit class="map" style="height: 100%; width: 100%;"></div>
       </div>
+      <input type="hidden" [(ngModel)]="mascotaForm.ubicacion" name="ubicacion">
 
       <div class="modal-actions">
         <button type="button" class="btn-cancelar" (click)="cerrarModalEditar()">Cancelar</button>

@@ -50,6 +50,9 @@ public class MascotaService {
         return mascotaRepository.findAll();
     }
 
+    public List<Mascota> listarActivas(){
+        return mascotaRepository.findByActivoTrue();
+    }
     public List<Mascota> buscarPorUsuario(Long idUsuario) {
         return mascotaRepository.findByUsuarioId(idUsuario);
     }

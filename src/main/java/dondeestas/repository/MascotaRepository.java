@@ -40,4 +40,6 @@ public interface MascotaRepository extends JpaRepository<Mascota, Long> {
     @Query("SELECT COUNT(DISTINCT m.municipio) FROM Mascota m")
     Long countMunicipiosDistintos();
 
-}
+    List<Mascota> findByActivoTrue()
+
+        ;}

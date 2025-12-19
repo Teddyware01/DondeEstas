@@ -34,7 +34,9 @@ export class MascotaService {
     return this.http.put<Mascota>(`${this.apiUrl}/${id}`, mascota);
   }
 
-  desactivarMascota(id: number | undefined): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/desactivar/${id}`);
+  desactivarMascota(id: number | undefined): Observable<Mascota> {
+
+    return this.http.put<Mascota>(`${this.apiUrl}/desactivar/${id}`, {}, );
   }
+
 }
