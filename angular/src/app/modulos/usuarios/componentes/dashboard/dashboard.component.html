@@ -15,7 +15,7 @@
   </section>
 
   <section class="actions-container">
-    <a routerLink="/mascotas" class="action-card card-blue">
+    <a routerLink="/todas-mascotas" class="action-card card-blue">
       <div class="icon-circle">🐾</div>
       <div class="action-text">
         <h3>Ver Mascotas</h3>
@@ -23,21 +23,21 @@
       </div>
     </a>
 
-    <button (click)="onRegistrar()" class="action-card card-purple">
+    <a routerLink="/login" class="action-card card-purple">
       <div class="icon-circle">👤</div>
       <div class="action-text">
-        <h3>Registrarme</h3>
+        <h3>Iniciar sesión</h3>
         <p>Crear cuenta</p>
       </div>
-    </button>
+    </a>
 
-    <button (click)="onPublicar()" class="action-card card-orange">
+    <a routerLink="/todas-mascotas" class="action-card card-orange">
       <div class="icon-circle">📢</div>
       <div class="action-text">
         <h3>Publicar</h3>
         <p>Reportar ahora</p>
       </div>
-    </button>
+    </a>
   </section>
 
   <section class="stats-section" *ngIf="!loadingStats(); else cargando">
