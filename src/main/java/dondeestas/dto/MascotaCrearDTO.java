@@ -31,22 +31,6 @@ public class MascotaCrearDTO {
     @Setter
     private List<String> imagenes;
 
-    public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public void setTamano(String tamano) { this.tamano = tamano; }
-
-    public void setColor(String color) { this.color = color; }
-
-    public void setFechaPerdida(String fechaPerdida) { this.fechaPerdida = fechaPerdida; }
-
-    public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
-
-    public void setEstado(String estado) { this.estado = estado; }
-
-    public void setFoto(String foto) { this.foto = foto; }
-
-    public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
-
     @Override
     public String toString() {
         return "MascotaCrearDTO{" +

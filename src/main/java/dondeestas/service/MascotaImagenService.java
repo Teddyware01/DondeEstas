@@ -17,17 +17,13 @@ public class MascotaImagenService {
 
     @Transactional
     public MascotaImagen agregarImagen(Long mascotaId, String base64) {
-        // Buscamos la mascota
         Mascota mascota = mascotaRepository.findById(mascotaId)
                 .orElseThrow(() -> new RuntimeException("Mascota no encontrada con id: " + mascotaId));
 
-        // Creamos la nueva imagen
         MascotaImagen imagen = new MascotaImagen(mascota, base64);
 
-        // Añadimos a la lista de la mascota
         mascota.getImagenes().add(imagen);
 
-        // Guardamos la imagen (CascadeType.ALL de la mascota también funcionaría)
         return imagenRepository.save(imagen);
     }
 }

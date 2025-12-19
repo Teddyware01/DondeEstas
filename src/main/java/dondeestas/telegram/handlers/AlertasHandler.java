@@ -42,7 +42,7 @@ public class AlertasHandler extends BaseHandler {
         Long chatId = getChatId(update);
         if (chatId == null) return;
 
-        // Caso 1️⃣: el mensaje trae ubicación
+        // Caso: el mensaje trae ubicación
         if (update.hasMessage() && update.getMessage().hasLocation()) {
             Double lat = update.getMessage().getLocation().getLatitude();
             Double lon = update.getMessage().getLocation().getLongitude();
@@ -59,7 +59,7 @@ public class AlertasHandler extends BaseHandler {
             return;
         }
 
-        // Caso 2️⃣: el usuario pulsa "No enviar, mostrar todos"
+        // Caso: el usuario pulsa "No enviar, mostrar todos"
         if (update.hasMessage() && update.getMessage().hasText()
                 && update.getMessage().getText().equals("No enviar, mostrar todos")) {
 
@@ -73,7 +73,7 @@ public class AlertasHandler extends BaseHandler {
             return;
         }
 
-        // Caso 3️⃣: primer comando /alertas
+        // Caso: primer comando /alertas
         if (update.hasMessage() && update.getMessage().hasText()
                 && update.getMessage().getText().startsWith("/alertas")) {
 
@@ -88,20 +88,14 @@ public class AlertasHandler extends BaseHandler {
         }
     }
 
-    /**
-     * Extrae el filtro del comando recibido
-     * @param mensaje texto completo del comando
-     * @return "todos", "propio" o "ajeno"
-     */
+    //Extrae el filtro del comando recibido
     private String extraerFiltro(String mensaje) {
         if (mensaje.contains(":propio")) return "propio";
         if (mensaje.contains(":ajeno")) return "ajeno";
         return "todos";
     }
 
-    /**
-     * Pregunta al usuario si desea enviar su ubicación
-     */
+     //Pregunta al usuario si desea enviar su ubicación
     private void preguntarUbicacion(Long chatId) {
         SendMessage message = new SendMessage(chatId.toString(), "¿Deseas enviar tu ubicación para ver solo mascotas cercanas?");
 
@@ -122,9 +116,7 @@ public class AlertasHandler extends BaseHandler {
         enviarMensaje(message);
     }
 
-    /**
-     * Obtiene la lista de mascotas según el filtro
-     */
+     //Obtiene la lista de mascotas según el filtro
     private List<Mascota> obtenerMascotasPorFiltro(String filtro) {
         return switch (filtro) {
             case "propio" -> mascotaService.listarMascotasPerdidasPropias();
@@ -133,9 +125,7 @@ public class AlertasHandler extends BaseHandler {
         };
     }
 
-    /**
-     * Convierte la lista de mascotas en un texto legible para enviar al chat
-     */
+ //Convierte la lista de mascotas en un texto legible para enviar al chat
     private String formatearMascotas(List<Mascota> mascotas, String filtro) {
         if (mascotas == null || mascotas.isEmpty()) {
             return "No hay mascotas reportadas en tu zona para el filtro '" + filtro + "'.";

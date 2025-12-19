@@ -66,39 +66,6 @@ public class UsuarioController {
         }
     }
 
-    /*
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id,
-                                                     @RequestHeader("token") String token,
-                                                     @RequestBody Usuario usuarioActualizado) {
-        String tokenEsperado = id + "123456";
-
-        if (!token.equals(tokenEsperado)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        Optional<Usuario> usuarioOpt = usuarioService.buscarPorId(id);
-        if (usuarioOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        Usuario usuario = usuarioOpt.get();
-        usuario.setNombre(usuarioActualizado.getNombre());
-        usuario.setApellido(usuarioActualizado.getApellido());
-        if (!usuario.getEmail().equals(usuarioActualizado.getEmail())) {
-            usuario.setEmail(usuarioActualizado.getEmail());
-        }
-        usuario.setContrasena(usuarioActualizado.getContrasena());
-        usuario.setBarrio(usuarioActualizado.getBarrio());
-        usuario.setCiudad(usuarioActualizado.getCiudad());
-        usuario.setIsAdmin(usuarioActualizado.getIsAdmin());
-        usuario.setTelefono(usuarioActualizado.getTelefono());
-
-        Usuario guardado = usuarioService.registrar(usuario);
-        return ResponseEntity.ok(guardado);
-    }
-     */
-
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Long id,
                                                      @RequestHeader("Authorization") String authHeader,
