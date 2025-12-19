@@ -3,6 +3,7 @@ package dondeestas.controller;
 import dondeestas.auxClass.EstadoEnum;
 import dondeestas.auxClass.TipoAnimalEnum;
 import dondeestas.auxClass.Ubicacion;
+import dondeestas.dto.MascotaActualizarDTO;
 import dondeestas.dto.MascotaCrearDTO;
 import dondeestas.dto.MascotaDTO;
 import dondeestas.entity.Mascota;
@@ -361,18 +362,78 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
 
         return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Mascota> actualizarMascota(@PathVariable Long id,
-                                                     @RequestBody Mascota nuevaMascota) {
-        try {
-            Mascota mascotaActualizada = mascotaService.actualizarMascota(id, nuevaMascota);
-            return ResponseEntity.ok(mascotaActualizada);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null);
+    public ResponseEntity<Mascota> actualizarMascota(
+            @PathVariable Long id,
+            @RequestBody MascotaActualizarDTO dto) {
+
+        // 1. Buscar mascota existente
+        Optional<Mascota> mascotaOpt = mascotaService.buscarPorId(id);
+        if (mascotaOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        Mascota mascota = mascotaOpt.get();
+
+        // 2. Actualizar campos opcionales
+        if (dto.getNombre() != null) mascota.setNombre(dto.getNombre());
+        if (dto.getTamano() != null) mascota.setTamano(dto.getTamano());
+        if (dto.getColor() != null) mascota.setColor(dto.getColor());
+        if (dto.getDescripcionExtra() != null) mascota.setDescripcionExtra(dto.getDescripcionExtra());
+
+        // 3. Fecha
+        if (dto.getFechaPerdida() != null && !dto.getFechaPerdida().isEmpty()) {
+            try {
+                LocalDate fecha = LocalDate.parse(dto.getFechaPerdida(), DateTimeFormatter.ISO_DATE);
+                mascota.setFecha(fecha);
+            } catch (DateTimeParseException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
+
+        // 4. Estado
+        if (dto.getEstado() != null) {
+            try {
+                mascota.setEstado(EstadoEnum.valueOf(dto.getEstado().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
+
+        // 5. Tipo de animal
+        if (dto.getTipoAnimal() != null) {
+            try {
+                mascota.setTipoAnimal(TipoAnimalEnum.valueOf(dto.getTipoAnimal().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
+
+        // 6. Ubicación
+        if (dto.getUbicacion() != null && dto.getUbicacion().contains(",")) {
+            String[] parts = dto.getUbicacion().split(",");
+            try {
+                double lat = Double.parseDouble(parts[0].trim());
+                double lng = Double.parseDouble(parts[1].trim());
+                mascota.setLatitud(lat);
+                mascota.setLongitud(lng);
+
+                Ubicacion ubicacion = Ubicacion.obtenerUbicacionPorLatLon(lat, lng);
+                mascota.setProvincia(ubicacion.getProvincia());
+                mascota.setMunicipio(ubicacion.getMunicipio());
+                mascota.setDepartamento(ubicacion.getDepartamento());
+            } catch (NumberFormatException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        }
+
+        // 7. Guardar cambios
+        Mascota mascotaActualizada = mascotaService.actualizarMascota(id, mascota);
+
+        return ResponseEntity.ok(mascotaActualizada);
     }
+
+
 
     @DeleteMapping("/{id}")
     public void eliminarMascota(@PathVariable Long id) {

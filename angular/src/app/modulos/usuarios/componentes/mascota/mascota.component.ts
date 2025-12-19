@@ -160,30 +160,24 @@ export class MascotaComponent implements OnInit {
       this.map = null;
     }
   }
-
   guardarEdicion(): void {
-    // Validar visualmente
-    if (!this.mascotaForm.nombre) {
-      alert("El nombre es obligatorio");
-      return;
+    const dto: any = { ...this.mascotaForm };
+
+    // Mapear fecha al nombre que espera el backend
+    if (dto.fecha) {
+      dto.fechaPerdida = dto.fecha;
+      delete dto.fecha;
     }
 
-    this.mascotaService.editarMascota(this.mascota.id, this.mascotaForm).subscribe({
+    this.mascotaService.editarMascota(this.mascota.id, dto).subscribe({
       next: (updated) => {
-        // ACTUALIZACIÓN DE FLUJO:
-        // 1. Actualizamos el objeto principal
         this.mascota = updated;
-
-        // 2. Si cambiaron cosas visuales (como estado), actualizamos variables derivadas
         if (updated.imagenesBase64 && updated.imagenesBase64.length > 0) {
           this.imagenes = updated.imagenesBase64;
           this.indiceImagenActual = 0;
           this.actualizarImagenPrincipal();
         }
-
-        // 3. Forzamos detección de cambios para que la UI principal reaccione YA
         this.cd.detectChanges();
-
         this.cerrarModalEditar();
       },
       error: (err) => {
@@ -192,6 +186,7 @@ export class MascotaComponent implements OnInit {
       }
     });
   }
+
 
   // --- ELIMINAR ---
   abrirModalEliminar(): void { this.mostrarModalEliminar = true; }
