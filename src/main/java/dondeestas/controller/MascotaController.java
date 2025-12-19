@@ -69,6 +69,7 @@ public class MascotaController {
                     dto.setProvincia(m.getProvincia());
                     dto.setDepartamento(m.getDepartamento());
                     dto.setMunicipio(m.getMunicipio());
+                    dto.setTelefono(m.getUsuario().getTelefono());
                     dto.setImagenesBase64(imagenesBase64);
 
                     return dto;
@@ -115,6 +116,8 @@ public class MascotaController {
                     dto.setProvincia(m.getProvincia());
                     dto.setDepartamento(m.getDepartamento());
                     dto.setMunicipio(m.getMunicipio());
+                    dto.setTelefono(m.getUsuario().getTelefono());
+
                     dto.setImagenesBase64(imagenesBase64);
 
                     return dto;
@@ -274,6 +277,7 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
         mascota.setNombre(dto.getNombre());
         mascota.setTamano(dto.getTamano());
         mascota.setColor(dto.getColor());
+
         mascota.setDescripcionExtra(dto.getDescripcionExtra());
         mascota.setUsuario(usuario);
 
@@ -384,15 +388,46 @@ public ResponseEntity<Mascota> crearMascota(@Valid @RequestBody MascotaCrearDTO 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Mascota> obtenerMascotaPorId(@PathVariable Long id) {
-    Optional<Mascota> mascota = mascotaService.buscarPorId(id);
-    if (mascota.isEmpty()) {
-        return ResponseEntity.notFound().build();
-    }else{
-        return ResponseEntity.ok(mascota.get());
+    public ResponseEntity<MascotaDTO> obtenerMascotaPorId(@PathVariable Long id) {
+
+        Optional<Mascota> mascotaOpt = mascotaService.buscarPorId(id);
+
+        if (mascotaOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Mascota m = mascotaOpt.get();
+
+        List<String> imagenesBase64 = null;
+
+        if (m.getImagenes() != null && !m.getImagenes().isEmpty()) {
+            imagenesBase64 = m.getImagenes()
+                    .stream()
+                    .map(img ->
+                            // 👇 MISMO PREFIJO QUE EN /todos y /perdidas
+                            "data:image/jpeg;base64," + img.getImagenBase64()
+                    )
+                    .toList();
+        }
+
+        MascotaDTO dto = new MascotaDTO();
+        dto.setId(m.getId());
+        dto.setNombre(m.getNombre());
+        dto.setTamano(m.getTamano());
+        dto.setColor(m.getColor());
+        dto.setEstado(m.getEstado().name());
+        dto.setTipoAnimal(m.getTipoAnimal().name());
+        dto.setFecha(m.getFecha());
+        dto.setDescripcionExtra(m.getDescripcionExtra());
+        dto.setProvincia(m.getProvincia());
+        dto.setDepartamento(m.getDepartamento());
+        dto.setMunicipio(m.getMunicipio());
+        dto.setImagenesBase64(imagenesBase64);
+
+        return ResponseEntity.ok(dto);
     }
 
-    }
+
 
     @GetMapping("/encontradas")
     public ResponseEntity<List<Mascota>> listarMascotasEncontradas() {

@@ -14,6 +14,7 @@ import { RankingComponent } from './ranking/ranking.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../../../interceptors/auth.interceptor';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {MascotaComponent} from './mascota/mascota.component';
 
 @NgModule({
   declarations: [

@@ -111,8 +111,11 @@
             {{ mascota.departamento }}{{ (mascota.departamento || mascota.municipio) && mascota.provincia ? ', ' : '' }}
             {{ mascota.provincia }}
           </p>
-
-          <button class="btn-ver-mas">VER MÁS</button>
+          <button
+            class="btn-ver-mas"
+            [routerLink]="['/mascota', mascota.id]">
+            VER MÁS
+          </button>
         </div>
       </div>
 

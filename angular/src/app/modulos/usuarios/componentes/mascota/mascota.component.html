@@ -1,0 +1,186 @@
+<div class="main-container">
+
+  <div class="loading-container" *ngIf="cargando">
+    <div class="spinner">⏳</div>
+    <p>Cargando información...</p>
+  </div>
+
+  <div class="error-container" *ngIf="!cargando && errorCarga">
+    <div class="empty-card">
+      <div class="error-icon">🐶❓</div>
+      <h2>Mascota no encontrada</h2>
+      <p>Parece que la publicación que buscas no existe o ha sido eliminada.</p>
+      <button class="btn-secondary" (click)="volver()">Volver al listado</button>
+    </div>
+  </div>
+
+  <div class="content-wrapper" *ngIf="!cargando && !errorCarga && mascota as m">
+
+    <div class="top-nav">
+      <button class="btn-back" (click)="volver()">
+        ← Volver al listado
+      </button>
+
+      <div class="admin-controls" *ngIf="esDuenio">
+        <button class="btn-icon-edit" (click)="abrirModalEditar()" title="Editar">✏️</button>
+        <button class="btn-icon-delete" (click)="abrirModalEliminar()" title="Eliminar">🗑️</button>
+      </div>
+    </div>
+
+    <div class="detail-card">
+
+      <div class="left-column">
+        <div class="carousel-container">
+
+          <img
+            [src]="imagenSeleccionada || 'assets/images/placeholder-pet.png'"
+            class="main-image"
+            alt="Foto de la mascota"
+            (error)="imagenSeleccionada = 'assets/images/placeholder-pet.png'">
+
+          <span class="badge-estado-large" [ngClass]="m.estado">
+            {{ m.estado }}
+          </span>
+
+          <ng-container *ngIf="m.imagenesBase64 && m.imagenesBase64.length > 1">
+            <button class="carousel-arrow prev" (click)="anteriorImagen()">❮</button>
+            <button class="carousel-arrow next" (click)="siguienteImagen()">❯</button>
+            <div class="carousel-counter">
+              📷 {{ indiceImagenActual + 1 }} / {{ m.imagenesBase64.length }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="right-column">
+
+        <div class="header-section">
+          <span class="label-tiny">Nombre:</span>
+          <h1 class="pet-title">{{ m.nombre }}</h1>
+          <p class="pet-date">Publicado el {{ m.fecha | date:'dd/MM/yyyy' }}</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Tipo</span>
+            <span class="info-value">{{ m.tipoAnimal }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Raza</span>
+            <span class="info-value">{{ m.raza || 'No especificada' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Tamaño</span>
+            <span class="info-value">{{ m.tamano }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Color</span>
+            <span class="info-value">{{ m.color }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="info-label">Ubicación</span>
+            <span class="info-value location-text">
+              📍 {{ m.municipio }}{{ m.provincia ? ', ' + m.provincia : '' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="description-section">
+          <span class="info-label">Descripción Extra</span>
+          <p class="description-text">
+            {{ m.descripcionExtra || 'Sin descripción adicional proporcionada por el dueño.' }}
+          </p>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-contact" (click)="contactar()">
+            📞 Contactar Dueño
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="sightings-card">
+      <div class="sightings-header">
+        <h3>👁️ Avistamientos Reportados (0)</h3>
+      </div>
+      <div class="sightings-content empty">
+        <p>- Aún no hay avistamientos de esta mascota -</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalEditar" (click)="cerrarModalEditar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <span class="close-btn" (click)="cerrarModalEditar()">&times;</span>
+
+    <div class="modal-header-text">
+      <h2>✏️ Editar Mascota</h2>
+    </div>
+
+    <form (ngSubmit)="guardarEdicion()">
+      <label>Nombre:</label>
+      <input [(ngModel)]="mascotaForm.nombre" name="nombre" class="modal-input" required>
+
+      <div class="row-inputs">
+        <div class="col">
+          <label>Tipo:</label>
+          <select [(ngModel)]="mascotaForm.tipoAnimal" name="tipoAnimal" class="modal-input">
+            <option value="PERRO">Perro</option>
+            <option value="GATO">Gato</option>
+            <option value="OTRO">Otro</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Tamaño:</label>
+          <select [(ngModel)]="mascotaForm.tamano" name="tamano" class="modal-input">
+            <option value="Chico">Chico</option>
+            <option value="Mediano">Mediano</option>
+            <option value="Grande">Grande</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Estado actual:</label>
+      <select [(ngModel)]="mascotaForm.estado" name="estado" class="modal-input">
+        <option *ngFor="let opcion of estadosPosibles" [value]="opcion.clave">
+          {{ opcion.label }}
+        </option>
+      </select>
+
+      <label>Color:</label>
+      <input [(ngModel)]="mascotaForm.color" name="color" class="modal-input">
+
+      <label>Descripción:</label>
+      <textarea [(ngModel)]="mascotaForm.descripcionExtra" name="desc" class="modal-input" rows="3"></textarea>
+
+      <label>Ubicación (Mapa):</label>
+      <div class="map-container-mini">
+        <div #mapEdit class="map"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancelar" (click)="cerrarModalEditar()">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalEliminar" (click)="cerrarModalEliminar()">
+  <div class="modal-content mini-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header-text">
+      <h2 style="color: #D32F2F;">⚠️ ¿Eliminar publicación?</h2>
+    </div>
+    <p style="text-align: center; color: #5D4037; margin-bottom: 20px;">
+      Esta acción es irreversible. Se borrarán todos los datos y fotos de La mascota'.
+    </p>
+    <div class="modal-actions">
+      <button class="btn-cancelar" (click)="cerrarModalEliminar()">Cancelar</button>
+      <button class="btn-danger-confirm" (click)="confirmarEliminacion()">Sí, Eliminar</button>
+    </div>
+  </div>
+</div>

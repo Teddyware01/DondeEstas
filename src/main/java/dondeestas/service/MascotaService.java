@@ -43,7 +43,7 @@ public class MascotaService {
     public Mascota registrarMascota(Mascota mascota) { return mascotaRepository.save(mascota); }
 
     public Optional<Mascota> buscarPorId(Long id) {
-        return mascotaRepository.findById(id);
+        return mascotaRepository.findByIdWithImagenes(id);
     }
 
     public List<Mascota> listarTodas() {
