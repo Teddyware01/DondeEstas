@@ -1,16 +1,12 @@
-/* =========================================
-   1. LAYOUT PRINCIPAL (CENTRADO)
-   ========================================= */
 .main-container {
   width: 100%;
   min-height: 100vh;
-  background-color: #f4f6f8; /* Gris muy suave */
+  background-color: #f4f6f8;
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
 }
 
-/* Contenedor que limita el ancho y alinea todo */
 .content-wrapper {
   width: 100%;
   max-width: 1100px;
@@ -19,9 +15,6 @@
   gap: 1.5rem;
 }
 
-/* =========================================
-   2. HEADER
-   ========================================= */
 .mascotas-header {
   display: flex;
   justify-content: space-between;
@@ -35,7 +28,7 @@
   margin: 0;
   font-size: 1.8rem;
   color: #2c3e50;
-  color: #3E2723; /* Marrón oscuro */
+  color: #3E2723;
   font-family: 'Arial Black', sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -49,7 +42,6 @@
   font-style: italic;
 }
 
-/* Botón "Publicar Mascota" (Estilo Moderno) */
 .btn-nueva-mascota {
   background-color: #ff6b6b;
   color: white;
@@ -69,9 +61,6 @@
   box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
 }
 
-/* =========================================
-   3. PANEL DE FILTROS (CHIPS & BÚSQUEDA)
-   ========================================= */
 .filtros-panel {
   background-color: white;
   border-radius: 24px;
@@ -82,7 +71,6 @@
   gap: 1.5rem;
 }
 
-/* Barra de búsqueda */
 .search-bar-container {
   position: relative;
   width: 100%;
@@ -126,7 +114,6 @@
   cursor: pointer;
 }
 
-/* Chips Container */
 .chips-section {
   display: flex;
   flex-wrap: wrap;
@@ -152,7 +139,6 @@
   gap: 0.6rem;
 }
 
-/* Chip Individual */
 .chip {
   background-color: #edf2f7;
   border: 1px solid transparent;
@@ -193,9 +179,6 @@
   text-decoration: underline;
 }
 
-/* =========================================
-   4. GRILLA Y TARJETAS
-   ========================================= */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -218,7 +201,6 @@
   box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 }
 
-/* Imagen de la tarjeta */
 .card-image {
   height: 250px;
   width: 100%;
@@ -232,9 +214,6 @@
   object-fit: cover;
 }
 
-/* --------------------------------------
-   ETIQUETAS DE ESTADO (Colores Dinámicos)
-   -------------------------------------- */
 .badge-estado {
   position: absolute;
   top: 15px;
@@ -246,27 +225,27 @@
   font-weight: 800;
   text-transform: uppercase;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  background-color: #9E9E9E; /* Gris por defecto */
+  background-color: #9E9E9E;
 }
 
 .badge-estado.PERDIDO_PROPIO {
-  background-color: #D32F2F; /* Rojo */
+  background-color: #D32F2F;
 }
 
 .badge-estado.PERDIDO_AJENO {
-  background-color: #F57C00; /* Naranja */
+  background-color: #F57C00;
 }
 
 .badge-estado.RECUPERADO {
-  background-color: #388E3C; /* Verde */
+  background-color: #388E3C;
 }
 
 .badge-estado.ADOPTADO {
-  background-color: #1976D2; /* Azul */
+  background-color: #1976D2;
 }
-/* -------------------------------------- */
 
-/* Información dentro de la tarjeta */
+
+
 .card-info {
   padding: 20px;
   text-align: center;
@@ -314,7 +293,6 @@
   background-color: #5D4037;
 }
 
-/* Estado vacío (Sin resultados) */
 .no-resultados {
   grid-column: 1 / -1;
   text-align: center;
@@ -334,9 +312,6 @@
   font-size: 1rem;
 }
 
-/* =========================================
-   5. MODAL (Formularios y Alertas)
-   ========================================= */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -374,7 +349,7 @@
   font-size: 1.5rem;
   text-align: center;
   margin-bottom: 20px;
-  margin-top: 0; /* Corrección de margen */
+  margin-top: 0;
 }
 
 form label {
@@ -477,15 +452,11 @@ form label {
   height: 100%;
 }
 
-/* Clase específica para modales pequeños de aviso */
 .mini-modal {
   max-width: 400px !important;
   text-align: center;
 }
 
-/* =========================================
-   6. RESPONSIVE
-   ========================================= */
 @media (max-width: 768px) {
   .filtros-panel {
     padding: 1rem;

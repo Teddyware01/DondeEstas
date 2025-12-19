@@ -5,7 +5,7 @@ import { RegistroRequest, LoginRequest, LoginResponse } from '../models/auth-req
 import { Usuario } from '../models/usuario.interface';
 import { HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
-import { PLATFORM_ID, Inject } from '@angular/core';
+import { PLATFORM_ID, Inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RankingEntry } from '../models/ranking.interface';
 import { map } from 'rxjs/operators';
@@ -18,6 +18,9 @@ export class UsuarioService {
   private apiUrl = 'http://localhost:8080/api/usuarios';
   private abrirRegistroSource = new Subject<void>();
   public abrirRegistro$ = this.abrirRegistroSource.asObservable();
+
+  public modalRegistroVisible = signal(false);
+  public modalPublicarVisible = signal(false);
 
   constructor(private http: HttpClient,
               @Inject(PLATFORM_ID) private platformId: Object) { }
@@ -73,8 +76,6 @@ export class UsuarioService {
     this.abrirRegistroSource.next();
   }
 
-
-
   public obtenerUsuarioId(): number | null {
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('id');
@@ -88,16 +89,14 @@ export class UsuarioService {
 
       return this.http.get<any[]>(rankingUrl).pipe(
         map(rankingItemsDesdeJava => {
-          console.log('Datos recibidos del backend:', rankingItemsDesdeJava); // <-- Log 1
+          console.log('Datos recibidos del backend:', rankingItemsDesdeJava);
 
-          // Verificamos si el array es nulo o no un array
           if (!Array.isArray(rankingItemsDesdeJava)) {
             console.error('El backend no retornó un array.');
-            return []; // Retornar array vacío para evitar errores
+            return [];
           }
 
           const listaMapeada = rankingItemsDesdeJava.map(item => {
-            // Validación de existencia de 'usuario' y 'totalPuntos'
             const nombre = item.usuario?.nombre || 'N/A';
             const apellido = item.usuario?.apellido || 'N/A';
             const puntos = item.totalPuntos || 0;
@@ -114,4 +113,7 @@ export class UsuarioService {
   public desactivar(id: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/desactivar/${id}`, {});
   }
+
+  abrirRegistro() { this.modalRegistroVisible.set(true); }
+  abrirPublicar() { this.modalPublicarVisible.set(true); }
 }

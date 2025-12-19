@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { LoginRequest } from '../../../../models/auth-request.interface';
 import { Router } from '@angular/router';
@@ -10,6 +10,12 @@ import { Router } from '@angular/router';
   styleUrl: 'login.component.css'
 })
 export class LoginComponent implements OnInit {
+  public currentUser = signal<any>(this.getUserFromStorage());
+
+  private getUserFromStorage() {
+    const user = localStorage.getItem('currentUser');
+    return user ? JSON.parse(user) : null;
+  }
 
   model: LoginRequest = {
     email: '',

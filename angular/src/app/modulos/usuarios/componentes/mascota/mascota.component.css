@@ -1,6 +1,3 @@
-/* =========================================
-   LAYOUT GENERAL
-   ========================================= */
 .main-container {
   width: 100%;
   min-height: 100vh;
@@ -19,7 +16,6 @@
   gap: 1.5rem;
 }
 
-/* Navegación superior */
 .top-nav {
   display: flex;
   justify-content: space-between;
@@ -44,7 +40,6 @@
   text-decoration: underline;
 }
 
-/* Controles de admin (iconos) */
 .admin-controls {
   display: flex;
   gap: 10px;
@@ -65,10 +60,6 @@
 .btn-icon-delete { background-color: #FFCDD2; color: #D32F2F; }
 .btn-icon-edit:hover, .btn-icon-delete:hover { transform: scale(1.1); }
 
-
-/* =========================================
-   TARJETA DE DETALLE (EL GRID 50/50)
-   ========================================= */
 .detail-card {
   background: white;
   border-radius: 24px;
@@ -79,7 +70,6 @@
   min-height: 500px; /* Altura mínima para que luzca bien */
 }
 
-/* --- COLUMNA IZQUIERDA (IMAGEN) --- */
 .left-column {
   background-color: #f0f0f0;
   position: relative;
@@ -100,10 +90,9 @@
 .main-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cubre todo el espacio disponible */
+  object-fit: cover;
 }
 
-/* Badge de estado (Más grande que en el listado) */
 .badge-estado-large {
   position: absolute;
   top: 20px;
@@ -117,14 +106,12 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.2);
   font-size: 0.9rem;
   z-index: 2;
-  /* Colores reutilizados del estilo previo */
 }
 .badge-estado-large.PERDIDO_PROPIO { background-color: #D32F2F; }
 .badge-estado-large.PERDIDO_AJENO { background-color: #F57C00; }
 .badge-estado-large.RECUPERADO { background-color: #388E3C; }
 .badge-estado-large.ADOPTADO { background-color: #1976D2; }
 
-/* Controles carrusel */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -153,10 +140,8 @@
   font-size: 0.8rem;
 }
 
-
-/* --- COLUMNA DERECHA (INFO) --- */
 .right-column {
-  padding: 3rem; /* Espaciado interno generoso */
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -178,7 +163,7 @@
 }
 
 .pet-title {
-  font-size: 3rem; /* Nombre muy grande */
+  font-size: 3rem;
   color: #3E2723;
   margin: 0;
   line-height: 1;
@@ -192,7 +177,6 @@
   margin-top: 0.5rem;
 }
 
-/* Grilla de datos clave */
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -205,7 +189,7 @@
 }
 
 .info-item.full-width {
-  grid-column: 1 / -1; /* Ocupa todo el ancho */
+  grid-column: 1 / -1;
 }
 
 .info-label {
@@ -226,7 +210,6 @@
   font-weight: bold;
 }
 
-/* Descripción */
 .description-section {
   background-color: #FAFAFA;
   padding: 1.5rem;
@@ -239,12 +222,11 @@
   color: #4a5568;
   line-height: 1.6;
   margin: 0;
-  white-space: pre-wrap; /* Respeta saltos de línea */
+  white-space: pre-wrap;
 }
 
-/* Botones de acción */
 .action-buttons {
-  margin-top: auto; /* Empuja los botones al final */
+  margin-top: auto;
   padding-top: 1rem;
 }
 
@@ -268,10 +250,6 @@
   box-shadow: 0 6px 12px rgba(141, 110, 99, 0.4);
 }
 
-
-/* =========================================
-   SECCIÓN AVISTAMIENTOS
-   ========================================= */
 .sightings-card {
   background: white;
   border-radius: 16px;
@@ -295,10 +273,6 @@
   font-weight: 500;
 }
 
-/* =========================================
-   ESTILOS MODAL Y AUXILIARES
-   ========================================= */
-/* Reutilizamos las clases del modal que me diste en el ejemplo */
 .modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background-color: rgba(62, 39, 35, 0.6);
@@ -337,18 +311,14 @@
 .spinner { font-size: 3rem; animation: spin 2s linear infinite; margin-bottom: 1rem; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-
-/* =========================================
-   RESPONSIVE
-   ========================================= */
 @media (max-width: 900px) {
   .detail-card {
-    grid-template-columns: 1fr; /* Una sola columna en tablet/mobile */
+    grid-template-columns: 1fr;
     min-height: auto;
   }
 
   .left-column {
-    height: 350px; /* Altura fija para la imagen en mobile */
+    height: 350px;
   }
 
   .right-column {
@@ -367,7 +337,7 @@
 
 .map-container-mini {
   width: 100%;
-  height: 250px; /* Altura obligatoria para que Leaflet renderice */
+  height: 250px;
   margin-bottom: 15px;
   border-radius: 8px;
   overflow: hidden;
@@ -379,32 +349,28 @@
   height: 100%;
 }
 
-/* Ajustes visuales del modal */
 .modal-content {
-  max-width: 600px; /* Un poco más ancho para el mapa */
+  max-width: 600px;
   width: 90%;
   max-height: 90vh;
-  overflow-y: auto; /* Scroll si el contenido es muy largo */
+  overflow-y: auto;
 }
 
-
-/* Contenedor externo (le da el tamaño fijo) */
 .map-container-mini {
   width: 100%;
-  height: 300px; /* Dale buena altura */
+  height: 300px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #ccc;
   margin-top: 10px;
   margin-bottom: 10px;
-  position: relative; /* Importante para posicionamiento relativo */
-  z-index: 1; /* Asegura que se pinte bien */
+  position: relative;
+  z-index: 1;
 }
 
-/* El div interno donde Leaflet inyecta el mapa */
 .map {
   width: 100%;
   height: 100%;
-  min-height: 100%; /* Forzar altura */
+  min-height: 100%;
   display: block;
 }

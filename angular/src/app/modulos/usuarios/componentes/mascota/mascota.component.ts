@@ -6,8 +6,6 @@ import { MascotaService } from '../../../../services/mascota.service';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { Mascota } from '../../../../models/mascota.interface';
 
-// Import dinámico de Leaflet se maneja en el método initMap,
-// pero declaramos variables globales si usas TS estricto.
 import * as L from 'leaflet';
 
 @Component({
@@ -23,24 +21,20 @@ export class MascotaComponent implements OnInit {
   cargando = true;
   errorCarga = false;
 
-  // Carrusel
   indiceImagenActual = 0;
   imagenSeleccionada: string = '';
   imagenes: string[] = [];
 
-  // Modales
   mostrarModalEditar = false;
   mostrarModalEliminar = false;
   mascotaForm: any = {};
 
   esDuenio = true;
 
-  // Mapa
   @ViewChild('mapEdit') mapElement!: ElementRef;
   private map!: L.Map;
   private marker!: L.Marker;
 
-  // Enums
   estadosPosibles = [
     { clave: 'PERDIDO_PROPIO', label: 'Perdido por mí (Propio)' },
     { clave: 'PERDIDO_AJENO', label: 'Vi una mascota perdida (Ajeno)' },
@@ -62,7 +56,6 @@ export class MascotaComponent implements OnInit {
     this.cargarDatos(id);
   }
 
-  // Extraje esto a un método para poder re-usarlo si hiciera falta recargar todo
   cargarDatos(id: number) {
     this.mascotaService.obtenerPorId(id).subscribe({
       next: (data) => {
@@ -74,7 +67,6 @@ export class MascotaComponent implements OnInit {
 
         this.mascota = data;
 
-        // Actualizar lista de imágenes
         this.imagenes = (data.imagenesBase64 && data.imagenesBase64.length > 0)
           ? data.imagenesBase64
           : ['/images/placeholder-pet.png'];
@@ -83,7 +75,7 @@ export class MascotaComponent implements OnInit {
         this.verificarDuenio();
 
         this.cargando = false;
-        this.cd.detectChanges(); // <--- Asegura que la vista inicial pinte todo
+        this.cd.detectChanges();
       },
       error: (err) => {
         console.error('Error', err);
@@ -100,7 +92,6 @@ export class MascotaComponent implements OnInit {
     }
   }
 
-  // --- Carrusel ---
   actualizarImagenPrincipal(): void {
     if (this.imagenes.length > 0) {
       this.imagenSeleccionada = this.imagenes[this.indiceImagenActual];
@@ -117,7 +108,6 @@ export class MascotaComponent implements OnInit {
     this.actualizarImagenPrincipal();
   }
 
-  // --- Acciones ---
   volver(): void {
     this.router.navigate(['/todas-mascotas']);
   }
@@ -130,20 +120,15 @@ export class MascotaComponent implements OnInit {
     }
   }
 
-  // --- EDICIÓN (Aquí estaba el problema de flujo) ---
-
   abrirModalEditar(): void {
-    // 1. Clonar objeto para no tocar la vista principal aún
     this.mascotaForm = { ...this.mascota };
 
-    // 2. Formatear fecha para input type="date" (yyyy-MM-dd) si hace falta
     if (this.mascotaForm.fecha) {
       this.mascotaForm.fecha = new Date(this.mascotaForm.fecha).toISOString().split('T')[0];
     }
 
     this.mostrarModalEditar = true;
 
-    // 3. Iniciar mapa con delay para asegurar que el DOM existe
     if (typeof window !== 'undefined') {
       setTimeout(() => {
         this.initMap();
@@ -153,7 +138,6 @@ export class MascotaComponent implements OnInit {
 
   cerrarModalEditar(): void {
     this.mostrarModalEditar = false;
-    // Limpiamos mapa si existe para ahorrar memoria
     if (this.map) {
       this.map.remove();
       // @ts-ignore
@@ -162,7 +146,6 @@ export class MascotaComponent implements OnInit {
   }
 
   guardarEdicion(): void {
-    // Validar visualmente
     if (!this.mascotaForm.nombre) {
       alert("El nombre es obligatorio");
       return;
@@ -170,18 +153,14 @@ export class MascotaComponent implements OnInit {
 
     this.mascotaService.editarMascota(this.mascota.id, this.mascotaForm).subscribe({
       next: (updated) => {
-        // ACTUALIZACIÓN DE FLUJO:
-        // 1. Actualizamos el objeto principal
         this.mascota = updated;
 
-        // 2. Si cambiaron cosas visuales (como estado), actualizamos variables derivadas
         if (updated.imagenesBase64 && updated.imagenesBase64.length > 0) {
           this.imagenes = updated.imagenesBase64;
           this.indiceImagenActual = 0;
           this.actualizarImagenPrincipal();
         }
 
-        // 3. Forzamos detección de cambios para que la UI principal reaccione YA
         this.cd.detectChanges();
 
         this.cerrarModalEditar();
@@ -193,7 +172,6 @@ export class MascotaComponent implements OnInit {
     });
   }
 
-  // --- ELIMINAR ---
   abrirModalEliminar(): void { this.mostrarModalEliminar = true; }
   cerrarModalEliminar(): void { this.mostrarModalEliminar = false; }
 
@@ -201,7 +179,6 @@ export class MascotaComponent implements OnInit {
     this.mascotaService.desactivarMascota(this.mascota.id).subscribe({
       next: (mascotaActualizada) => {
         console.log('Mascota desactivada:', mascotaActualizada);
-        // Actualizar la lista local si tienes
       },
       error: (err) => console.error('Error al desactivar mascota', err)
     });
@@ -209,27 +186,23 @@ export class MascotaComponent implements OnInit {
     this.router.navigate(['/todas-mascotas']);
   }
 
-  // --- MAPA LEAFLET (Corregido con NgZone) ---
 
   private async initMap(): Promise<void> {
     if (typeof window === 'undefined' || !this.mapElement) return;
 
     const L = await import('leaflet');
 
-    // Parsear ubicación
     let coords: [number, number] = [-34.6037, -58.3816]; // Default BsAs
     if (this.mascotaForm.ubicacion && this.mascotaForm.ubicacion.includes(',')) {
       const split = this.mascotaForm.ubicacion.split(',');
       coords = [parseFloat(split[0]), parseFloat(split[1])];
     }
 
-    // Reset mapa si ya existía
     if (this.map) {
       this.map.off();
       this.map.remove();
     }
 
-    // Crear mapa
     this.map = L.map(this.mapElement.nativeElement).setView(coords, 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -238,9 +211,6 @@ export class MascotaComponent implements OnInit {
 
     this.marker = L.marker(coords, { draggable: true }).addTo(this.map);
 
-    // --- AQUÍ ESTÁ LA MAGIA PARA EL FLUJO ---
-    // Usamos ngZone.run() para volver a meter a Angular en la jugada
-    // cuando ocurren eventos del mapa.
 
     this.marker.on('dragend', () => {
       this.ngZone.run(() => {

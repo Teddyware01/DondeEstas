@@ -1,77 +1,94 @@
 <div class="dashboard-wrapper">
-
-  <div class="hero-card">
+  <section class="hero-card">
     <div class="hero-content">
       <div class="hero-text">
         <h1>Bienvenido a <span class="brand-name">DondeEstás?</span></h1>
         <p class="subtitle">
           El punto de encuentro para reunir a las mascotas con sus hogares.
-          <br>
-          <strong>Conectamos corazones perdidos.</strong>
+          <br><strong>Conectamos corazones perdidos.</strong>
         </p>
       </div>
       <div class="hero-image-container">
-        <img src="/images/logo-dashboard.png" alt="Mascota" class="hero-img">
+        <img src="images/pet-hero.png" alt="Mascota" class="hero-img">
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="actions-container">
-    <a routerLink="/todas-mascotas" class="action-card card-blue">
-      <div class="icon-circle"><i class="fas fa-paw"></i> <span>🐾</span></div>
-      <div class="action-text"><h3>Ver Mascotas</h3><p>Explorar listado</p></div>
+  <section class="actions-container">
+    <a routerLink="/mascotas" class="action-card card-blue">
+      <div class="icon-circle">🐾</div>
+      <div class="action-text">
+        <h3>Ver Mascotas</h3>
+        <p>Explorar listado</p>
+      </div>
     </a>
-    <a routerLink="/login" class="action-card card-purple">
-      <div class="icon-circle"><span>👤</span></div>
-      <div class="action-text"><h3>Registrarme</h3><p>Crear cuenta</p></div>
-    </a>
-    <a routerLink="/todas-mascotas" class="action-card card-orange">
-      <div class="icon-circle"><span>📢</span></div>
-      <div class="action-text"><h3>Publicar</h3><p>Reportar ahora</p></div>
-    </a>
+
+    <button (click)="onRegistrar()" class="action-card card-purple">
+      <div class="icon-circle">👤</div>
+      <div class="action-text">
+        <h3>Registrarme</h3>
+        <p>Crear cuenta</p>
+      </div>
+    </button>
+
+    <button (click)="onPublicar()" class="action-card card-orange">
+      <div class="icon-circle">📢</div>
+      <div class="action-text">
+        <h3>Publicar</h3>
+        <p>Reportar ahora</p>
+      </div>
+    </button>
+  </section>
+
+  <section class="stats-section" *ngIf="!loadingStats(); else cargando">
+    <div class="stats-header">
+      <h2>Impacto de la comunidad</h2>
+      <div class="divider-line"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon users-color">👥</div>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.totalUsuarios }}</span>
+          <span class="stat-label">Usuarios Registrados</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon search-color">🔍</div>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.busquedasActivas }}</span>
+          <span class="stat-label">Búsquedas Activas</span>
+        </div>
+      </div>
+      <div class="stat-card highlight-card">
+        <div class="stat-icon heart-color">❤️</div>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.reencuentrosFelices }}</span>
+          <span class="stat-label success-text">Reencuentros Felices</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon map-color">🏘️</div>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.barriosCubiertos }}</span>
+          <span class="stat-label">Barrios Cubiertos</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon map-color">🏘️</div>
+        <div class="stat-info">
+          <span class="stat-number">{{ stats.provinciasCubiertas }}</span>
+          <span class="stat-label">Provincias Cubiertas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="loadingStats()" class="loader">
+    <p>Cargando estadísticas...</p>
   </div>
 
-  <div class="stats-header">
-    <h2>Impacto de la comunidad</h2>
-    <div class="divider-line"></div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon users-color">👥</div>
-      <div class="stat-info">
-        <span class="stat-number">{{ stats.totalUsuarios }}</span>
-        <span class="stat-label">Usuarios Registrados</span>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon search-color">🔍</div>
-      <div class="stat-info">
-        <span class="stat-number">{{ stats.busquedasActivas }}</span>
-        <span class="stat-label">Búsquedas Activas</span>
-      </div>
-    </div>
-    <div class="stat-card highlight-card">
-      <div class="stat-icon heart-color">❤️</div>
-      <div class="stat-info">
-        <span class="stat-number">{{ stats.reencuentrosFelices }}</span>
-        <span class="stat-label success-text">Reencuentros Felices</span>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon map-color">🏘️</div>
-      <div class="stat-info">
-        <span class="stat-number">{{ stats.barriosCubiertos }}</span>
-        <span class="stat-label">Barrios Cubiertos</span>
-      </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon map-color">🏘️</div>
-      <div class="stat-info">
-        <span class="stat-number">{{ stats.provinciasCubiertas }}</span>
-        <span class="stat-label">Provincias Cubiertas</span>
-      </div>
-    </div>
-  </div>
-
+  <ng-template #cargando>
+    <div class="loader">Cargando impacto de la comunidad...</div>
+  </ng-template>
 </div>

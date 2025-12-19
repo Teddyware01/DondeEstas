@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../../../../services/dashboard.service'; // Importar servicio
-import { DashboardStats } from '../../../../models/dashboard.interface';       // Importar interfaz
-import { ChangeDetectorRef } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import { DashboardService } from '../../../../services/dashboard.service';
+import { DashboardStats } from '../../../../models/dashboard.interface';
+import { ChangeDetectorRef, signal, PLATFORM_ID } from '@angular/core';
+import { UsuarioService } from '../../../../services/usuario.service';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home-dashboard',
@@ -11,7 +14,6 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  // Inicializamos en 0 para que no falle la vista mientras carga
   stats: DashboardStats = {
     totalUsuarios: 0,
     busquedasActivas: 0,
@@ -19,12 +21,22 @@ export class DashboardComponent implements OnInit {
     barriosCubiertos: 0,
     provinciasCubiertas:0
   };
-
-  // Variable opcional para mostrar un spinner de carga si quisieras
+  public currentUser = signal<any>(null);
+  loadingStats = signal(true);
   cargando: boolean = true;
 
   constructor(private dashboardService: DashboardService,
-              private cd: ChangeDetectorRef) { }
+              private cd: ChangeDetectorRef,
+              private usuarioService: UsuarioService,
+              private router: Router,
+              @Inject(PLATFORM_ID) private platformId: Object) {
+      if (isPlatformBrowser(this.platformId)) {
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+          this.currentUser.set(JSON.parse(savedUser));
+        }
+      }
+    }
 
   ngOnInit(): void {
     this.cargarEstadisticas();
@@ -34,6 +46,7 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.obtenerEstadisticas().subscribe({
       next: (data) => {
         this.stats = data;
+        this.loadingStats.set(false);
         this.cargando = false;
         this.cd.detectChanges();
       },
@@ -41,8 +54,15 @@ export class DashboardComponent implements OnInit {
         console.error('Error al cargar estadísticas', err);
         this.cargando = false;
         this.cd.detectChanges();
-      }
+      },
     });
   }
+  onRegistrar() {
+    this.usuarioService.abrirRegistro();
+  }
 
+  onPublicar() {
+    this.router.navigate(['/mascotas']);
+    this.usuarioService.abrirPublicar();
+  }
 }

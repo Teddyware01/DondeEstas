@@ -1,18 +1,14 @@
-/* 1. LAYOUT GENERAL */
 .dashboard-wrapper {
   background-color: #f4f6f9;
   min-height: 100vh;
-  /* CAMBIO: Reduje el padding lateral del 5% al 2rem para usar más ancho */
   padding: 2rem;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   box-sizing: border-box;
 }
 
-/* 2. HERO CARD */
 .hero-card {
   background: white;
   border-radius: 15px;
-  /* CAMBIO: Padding un poco más compacto arriba/abajo */
   padding: 2rem 3rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
   margin-bottom: 3rem;
@@ -22,11 +18,10 @@
 .hero-content {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Centra verticalmente texto e imagen */
+  align-items: center;
   gap: 2rem;
 }
 
-/* CAMBIO: El texto ahora ocupa todo el espacio disponible */
 .hero-text {
   flex: 1;
 }
@@ -34,7 +29,7 @@
 .hero-text h1 {
   font-size: 2.5rem;
   color: #2c3e50;
-  margin-bottom: 0.5rem; /* Menos margen */
+  margin-bottom: 0.5rem;
   margin-top: 0;
 }
 
@@ -47,28 +42,25 @@
   font-size: 1.25rem;
   color: #6c757d;
   line-height: 1.6;
-  max-width: 800px; /* Permitimos que el texto sea más largo antes de bajar de línea */
+  max-width: 800px;
   margin-bottom: 0;
 }
 
-/* CAMBIO: Contenedor de imagen más restringido */
 .hero-image-container {
-  flex: 0 0 auto; /* No se estira, solo ocupa lo que mide la imagen */
+  flex: 0 0 auto;
   display: flex;
   justify-content: flex-end;
 }
 
-/* CAMBIO: Estilo específico para hacer la imagen chica */
 .hero-img {
-  max-width: 150px; /* Ajusta este valor si la quieres más chica o grande */
+  max-width: 150px;
   height: auto;
   object-fit: contain;
 }
 
-/* MEDIA QUERY: Para que en celular se vea bien (uno arriba del otro) */
 @media (max-width: 768px) {
   .hero-content {
-    flex-direction: column-reverse; /* Imagen arriba o abajo, a gusto */
+    flex-direction: column-reverse;
     text-align: center;
   }
   .hero-image-container {
@@ -77,10 +69,8 @@
   }
 }
 
-/* 3. BOTONES DE ACCIÓN (Sin cambios mayores, solo grid responsive) */
 .actions-container {
   display: grid;
-  /* Grid responsiva que ocupa todo el ancho */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   margin-bottom: 4rem;
@@ -113,7 +103,7 @@
   justify-content: center;
   font-size: 1.8rem;
   margin-right: 1.5rem;
-  flex-shrink: 0; /* Evita que el circulo se aplaste */
+  flex-shrink: 0;
 }
 
 .action-text h3 {
@@ -134,7 +124,6 @@
 .card-orange .action-text h3, .card-orange .action-text p { color: #333; }
 .card-orange .icon-circle { background: rgba(0,0,0,0.1); }
 
-/* 4. SECCIÓN ESTADÍSTICAS */
 .stats-header {
   display: flex;
   align-items: center;
@@ -157,7 +146,7 @@
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Minimo un poco mas chico para que entren mas */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 

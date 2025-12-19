@@ -1,4 +1,3 @@
-/* --- TARJETA PRINCIPAL --- */
 .login-card {
   border: none;
   border-radius: 15px;
@@ -7,9 +6,8 @@
   overflow: hidden;
 }
 
-/* --- CABECERA (Color barra navegación) --- */
 .login-header {
-  background-color: #D7CCC8 !important; /* Beige Navbar */
+  background-color: #D7CCC8 !important;
   border-bottom: 1px solid #D7CCC8;
   padding: 20px 0;
   text-align: center;
@@ -17,14 +15,13 @@
 
 .login-header h3 {
   margin: 0;
-  color: #3E2723; /* Marrón oscuro para contraste */
+  color: #3E2723;
   font-family: 'Arial Black', sans-serif;
   font-weight: 900;
   letter-spacing: -0.5px;
   font-size: 24px;
 }
 
-/* --- INPUTS --- */
 .custom-label {
   font-weight: 700;
   color: #5D4037;
@@ -50,11 +47,9 @@
   outline: none;
 }
 
-/* --- BOTÓN INGRESAR --- */
 .btn-ingresar {
-  /* ESTADO NORMAL: Color de la barra de navegación */
   background-color: #D7CCC8 !important;
-  color: #3E2723 !important; /* Letra oscura */
+  color: #3E2723 !important;
   border: 2px solid #D7CCC8 !important;
 
   border-radius: 25px;
@@ -67,10 +62,9 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-/* HOVER: Invierte los colores */
 .btn-ingresar:hover {
-  background-color: #3E2723 !important; /* Fondo oscuro */
-  color: #D7CCC8 !important;            /* Letra clara (color navbar) */
+  background-color: #3E2723 !important;
+  color: #D7CCC8 !important;
   border-color: #3E2723 !important;
 
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
@@ -81,7 +75,6 @@
   transform: scale(0.98);
 }
 
-/* --- LINKS Y TEXTOS --- */
 .footer-text {
   color: #795548;
   font-size: 14px;

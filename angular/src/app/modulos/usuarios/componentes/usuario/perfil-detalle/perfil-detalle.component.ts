@@ -23,7 +23,6 @@ export class PerfilDetalleComponent implements OnInit {
   edicionExitosa = false;
   guardando = false;
 
-  /* ===== MODAL ELIMINAR ===== */
   mostrarModalEliminar = false;
   eliminando = false;
 
@@ -71,8 +70,6 @@ export class PerfilDetalleComponent implements OnInit {
       });
     });
   }
-
-  /* ================= FORM ================= */
 
   inicializarFormulario(usuario: Usuario): void {
     this.perfilForm = this.fb.group({
@@ -137,16 +134,12 @@ export class PerfilDetalleComponent implements OnInit {
     });
   }
 
-  /* ================= OTROS ================= */
-
   getPosicionRanking(): number | string {
     if (this.usuario && this.usuario.puntajes) {
       return 'Nivel ' + Math.floor(this.usuario.puntajes / 100);
     }
     return 'Sin ranking';
   }
-
-  /* ================= ELIMINAR CUENTA ================= */
 
   eliminarCuenta(): void {
     this.mostrarModalEliminar = true;

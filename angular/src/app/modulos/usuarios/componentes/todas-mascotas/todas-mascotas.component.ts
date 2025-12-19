@@ -13,16 +13,13 @@ import { UsuarioService } from '../../../../services/usuario.service';
 })
 export class TodasMascotasComponent implements OnInit {
 
-  // --- Control de UI ---
   mostrarModal: boolean = false;
   mostrarModalLogin: boolean = false;
   modoEdicion: boolean = false;
 
-  // --- Listas de Datos ---
   listaMascotasOriginal: Mascota[] = [];
   listaMascotasFiltrada: Mascota[] = [];
 
-  // --- Filtros (Selección Múltiple) ---
   filtros: { texto: string, estados: string[], tamanos: string[], tipos: string[] } = {
     texto: '',
     estados: [],
@@ -37,7 +34,6 @@ export class TodasMascotasComponent implements OnInit {
     { clave: 'ADOPTADO', label: 'Ya fue adoptado' }
   ];
 
-  // --- Formulario ---
   mascotaForm: Mascota & { fotos?: File[] } = {
     nombre: '',
     tipoAnimal: 'PERRO',
@@ -50,7 +46,6 @@ export class TodasMascotasComponent implements OnInit {
     fotos: []
   };
 
-  // --- Mapa (Leaflet) ---
   @ViewChild('map') mapElement!: ElementRef;
   private map!: L.Map;
   private marker!: L.Marker;
@@ -66,10 +61,6 @@ export class TodasMascotasComponent implements OnInit {
     this.cargarMascotas();
   }
 
-  // =============================================================
-  // 1. LÓGICA DE CARGA Y FILTRADO
-  // =============================================================
-
   cargarMascotas(): void {
     this.mascotaService.obtenerMascotasTodas().subscribe({
       next: (data) => {
@@ -81,7 +72,6 @@ export class TodasMascotasComponent implements OnInit {
     });
   }
 
-  // Toggle para Estado
   toggleEstado(estadoClave: string): void {
     const index = this.filtros.estados.indexOf(estadoClave);
     if (index > -1) {
@@ -92,7 +82,6 @@ export class TodasMascotasComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  // Toggle para Tamaño
   toggleTamano(tamanoValor: string): void {
     const index = this.filtros.tamanos.indexOf(tamanoValor);
     if (index > -1) {
@@ -103,7 +92,6 @@ export class TodasMascotasComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  // Toggle para Tipo de Animal
   toggleTipo(tipoValor: string): void {
     const index = this.filtros.tipos.indexOf(tipoValor);
     if (index > -1) {
@@ -119,22 +107,18 @@ export class TodasMascotasComponent implements OnInit {
 
     this.listaMascotasFiltrada = this.listaMascotasOriginal.filter(mascota => {
 
-      // A. Filtro Texto (Nombre, Municipio, Provincia O Descripción Extra)
       const coincideTexto = !textoBusqueda ||
         mascota.nombre?.toLowerCase().includes(textoBusqueda) ||
         mascota.municipio?.toLowerCase().includes(textoBusqueda) ||
         mascota.provincia?.toLowerCase().includes(textoBusqueda) ||
-        mascota.descripcionExtra?.toLowerCase().includes(textoBusqueda); // <--- AGREGADO AQUÍ
+        mascota.descripcionExtra?.toLowerCase().includes(textoBusqueda);
 
-      // B. Filtro Estado
       const coincideEstado = this.filtros.estados.length === 0 ||
         this.filtros.estados.includes(mascota.estado);
 
-      // C. Filtro Tamaño
       const coincideTamano = this.filtros.tamanos.length === 0 ||
         this.filtros.tamanos.includes(mascota.tamano);
 
-      // D. Filtro Tipo Animal (Versión Robusta)
       const tipoBackend = mascota.tipoAnimal ? String(mascota.tipoAnimal).toUpperCase() : '';
 
       const coincideTipo = this.filtros.tipos.length === 0 ||
@@ -153,10 +137,6 @@ export class TodasMascotasComponent implements OnInit {
     };
     this.listaMascotasFiltrada = [...this.listaMascotasOriginal];
   }
-
-  // =============================================================
-  // 2. GESTIÓN DE MODALES
-  // =============================================================
 
   abrirModalCrear(): void {
     if (!this.usuarioService.estaLogueado()) {
@@ -211,10 +191,6 @@ export class TodasMascotasComponent implements OnInit {
     };
   }
 
-  // =============================================================
-  // 3. LÓGICA DE GUARDADO (CRUD)
-  // =============================================================
-
   guardarMascota(): void {
     if (typeof window === 'undefined') return;
 
@@ -258,10 +234,6 @@ export class TodasMascotasComponent implements OnInit {
     if (!input.files) return;
     this.mascotaForm.fotos = Array.from(input.files);
   }
-
-  // =============================================================
-  // 4. MAPA (Leaflet)
-  // =============================================================
 
   private async initMap(): Promise<void> {
     if (typeof window === 'undefined' || !this.mapElement) return;

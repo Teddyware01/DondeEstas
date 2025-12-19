@@ -1,4 +1,3 @@
-/* ================= PERFIL CARD ================= */
 .perfil-card {
   background-color: #FDFBF7;
   padding: 30px;
@@ -19,7 +18,6 @@
   letter-spacing: 1px;
 }
 
-/* ================= SECCIONES ================= */
 .perfil-section {
   margin-bottom: 30px;
 }
@@ -43,7 +41,6 @@
   color: #5D4037;
 }
 
-/* ================= LISTAS ================= */
 .perfil-section ul {
   padding-left: 18px;
 }
@@ -53,7 +50,6 @@
   margin-bottom: 5px;
 }
 
-/* ================= BADGES ================= */
 .perfil-badges {
   display: flex;
   gap: 8px;
@@ -68,7 +64,6 @@
   font-size: 12px;
 }
 
-/* ================= BOTONES ================= */
 .perfil-btn-submit {
   width: 100%;
   padding: 12px;
@@ -102,7 +97,6 @@
   color: white;
 }
 
-/* ================= MODAL ================= */
 .modal-backdrop-custom {
   position: fixed;
   inset: 0;
@@ -144,7 +138,6 @@
   cursor: pointer;
 }
 
-/* ================= FORM ================= */
 .perfil-form-row {
   display: flex;
   gap: 10px;
@@ -179,13 +172,11 @@
   background-color: #fff;
 }
 
-/* ================= INPUT DISABLED ================= */
 .perfil-input-disabled {
   background-color: #f3f3f3;
   cursor: not-allowed;
 }
 
-/* ================= ALERTAS ================= */
 .perfil-alert-success {
   color: #388E3C;
   font-size: 14px;
@@ -201,8 +192,6 @@
   margin-top: 10px;
 }
 
-
-/* ================= TITULO PRINCIPAL ================= */
 .perfil-nombre {
   font-size: 26px;
   font-weight: 700;
@@ -213,18 +202,15 @@
   letter-spacing: 1px;
 }
 
-/* ================= SECCIONES ================= */
 .perfil-section {
   margin-bottom: 40px;
 }
 
-/* Sección más importante */
 .perfil-section-principal {
   border-bottom: 1px solid #E0D6D1;
   padding-bottom: 30px;
 }
 
-/* ================= TITULOS ================= */
 .perfil-section-title {
   font-size: 18px;
   font-weight: 700;
@@ -233,7 +219,6 @@
   text-transform: uppercase;
 }
 
-/* Jerarquía descendente */
 .perfil-section-title.secundaria {
   font-size: 16px;
   font-weight: 700;
@@ -246,14 +231,12 @@
   color: #6D4C41;
 }
 
-/* ================= BOTONES ================= */
 .perfil-actions {
   display: flex;
   gap: 12px;
   margin-top: 20px;
 }
 
-/* Botón eliminar */
 .perfil-btn-danger {
   padding: 12px 20px;
   background-color: #D32F2F;
@@ -269,7 +252,6 @@
   background-color: #B71C1C;
 }
 
-/* ================= RANKING ================= */
 .perfil-dato-destacado {
   font-size: 28px;
   font-weight: 700;
@@ -297,13 +279,11 @@
   font-size: 14px;
 }
 
-/* ================= PUBLICACIONES ================= */
 .perfil-resumen {
   font-size: 15px;
   margin-bottom: 10px;
 }
 
-/* ================= LISTAS ================= */
 .perfil-section ul {
   padding-left: 18px;
   margin-bottom: 15px;
@@ -314,8 +294,6 @@
   margin-bottom: 6px;
 }
 
-
-/* ================= LISTADO MASCOTAS ================= */
 .mascotas-list {
   display: flex;
   flex-direction: column;
@@ -339,7 +317,6 @@
   transform: translateY(-1px);
 }
 
-/* INFO */
 .mascota-info {
   display: flex;
   flex-direction: column;
@@ -356,7 +333,6 @@
   color: #8D6E63;
 }
 
-/* BOTÓN VER */
 .mascota-btn-ver {
   padding: 6px 14px;
   background-color: transparent;
@@ -374,7 +350,6 @@
   color: white;
 }
 
-/* ================= LISTADO ================= */
 .mascotas-list {
   display: flex;
   flex-direction: column;
@@ -392,21 +367,18 @@
   border-radius: 12px;
 }
 
-/* LINEA PRINCIPAL */
 .mascota-linea {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
-/* FECHA */
 .mascota-fecha {
   font-size: 12px;
   color: #9E9E9E;
-  min-width: 80px; /* mantiene alineación */
+  min-width: 80px;
 }
 
-/* NOMBRE */
 .mascota-nombre {
   font-size: 15px;
   font-weight: 700;
@@ -414,7 +386,6 @@
   min-width: 120px;
 }
 
-/* ESTADO */
 .mascota-estado {
   padding: 4px 12px;
   border-radius: 14px;
@@ -423,7 +394,6 @@
   text-transform: uppercase;
 }
 
-/* COLORES */
 .mascota-estado.PERDIDO_PROPIO {
   background-color: #D32F2F;
   color: white;
@@ -444,13 +414,12 @@
   color: white;
 }
 
-/* TIPO ANIMAL */
 .mascota-tipo {
-  font-size: 11px;             /* Letra pequeña/ligera */
-  font-weight: 600;            /* Peso medio para que se lea bien */
-  text-transform: uppercase;   /* Fuerza mayúsculas (PERRO, GATO) */
-  color: #8D6E63;              /* Color secundario de tu paleta */
-  min-width: 50px;             /* Ancho mínimo para mantener alineación vertical */
-  letter-spacing: 0.5px;       /* Un poco de espacio entre letras */
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8D6E63;
+  min-width: 50px;
+  letter-spacing: 0.5px;
   opacity: 0.9;
 }
