@@ -4,7 +4,7 @@ export interface Mascota {
   tamano: string;
   color: string;
   raza?: string;
-  fecha: string | Date;
+  fechaPerdida: string | Date;
   estado: string;
   descripcionExtra?: string;
   usuarioId?: number;

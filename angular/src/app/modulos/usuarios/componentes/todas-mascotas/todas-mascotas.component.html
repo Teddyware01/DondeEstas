@@ -102,7 +102,7 @@
 
           <div class="pet-details">
             <p><strong>Tamaño:</strong> {{ mascota.tamano }}</p>
-            <p><strong>Perdido el:</strong> {{ mascota.fecha | date:'dd/MM/yyyy' }}</p>
+            <p><strong>Perdido el:</strong> {{ mascota.fechaPerdida | date:'dd/MM/yyyy' }}</p>
           </div>
 
           <p class="ubicacion">
@@ -174,7 +174,7 @@
       </textarea>
 
       <label>Fecha de pérdida:</label>
-      <input type="date" [(ngModel)]="mascotaForm.fecha" name="fechaPerdida" class="modal-input" required>
+      <input type="date" [(ngModel)]="mascotaForm.fechaPerdida" name="fechaPerdida" class="modal-input" required>
 
       <label>Ubicación:</label>
       <div class="map-container">

@@ -57,7 +57,7 @@
         <div class="header-section">
           <span class="label-tiny">Nombre:</span>
           <h1 class="pet-title">{{ m.nombre }}</h1>
-          <p class="pet-date">Publicado el {{ m.fecha | date:'dd/MM/yyyy' }}</p>
+          <p class="pet-date">Publicado el {{ m.fechaPerdida | date:'dd/MM/yyyy' }}</p>
         </div>
 
         <div class="info-grid">
@@ -158,7 +158,7 @@
       <textarea [(ngModel)]="mascotaForm.descripcionExtra" name="desc" class="modal-input" rows="3"></textarea>
 
       <label>Fecha de pérdida/hallazgo:</label>
-      <input type="date" [(ngModel)]="mascotaForm.fecha" name="fecha" class="modal-input">
+      <input type="date" [(ngModel)]="mascotaForm.fechaPerdida" name="fecha" class="modal-input">
 
       <label>Ubicación (Arrastra el marcador para corregir):</label>
       <div class="map-container-mini">

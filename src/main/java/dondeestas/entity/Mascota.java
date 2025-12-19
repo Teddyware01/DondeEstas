@@ -54,8 +54,8 @@ public class Mascota {
 
     @Setter
     @Getter
-    @Column
-    private LocalDate fecha;
+    @Column(name = "fecha_perdida")
+    private LocalDate fechaPerdida;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -113,13 +113,13 @@ public class Mascota {
     }
 
     public Mascota(Usuario usuario, String nombre,
-                   String tamano, String color, LocalDate fecha, EstadoEnum estado, TipoAnimalEnum tipoAnimal, String descripcionExtra) {
+                   String tamano, String color, LocalDate fechaPerdida, EstadoEnum estado, TipoAnimalEnum tipoAnimal, String descripcionExtra) {
         this.usuario = usuario;
         this.avistamientos = new ArrayList<>();
         this.nombre = nombre;
         this.tamano = tamano;
         this.color = color;
-        this.fecha = fecha;
+        this.fechaPerdida = fechaPerdida;
         this.estado = estado;
         this.activo = true;
         this.tipoAnimal = tipoAnimal;
@@ -134,7 +134,7 @@ public class Mascota {
                 ", nombre='" + nombre + '\'' +
                 ", tamano='" + tamano + '\'' +
                 ", color='" + color + '\'' +
-                ", fecha=" + fecha +
+                ", fecha=" + fechaPerdida +
                 ", descripcionExtra='" + descripcionExtra + '\'' +
                 ", avistamientosCount=" + (avistamientos != null ? avistamientos.size() : 0) +
                 '}';

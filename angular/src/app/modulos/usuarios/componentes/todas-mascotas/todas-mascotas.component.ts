@@ -40,7 +40,7 @@ export class TodasMascotasComponent implements OnInit {
     tamano: '',
     color: '',
     descripcionExtra: '',
-    fecha: '',
+    fechaPerdida: '',
     ubicacion: '',
     estado: 'PERDIDO_PROPIO',
     fotos: []
@@ -184,7 +184,7 @@ export class TodasMascotasComponent implements OnInit {
       tamano: '',
       color: '',
       descripcionExtra: '',
-      fecha: '',
+      fechaPerdida: '',
       ubicacion: '',
       estado: 'PERDIDO_PROPIO',
       fotos: []

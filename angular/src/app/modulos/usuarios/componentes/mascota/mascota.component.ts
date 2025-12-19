@@ -123,8 +123,8 @@ export class MascotaComponent implements OnInit {
   abrirModalEditar(): void {
     this.mascotaForm = { ...this.mascota };
 
-    if (this.mascotaForm.fecha) {
-      this.mascotaForm.fecha = new Date(this.mascotaForm.fecha).toISOString().split('T')[0];
+    if (this.mascotaForm.fechaPerdida) {
+      this.mascotaForm.fechaPerdida = new Date(this.mascotaForm.fechaPerdida).toISOString().split('T')[0];
     }
 
     this.mostrarModalEditar = true;
@@ -179,11 +179,11 @@ export class MascotaComponent implements OnInit {
     this.mascotaService.desactivarMascota(this.mascota.id).subscribe({
       next: (mascotaActualizada) => {
         console.log('Mascota desactivada:', mascotaActualizada);
+        this.router.navigate(['/todas-mascotas']);
       },
       error: (err) => console.error('Error al desactivar mascota', err)
     });
 
-    this.router.navigate(['/todas-mascotas']);
   }
 
 

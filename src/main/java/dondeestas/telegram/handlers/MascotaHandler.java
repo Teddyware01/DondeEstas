@@ -64,7 +64,7 @@ public class MascotaHandler extends BaseHandler {
         if (mascota.getTamano() != null) sb.append("Tamaño: ").append(mascota.getTamano()).append("\n");
         if (mascota.getColor() != null) sb.append("Color: ").append(mascota.getColor()).append("\n");
         sb.append("Estado: ").append(mascota.getEstado()).append("\n");
-        if (mascota.getFecha() != null) sb.append("Fecha: ").append(mascota.getFecha()).append("\n");
+        if (mascota.getFechaPerdida() != null) sb.append("Fecha: ").append(mascota.getFechaPerdida()).append("\n");
 
         // Ubicación aproximada
         if (mascota.getDepartamento() != null || mascota.getProvincia() != null || mascota.getMunicipio() != null) {

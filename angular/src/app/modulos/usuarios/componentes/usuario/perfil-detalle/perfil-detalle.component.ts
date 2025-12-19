@@ -178,6 +178,6 @@ export class PerfilDetalleComponent implements OnInit {
   }
 
   verMascota(id: number): void {
-    // Lógica para ver mascota
+    this.router.navigate(['/mascota',id]);
   }
 }

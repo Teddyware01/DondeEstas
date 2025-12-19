@@ -137,7 +137,7 @@ public class AlertasHandler extends BaseHandler {
             sb.append("● Nombre: ").append(m.getNombre()).append("\n")
                     .append("ID: ").append(m.getId()).append("\n")
                     .append("Descripcion: ").append(m.getDescripcionExtra()).append("\n")
-                    .append("Fecha publicacion: ").append(m.getFecha()).append("\n")
+                    .append("Fecha publicacion: ").append(m.getFechaPerdida()).append("\n")
                     .append("Reportada por: ").append(m.getUsuario().getNombre()).append("\n")
                     .append("---\n");
         }
